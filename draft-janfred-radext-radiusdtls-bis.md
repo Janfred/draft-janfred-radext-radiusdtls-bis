@@ -8,15 +8,15 @@ obsoletes: 6614 7360
 docname: draft-janfred-radext-radiusdtls-bis-latest
 submissiontype: IETF
 v: 3
-area: ops
+area: "Security"
 workgroup: "RADIUS EXTensions"
 keyword:
  - RADIUS
  - TLS
 venue:
   group: "RADIUS EXTensions"
-  type: Working Group
-  mail: radext@ietf.org
+  type: "Working Group"
+  mail: "radext@ietf.org"
 
 author:
   - name: Jan-Frederik Rieckers
