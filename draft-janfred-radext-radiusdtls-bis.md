@@ -5,7 +5,7 @@ category: std
 
 obsoletes: 6614 7360
 
-docname: draft-janfred-radext-radiusdtls-bis
+docname: draft-janfred-radext-radiusdtls-bis-latest
 submissiontype: IETF
 v: 3
 area: ops
