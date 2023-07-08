@@ -10,7 +10,7 @@ Expires: 9 January 2024                                      8 July 2023
 
 
    (Datagram) Transport Layer Security ((D)TLS Encryption for RADIUS
-               draft-janfred-radext-radiusdtls-bis-latest
+              draft-janfred-radext-radius_d_tls-bis-latest
 
 Abstract
 
@@ -25,7 +25,7 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-janfred-radext-radiusdtls-
+   https://datatracker.ietf.org/doc/draft-janfred-radext-radius_d_tls-
    bis/.
 
    Discussion of this document takes place on the RADIUS EXTensions
@@ -774,8 +774,8 @@ Table of Contents
 
 6.1.  RADIUS packet lengths
 
-   [^src_7360_2_1] This [^src_7360_2_1]: Source: RFC7360, Section 2.1,
-   last paragraphs
+
+   // Source: RFC7360, Section 2.1, last paragraphs
 
    The DTLS encryption adds an additional overhead to each packet sent.
    RADIUS/DTLS implementations MUST support sending and receiving RADIUS

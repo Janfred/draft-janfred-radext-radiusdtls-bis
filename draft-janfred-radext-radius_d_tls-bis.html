@@ -14,7 +14,7 @@ This enables encrypting the RADIUS traffic as well as dynamic trust relationship
 <meta content="xml2rfc 3.17.4" name="generator">
 <meta content="RADIUS" name="keyword">
 <meta content="TLS" name="keyword">
-<meta content="draft-janfred-radext-radiusdtls-bis-latest" name="ietf.draft">
+<meta content="draft-janfred-radext-radius_d_tls-bis-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.17.4
     Python 3.11.4
@@ -31,7 +31,7 @@ This enables encrypting the RADIUS traffic as well as dynamic trust relationship
     six 1.16.0
     wcwidth 0.2.6
 -->
-<link href="draft-janfred-radext-radiusdtls-bis.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-janfred-radext-radius_d_tls-bis.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -1064,7 +1064,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">RADIUS EXTensions</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-janfred-radext-radiusdtls-bis-latest</dd>
+<dd class="internet-draft">draft-janfred-radext-radius_d_tls-bis-latest</dd>
 <dt class="label-obsoletes">Obsoletes:</dt>
 <dd class="obsoletes">
 <a href="https://www.rfc-editor.org/rfc/rfc6614%207360" class="eref">6614 7360</a> (if approved)</dd>
@@ -1101,7 +1101,7 @@ This enables encrypting the RADIUS traffic as well as dynamic trust relationship
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-janfred-radext-radiusdtls-bis/">https://datatracker.ietf.org/doc/draft-janfred-radext-radiusdtls-bis/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-janfred-radext-radius_d_tls-bis/">https://datatracker.ietf.org/doc/draft-janfred-radext-radius_d_tls-bis/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
         RADIUS EXTensions Working Group mailing list (<span><a href="mailto:radext@ietf.org">mailto:radext@ietf.org</a></span>),
@@ -1797,9 +1797,7 @@ This limitation can lower the maximum packet processing rate of RADIUS/TLS.<a hr
         <h3 id="name-radius-packet-lengths">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-radius-packet-lengths" class="section-name selfRef">RADIUS packet lengths</a>
         </h3>
-<p id="section-6.1-1">[^src_7360_2_1]
-This
-[^src_7360_2_1]: Source: RFC7360, Section 2.1, last paragraphs<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1"><span class="cref" id="src_7360_2_1">Source: RFC7360, Section 2.1, last paragraphs</span><a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.1-2">The DTLS encryption adds an additional overhead to each packet sent.
 RADIUS/DTLS implementations <span class="bcp14">MUST</span> support sending and receiving RADIUS packets of 4096 bytes in length, with a corresponding increase in the maximum size of the encapsulated DTLS packets.
 This larger packet size may cause the packet to be larger than the Path MTU (PMTU), where a RADIUS/UDP packet may be smaller.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
