@@ -183,25 +183,23 @@ While the client may be able to deduce the operational state of the local server
 Within RADIUS, proxies typically only forward traffic between the NAS and RADIUS servers, and they do not generate their own response.
 As a result, when a NAS does not receive a response to a request, this could be the result of packet loss between the NAS and proxy, a problem on the proxy, loss between the RADIUS proxy and server, or a problem with the server.
 
-When UDP is used as a transport protocol, the absence of a reply can cause a client to deduce (incorrectly) that the proxy is unavailable.
+The absence of a reply can cause a client to deduce (incorrectly) that the proxy is unavailable.
 The client could then fail over to another server or conclude that no "live" servers are available (OKAY state in {{!RFC3539}}, Appendix A).
 This situation is made even worse when requests are sent through a proxy to multiple destinations.
 Failures in one destination may result in service outages for other destinations, if the client erroneously believes that the proxy is unresponsive.
 
-For RADIUS/TLS, it is RECOMMENDED that implementations utilize the existence of a TCP connection along with the application-layer watchdog defined in {{RFC3539}}, Section 3.4 to determine that the server is "live".
-RADIUS/TLS clients MUST mark a connection DOWN, if the network stack indicates that the connection is no longer active.
-If the network stack indicates that the connection is still active, clients MUST NOT decide that it is down until the application-layer watchdog algorithm has marked it DOWN.
-RADIUS/TLS clients MUST NOT decide that a RADIUS/TLS server is unresponsive until all TLS connections to it have been marked down.[^contradiction]{:jf}
+It is REQUIRED that implementations utilize the existence of a TCP/DTLS connection along with the application-layer watchdog defined in {{RFC3539}}, Section 3.4 to determine that the server liveliness.
+RADIUS/TLS clients MUST mark a connection DOWN, under the following conditions:
+- The administrator has marked the connection administrative DOWN.
+- The network stack indicates that the connection is no longer viable.
+- The application-layer watchdog algorithm has marked it DOWN.
 
-[^contradiction]: The specification in RFC6613 is contradictory here. Section 2.4 says that it is recommended to have a watchdog. Section 2.6 says it must be used.
+For RADIUS/TLS, TCP connections MAY send TCP keepalives as described in {{RFC9293}} Section 3.8.4, that UDP connections MAY send periodic DTLS keepalives as defined in {{RFC6520}}, as a way of proactively and rapidly triggering a connection DOWN notification from the network stack.  These liveliness checks are essentially redundant in the presence of an application-layer watchdog, but may provide more rapid notifications of connectivity issues.
 
-The above requirements do not forbid the practice of a client proactively closing connections or marking a server as DOWN due to an administrative decision.
+It is REQUIRED that RADIUS/(D)TLS clients implement the Status-Server extension as described in {{?RFC5997}} as the application level watchdog to detect the liveness of the peer in the absence of responses.
 
-It is RECOMMENDED that RADIUS/(D)TLS nodes implement the Status-Server extension as described in {{?RFC5997}} to detect the liveness of the peer without dependence on successful authentications.
 Since RADIUS has a limitation of 256 simultaneous "in flight" packets due to the length of the ID field ({{RFC3539}}, Section 2.4), it is RECOMMENDED that RADIUS/(D)TLS clients reserve ID zero (0) on each session for Status-Server packets.
 This value was picked arbitrary, as there is no reason to choose any other value over another for this use.[^statusserver]{:jf}
-
-[^statusserver]: TODO: RFC6613 mandates the use of Status-Server for RADIUS/TCP, RFC7360 only recommends it for RADIUS/DTLS. Maybe it should be mandatory for both?
 
 # Packet / Connection Handling
 
@@ -569,8 +567,8 @@ Any security-related issue causes the connection to be closed.
 After security restrictions have been applied, any unexpected traffic may be safely ignored, as it cannot cause a security issue.
 This allows for future extensions to the RADIUS/DTLS specifications.
 
-Once a DTLS session is established, a RADIUS/DTLS server SHOULD use DTLS Heartbeats {{!RFC6520}} to determine connectivity between the two servers.
-A server SHOULD also use watchdog packets from the client to determine that the session is still active.
+Once a DTLS session is established, a RADIUS/DTLS server MAY use DTLS Heartbeats {{!RFC6520}} to determine connectivity between the two servers.
+A server MUST also use watchdog packets from the client to determine that the session is still active.
 
 As UDP does not guarantee delivery of messages, RADIUS/DTLS servers that do not implement an application-layer watchdog MUST also maintain a "Last Traffic" timestamp per DTLS session.
 The granularity of this timestamp is not critical and could be limited to one-second intervals.
@@ -607,9 +605,9 @@ Non-compliant, or unexpected packets will be ignored by the DTLS layer.[^proxymi
 [^src_7360_5_2]: Source: RFC7360, Section 5.2 with modifications
 
 RADIUS/DTLS clients SHOULD use PMTU discovery {{!RFC6520}} to determine the PMTU between the client and server, prior to sending any RADIUS traffic.
-Once a DTLS session is established, a RADIUS/DTLS client SHOULD use DTLS Heartbeats {{RFC6520}} to determine connectivity between the two systems.
-RADIUS/DTLS clients SHOULD also use the application-layer watchdog algorithm defined in {{RFC3539}} to determine server responsiveness.
-The Status-Server packet defined in {{RFC5997}} SHOULD be used as the "watchdog packet" in any application-layer watchdog algorithm.[^doublespec]{:jf}
+Once a DTLS session is established, a RADIUS/DTLS client MAY use DTLS Heartbeats {{RFC6520}} to determine connectivity between the two systems.
+RADIUS/DTLS clients MUST also use the application-layer watchdog algorithm defined in {{RFC3539}} to determine server responsiveness.
+The Status-Server packet defined in {{RFC5997}} MUST be used as the "watchdog packet" in any application-layer watchdog algorithm.[^doublespec]{:jf}
 
 [^doublespec]: The Status-Server spec was already mentioned above. Maybe remove it from here?
 
@@ -623,7 +621,7 @@ Therefore, there is the possibility that the server closes the session without t
 When that happens, the client may later transmit packets in a session, and those packets will be ignored by the server.
 The client is then forced to time out those packets and then the session, leading to delays and network instabilities.
 
-For these reasons, it is RECOMMENDED that all DTLS session be configured to use DTLS Heartbeats and/or watchdog packets.
+For these reasons, it is REQUIRED that all DTLS session be configured to use DTLS Heartbeats and/or watchdog packets.
 
 DTLS sessions MUST also be deleted when a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Response Authenticator.
 There are other cases, when the specifications require that a packet received via a DTLS session be "silently discarded".
