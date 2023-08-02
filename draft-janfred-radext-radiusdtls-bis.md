@@ -282,7 +282,7 @@ RADIUS/(D)TLS implementations SHOULD support using Raw Public Keys {{!RFC7250}} 
 ### Authentication using TLS-PSK
 
 RADIUS/(D)TLS implementations SHOULD support the use of TLS-PSK.
-Further guidance on the usage of TLS-PSK in RADIUS/(D)TLS is given in {{!I-D.dekok-radext-tls-psk}}.
+Further guidance on the usage of TLS-PSK in RADIUS/(D)TLS is given in {{!I-D.ietf-radext-tls-psk}}.
 
 ## Connecting Client Identity
 
