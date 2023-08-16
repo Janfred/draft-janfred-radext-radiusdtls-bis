@@ -47,6 +47,7 @@ informative:
 
 This document specifies a transport profile for RADIUS using Transport Layer Security (TLS) over TCP or Datagram Transport Layer Security (DTLS) over UDP as the transport protocol.
 This enables encrypting the RADIUS traffic as well as dynamic trust relationships between RADIUS servers.
+The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/TLS) and RFC 7360 (RADIUS/DTLS) and combines them in this specification.
 
 --- middle
 
@@ -72,9 +73,11 @@ An example for a worldwide roaming environment that uses RADIUS over TLS to secu
   These specifications have been merged into this document.
 * RFC6614 marked TLSv1.1 or later as mandatory, this specification requires TLSv1.2 as minimum and recommends usage of TLSv1.3
 * RFC6614 allowed usage of TLS compression, this document forbids it.
-* RFC6614 lists support for TLS-PSK as optional, this document changes this to recommended.
-* The mandatory-to-implement cipher suites are changing to more up-to-date cipher suites.
+* RFC6614 only requires support for the trust model "certificates with PKIX". This document changes this. For servers, "certificates with PKIX" and "TLS-PSK" is now mandated and clients must implement one of the two.
+* The mandatory-to-implement cipher suites are not referenced directly, this is replaced by a pointer to the TLS BCP.
 * The specification regarding steps for certificate verification has been updated
+
+The rationales behind some of these changes are outlined in {{design_decisions}}.
 
 # Conventions and Definitions
 
@@ -97,13 +100,12 @@ RADIUS/UDP:
 Whenever "(D)TLS" or "RADIUS/(D)TLS" is mentioned, the specification applies for both RADIUS/TLS and RADIUS/DTLS.
 Where "TLS" or "RADIUS/TLS" is mentioned, the specification only applies to RADIUS/TLS, where "DTLS" or "RADIUS/DTLS" is mentioned it only applies to RADIUS/DTLS.
 
-Implementations SHOULD support both RADIUS/TLS and RADIUS/DTLS, but to be compliant to this specification they can choose to implement only one of the two. [^choose-your-weapon]{:jf}
-
-[^choose-your-weapon]: I'm not exactly sure if this text is good. My thought was also to add a text like "You have to say RADIUS/TLS according to RFC????, if you want to say 'compliant with RFC????' you need to implement both". But maybe this is the pessimist in me that fears that companies will advocate "we support RFC????", but only use one or the other and we end up with incompatible systems, because A does RADIUS/TLS and B does RADIUS/DTLS.
+Server implementations MUST support both RADIUS/TLS and RADIUS/DTLS.
+Client implementations SHOULD implement both, but MUST only implement one of RADIUS/TLS or RADIUS/DTLS.
 
 # Changes to RADIUS
 
-This section discusses the needed changes to the RADIUS packet format ({{pktformat}}), port usage and shared secrets ({{portusage}}) and RADIUS MIBs ({{radius_mib}}).
+This section discusses the needed changes to the RADIUS packet format ({{pktformat}}), port usage and shared secrets ({{portusage}}).
 
 ## Packet format
 {: #pktformat}
@@ -163,13 +165,6 @@ RADIUS/DTLS servers MUST silently discard any packet they receive that is not a 
 RADIUS/(D)TLS peers MUST NOT use the old RADIUS/UDP or RADIUS/TCP ports for RADIUS/DTLS or RADIUS/TLS.
 
 [^considerations]: TODO: add reference to considerations regarding the multi-purpose use of one port.
-
-## RADIUS MIBs
-{: #radius_mib}
-
-[^mib]{:jf}
-
-[^mib]: Is this actually still needed? RFC6613, Section 2.3 says "will need to be updated in the future". Is this the time?
 
 ## Detecting Live Servers
 
@@ -242,7 +237,10 @@ RADIUS/(D)TLS allows for the following different modes of mutual authentication.
 
 ### Authentication using X.509 certificates with PKIX trust model
 
-All RADIUS/(D)TLS implementations MUST implement this model, with the following rules:
+All RADIUS/(D)TLS server implementations MUST implement this model.
+RADIUS/(D)TLS client implementations SHOULD implement this model, but MUST implement either this or TLS-PSK
+
+If implemented it MUST use the following rules:
 
 * Implementations MUST allow the configuration of a list of trusted Certificate Authorities for new TLS sessions.
 * Certificate validation MUST include the verification rules as per {{!RFC5280}}.
@@ -281,7 +279,8 @@ RADIUS/(D)TLS implementations SHOULD support using Raw Public Keys {{!RFC7250}} 
 
 ### Authentication using TLS-PSK
 
-RADIUS/(D)TLS implementations SHOULD support the use of TLS-PSK.
+RADIUS/(D)TLS server implementations MUST support the use of TLS-PSK.
+RADIUS/(D)TLS client implementations MUST support either this or Authentication using X.509 certificates with PKIX trust model.
 Further guidance on the usage of TLS-PSK in RADIUS/(D)TLS is given in {{!I-D.ietf-radext-tls-psk}}.
 
 ## Connecting Client Identity
@@ -639,6 +638,34 @@ This practice lowers the time and effort required to start a DTLS session with a
 
 TODO Security
 
+# Design Decisions
+{: #design_decisions}
+
+Many of the design decisions of RADIUS/TLS and RADIUS/DTLS can be found in {{RFC6614}} and {{?RFC7360}}.
+This section will discuss the rationale behind significant changes from the experimental specification.
+
+## Mandatory-to-implement transports
+{: #design_supported_transports}
+
+With the merging of RADIUS/TLS and RADIUS/DTLS the question of mandatory-to-implement transports arose.
+In order to avoid incompatibilities, there were two possibilities: Either mandate one of the transports for all implementations or mandate the implementation of both transports for either the server or the client.
+As of the time writing, RADIUS/TLS is widely addapted for some use cases (see {{lessons_learned}}).
+However, TLS has some serious drawbacks when used for RADIUS transport.
+Especially the sequential nature of the connection and the connected issues like Head-of-Line blocking could create problems.
+
+Therefore, the decision was made that RADIUS servers must implement both transports.
+For RADIUS clients, that may run on more constrained nodes, the implementations can choose to implement only the transport, that is better suited for their needs.
+
+## Mandatory-to-implement trust profiles
+{: #design_trust_profiles}
+
+{{RFC6614}} mandates the implementation of the trust profile "certificate with PKIX trust model" for both clients and servers.
+The experience of the deployment of RADIUS/TLS as specified in {{RFC6614}} has shown that most actors still rely on RADIUS/UDP.
+Since dealing with certificates can create a lot of issues, both for implementers and administrators, for the re-specification we wanted to create an alternative to insecure RADIUS transports like RADIUS/UDP that can be deployed easily without much additional administrative overhead.
+
+As with the supported transports, the assumption is that RADIUS servers are generally believed to be less constrained that RADIUS clients.
+Since some client implementations already support using certificates for mutual authentication and there are several use cases, where Pre-shared keys are not usable (e.g. a dynamic federation with changing members), the decision was made that, analog to the supported transports, RADIUS servers must implement both certificates with PKIX trust model and TLS-PSK as means of mutual authentication.
+RADIUS clients again can choose which method is better suited for them, but must, for compatibility reasons, implement at least one of the two.
 
 # IANA Considerations
 
@@ -653,7 +680,8 @@ Upon approval, IANA should update the Reference to radsec in the Service Name an
 
 --- back
 
-# Lessens learned from deployments of the Experimental {{RFC6614}}
+# Lessons learned from deployments of the Experimental {{RFC6614}}
+{: #lessons_learned}
 
 There are at least to major (world-scale deployments of {{RFC6614}}.
 This section will discuss lessens learned from these deployments, that influenced this document.
