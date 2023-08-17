@@ -281,7 +281,8 @@ RADIUS/(D)TLS implementations SHOULD support using Raw Public Keys {{!RFC7250}} 
 ### Authentication using TLS-PSK
 
 RADIUS/(D)TLS server implementations MUST support the use of TLS-PSK.
-RADIUS/(D)TLS client implementations MUST support either this or Authentication using X.509 certificates with PKIX trust model.
+RADIUS/(D)TLS client implementations SHOULD support the use of TLS-PSK, but MUST implement either this or Authentication using X.509 certificates with PKIX trust model.
+
 Further guidance on the usage of TLS-PSK in RADIUS/(D)TLS is given in {{!I-D.ietf-radext-tls-psk}}.
 
 ## Connecting Client Identity
