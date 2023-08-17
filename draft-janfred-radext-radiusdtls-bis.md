@@ -215,7 +215,8 @@ As RADIUS has no provisions for capability signaling, there is also no way for a
 Servers and clients need to be preconfigured to use RADIUS/(D)TLS for a given endpoint.
 This action has to be taken by the administrators of the two systems.
 
-The following requirements have to be met for the (D)TLS session:
+Implementations MUST follow the recommendations given in {{!RFC9325}}.
+Additionally, the following requirements have to be met for the (D)TLS session:
 
 * Support for TLS 1.2 {{!RFC5248}} / DTLS 1.2 {{!RFC6347}} is REQUIRED, support for TLS 1.3 {{!RFC8446}} / DTLS 1.3 {{!RFC9147}} or higher is RECOMMENDED.
 * Negotiation of a cipher suite providing for confidentiality as well as integrity protection is REQUIRED.
