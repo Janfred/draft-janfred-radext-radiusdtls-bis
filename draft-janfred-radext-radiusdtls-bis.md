@@ -638,7 +638,46 @@ This practice lowers the time and effort required to start a DTLS session with a
 
 # Security Considerations
 
-TODO Security
+As this specification relies on the existing TLS and DTLS specifications, all security considerations for these protocols also apply to the (D)TLS portions of RADIUS/(D)TLS.
+
+For RADIUS however, many security considerations raised in the RADIUS documents are related to RADIUS encryption and authorization.
+Those issues are largely mitigated when (D)TLS is used as a transport method.
+The issues that are not mitigated by this specification are related to the RADIUS packet format and handling, which is unchanged in this specification.
+
+A few remaining security considerations are listed below.
+
+## RADIUS Proxies
+
+RADIUS/(D)TLS provides authentication, integrity and confidentiality protection for RADIUS traffic between two RADIUS peers.
+In the presence of proxies, the intermediate proxies can still inspect the individual RADIUS packets, i.e., "end-to-end" encryption is not provides.
+Where intermediate proxies are untrusted, it is desirable to use other RADIUS mechanisms to prevent RADIUS packet payload from inspection by such proxies.
+One common method to protect passwords is the use of the Extensible Authentication Protocol (EAP) and EAP methods that utilize TLS.
+
+Additionally, when RADIUS proxies are used, the client has no way of ensuring that the complete path of the RADIUS packet is protected, since RADIUS routing is done hop-by-hop and any intermediate proxy may decide to forward the RADIUS packet it received via RADIUS/(D)TLS using the RADIUS/UDP transport profile.
+There is no technical solution to this problem with the current specification.
+Where the confidentiality of the contents of the RADIUS packet across the whole path is required, organizational solutions need to be in place, that ensure that every intermediate RADIUS proxy is forwarding the RADIUS packets using RADIUS/(D)TLS as transport.
+
+## Usage of null encryption cipher suites for debugging
+
+For debugging purposes, some TLS implementation offer cipher suites with NULL encryption, to allow inspection of the plaintext with packet sniffing tools.
+Since with RADIUS/(D)TLS the RADIUS shared secret is set to a static string ("radsec" for RADIUS/TLS, "radius/dtls" for RADIUS/DTLS), using a NULL encryption cipher suite will also result in complete disclosure of the whole RADIUS packet, including the encrypted RADIUS attributes, to any intermediate IP node.
+To prevent this, while keeping a NULL encryption cipher suite active, the only option is to set a different shared secret for RADIUS.
+In this case, the security considerations for confidentiality of RADIUS/UDP packets apply.
+Following the recommendations in {{RFC9325, section 4.1}}, this specification forbids the usage of NULL encryption cipher suites for RADIUS/(D)TLS.
+
+## Possibility of Denial-of-Service attacks
+
+Both RADIUS/TLS and RADIUS/DTLS have a considerable higher amount of data that the server needs to store in comparison to RADIUS/UDP.
+Therefore, an attacker could try to exhaust server resources.
+
+With UDP, any bogous packet would fail the cryptographic checks and the server will silently discard the bogous packet.
+With RADIUS/(D)TLS, a RADIUS client needs to perform a (D)TLS handshake, before sending actual RADIUS packets.
+Performing a (D)TLS handshake is more complex than the cryptographic check of a RADIUS packet.
+An attacker could try to trigger a high number of (D)TLS handshakes at the same time.
+To prevent this attack, a RADIUS/(D)TLS server SHOULD have configurable limits on new connection attempts.
+
+
+TODO: DTLS session deletion
 
 # Design Decisions
 {: #design_decisions}
@@ -651,7 +690,7 @@ This section will discuss the rationale behind significant changes from the expe
 
 With the merging of RADIUS/TLS and RADIUS/DTLS the question of mandatory-to-implement transports arose.
 In order to avoid incompatibilities, there were two possibilities: Either mandate one of the transports for all implementations or mandate the implementation of both transports for either the server or the client.
-As of the time writing, RADIUS/TLS is widely addapted for some use cases (see {{lessons_learned}}).
+As of the time writing, RADIUS/TLS is widely adapted for some use cases (see {{lessons_learned}}).
 However, TLS has some serious drawbacks when used for RADIUS transport.
 Especially the sequential nature of the connection and the connected issues like Head-of-Line blocking could create problems.
 
