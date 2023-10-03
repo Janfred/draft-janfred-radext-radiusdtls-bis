@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-09-14T00:53:39.364245+00:00",
+  "timestamp": "2023-10-03T00:55:28.547274+00:00",
   "repo": "Janfred/draft-janfred-radext-radiusdtls-bis",
   "labels": [
     {
@@ -404,13 +404,13 @@
       "labels": [],
       "body": "This commit copies some text, but all duplicate specifications in the TLS/DTLS specific sections is deleted.",
       "createdAt": "2023-08-17T08:38:17Z",
-      "updatedAt": "2023-08-17T08:49:54Z",
+      "updatedAt": "2023-10-02T13:21:24Z",
       "baseRepository": "Janfred/draft-janfred-radext-radiusdtls-bis",
       "baseRefName": "main",
-      "baseRefOid": "dc87ef3351a689db58e7f0e0f07191af8733fbd4",
+      "baseRefOid": "4d50aecee9038ab143150c35cfafbe7ceeaf21ff",
       "headRepository": "Janfred/draft-janfred-radext-radiusdtls-bis",
       "headRefName": "watchdog-keepalives-reword",
-      "headRefOid": "0e88c25ca87eaf8ff0500f8692451d22f0d7763b",
+      "headRefOid": "7464c59e49e50ca5d9d021bd7761078532987a08",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
