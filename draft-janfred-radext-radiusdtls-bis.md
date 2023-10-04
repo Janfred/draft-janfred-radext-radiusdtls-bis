@@ -663,7 +663,7 @@ For debugging purposes, some TLS implementation offer cipher suites with NULL en
 Since with RADIUS/(D)TLS the RADIUS shared secret is set to a static string ("radsec" for RADIUS/TLS, "radius/dtls" for RADIUS/DTLS), using a NULL encryption cipher suite will also result in complete disclosure of the whole RADIUS packet, including the encrypted RADIUS attributes, to any intermediate IP node.
 To prevent this, while keeping a NULL encryption cipher suite active, the only option is to set a different shared secret for RADIUS.
 In this case, the security considerations for confidentiality of RADIUS/UDP packets apply.
-Following the recommendations in {{RFC9325, section 4.1}}, this specification forbids the usage of NULL encryption cipher suites for RADIUS/(D)TLS.
+Following the recommendations in {{RFC9325, Section 4.1}}, this specification forbids the usage of NULL encryption cipher suites for RADIUS/(D)TLS.
 
 ## Possibility of Denial-of-Service attacks
 
