@@ -644,7 +644,7 @@ For RADIUS however, many security considerations raised in the RADIUS documents 
 Those issues are largely mitigated when (D)TLS is used as a transport method.
 The issues that are not mitigated by this specification are related to the RADIUS packet format and handling, which is unchanged in this specification.
 
-A few remaining security considerations are listed below.
+A few remaining security considerations and notes to administrators deploying RADIUS/(D)TLS are listed below.
 
 ## RADIUS Proxies
 
@@ -670,14 +670,38 @@ Following the recommendations in {{RFC9325, section 4.1}}, this specification fo
 Both RADIUS/TLS and RADIUS/DTLS have a considerable higher amount of data that the server needs to store in comparison to RADIUS/UDP.
 Therefore, an attacker could try to exhaust server resources.
 
-With UDP, any bogous packet would fail the cryptographic checks and the server will silently discard the bogous packet.
-With RADIUS/(D)TLS, a RADIUS client needs to perform a (D)TLS handshake, before sending actual RADIUS packets.
+With RADIUS/UDP, any bogous packet would fail the cryptographic checks and the server would silently discard the bogous packet.
+For RADIUS/(D)TLS, the server needs to perform at least a partial TLS handshake to determine whether or not the client is authorized.
 Performing a (D)TLS handshake is more complex than the cryptographic check of a RADIUS packet.
-An attacker could try to trigger a high number of (D)TLS handshakes at the same time.
+An attacker could try to trigger a high number of (D)TLS handshakes at the same time, resulting in a high server load and potentially a Denial-of-Service.
 To prevent this attack, a RADIUS/(D)TLS server SHOULD have configurable limits on new connection attempts.
 
+Both TLS and DTLS need to store session information for each open (D)TLS session.
+Especially with DTLS, a bogous or misbehaving client could open an excessive number of DTLS sessions.
+This session tracking could lead to a resource exhaustion, triggering a Denial-of-Service.
+Therefore, RADIUS/(D)TLS servers MUST limit the absolute number of sessions they can track and SHOULD expose this limit as configurable option to the administrator.
+When the total number of sessions tracked is going to exceed the configured limit, servers MAY free up resources by closing the session that has been idle for the longest time.
+Doing so may free up idle resources that then allow the server to accept a new session.
 
-TODO: DTLS session deletion
+RADIUS/(D)TLS MUST limit the umber of partially open DTLS sessions and SHOULD expose this limit as configurable option to the administrator.
+
+## Migrating from RADIUS/UDP to RADIUS/(D)TLS
+
+Since RADIUS/UDP security relies on the MD5 algorithm, which is considered insecure, using RADIUS/UDP over insecure networks is risky.
+We therefore recommend to migrate from RADIUS/UDP to RADIUS/(D)TLS.
+Within this migration process, however, there are a few items that need to be considered by administrators.
+
+Firstly, administrators may be tempted to simply migrate from RADIUS/UDP to RADIUS/(D)TLS with (D)TLS-PSK and reuse the RADIUS shared secret as (D)TLS-PSK.
+While this may seem like an easy way to upgrade RADIUS/UDP to RADIUS/(D)TLS, the cryptographic problems with the RADIUS/UDP shared secret render the shared secret potentially compromised.
+Using a potentially compromised shared secret as TLS-PSK compromises the whole TLS connection.
+Therefore, any shared secret used with RADIUS/UDP before MUST NOT be used with RADIUS/(D)TLS and (D)TLS-PSK.
+Implementers MUST NOT reuse the configuration option for the RADIUS/UDP shared secret for the (D)TLS-PSK to prevent accidental reuse.
+
+When upgrading from RADIUS/UDP to RADIUS/(D)TLS, there may be a period of time, where the connection between client and server is configured for both transport profiles.
+If the old RADIUS/UDP configuration is left configured, but not used in normal operation, e.g. due to a fail-over configuration that prefers RADIUS/(D)TLS, an attacker could disrupt the RADIUS/(D)TLS communication and force a downgrade to RADIUS/UDP.
+To prevent this it is RECOMMENDED that, when the migration to RADIUS/(D)TLS is completed, the RADIUS/UDP configuration is removed.
+RADIUS/(D)TLS clients MUST NOT fall back to RADIUS/UDP if the RADIUS/(D)TLS communication fails, unless explicitly configured this way.
+
 
 # Design Decisions
 {: #design_decisions}
