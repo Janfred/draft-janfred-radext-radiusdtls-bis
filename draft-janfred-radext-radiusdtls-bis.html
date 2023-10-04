@@ -12,25 +12,25 @@
 This enables encrypting the RADIUS traffic as well as dynamic trust relationships between RADIUS servers.
 The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/TLS) and RFC 7360 (RADIUS/DTLS) and combines them in this specification. 
     " name="description">
-<meta content="xml2rfc 3.17.5" name="generator">
+<meta content="xml2rfc 3.18.1" name="generator">
 <meta content="RADIUS" name="keyword">
 <meta content="TLS" name="keyword">
 <meta content="draft-janfred-radext-radiusdtls-bis-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.17.5
-    Python 3.11.4
+  xml2rfc 3.18.1
+    Python 3.11.5
     ConfigArgParse 1.5.3
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 3.10.0
+    platformdirs 3.11.0
     pycountry 22.3.5
     PyYAML 6.0
     requests 2.31.0
     setuptools 67.7.2
     six 1.16.0
-    wcwidth 0.2.6
+    wcwidth 0.2.8
 -->
 <link href="draft-janfred-radext-radiusdtls-bis.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -653,7 +653,7 @@ sub, sup {
 }
 #toc nav li {
   line-height: 1.3em;
-  margin: 0.75em 0;
+  margin: 2px 0;
   padding-left: 1.2em;
   text-indent: -1.2em;
 }
@@ -746,7 +746,7 @@ hr.addr {
     z-index: 2;
     top: 0;
     right: 0;
-    padding: 0;
+    padding: 1px 0 0 0;
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
@@ -870,16 +870,13 @@ hr.addr {
     border-top: none;
     padding-top: 0;
   }
-  figure, pre {
+  figure, pre, .vcard {
     page-break-inside: avoid;
-  }
-  figure {
-    overflow: scroll;
   }
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
   }
-  h2+*, h3+*, h4+*, h5+*, h6+* {
+  :is(h2, h3, h4, h5, h6)+*, dd {
     page-break-before: avoid;
   }
   pre {
@@ -892,6 +889,9 @@ hr.addr {
   }
   td {
     border-top: 1px solid #ddd;
+  }
+  .toplink {
+    display: none;
   }
 }
 
@@ -993,28 +993,6 @@ address div.right {
   text-align: right;
 }
 
-/* Give the table caption label the same styling as the figcaption */
-
-@media print {
-  .toplink {
-    display: none;
-  }
-
-  /* avoid overwriting the top border line with the ToC header */
-  #toc {
-    padding-top: 1px;
-  }
-
-  /* Avoid page breaks inside dl and author address entries */
-  dd {
-    page-break-before: avoid;
-  }
-  .vcard {
-    page-break-inside: avoid;
-  }
-
-}
-
 /* Dark mode. */
 @media (prefers-color-scheme: dark) {
 :root {
@@ -1051,11 +1029,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">RADIUS over (D)TLS</td>
-<td class="right">August 2023</td>
+<td class="right">October 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rieckers &amp; Winter</td>
-<td class="center">Expires 18 February 2024</td>
+<td class="center">Expires 6 April 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1071,12 +1049,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6614%207360" class="eref">6614 7360</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-08-17" class="published">17 August 2023</time>
+<time datetime="2023-10-04" class="published">4 October 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-02-18">18 February 2024</time></dd>
+<dd class="expires"><time datetime="2024-04-06">6 April 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1129,7 +1107,7 @@ The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 February 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1258,6 +1236,20 @@ The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-radius-proxies" class="internal xref">RADIUS Proxies</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-usage-of-null-encryption-ci" class="internal xref">Usage of null encryption cipher suites for debugging</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-possibility-of-denial-of-se" class="internal xref">Possibility of Denial-of-Service attacks</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-migrating-from-radius-udp-t" class="internal xref">Migrating from RADIUS/UDP to RADIUS/(D)TLS</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-design-decisions" class="internal xref">Design Decisions</a></p>
@@ -1341,18 +1333,23 @@ An example for a worldwide roaming environment that uses RADIUS over TLS to secu
         </h3>
 <ul class="normal">
 <li class="normal" id="section-1.2-1.1">
-            <span>[<a href="#RFC6614" class="cite xref">RFC6614</a>]</span> referenced <span>[<a href="#RFC6613" class="cite xref">RFC6613</a>]</span> for TCP-related specification, RFC6613 on the other hand had some specification for RADIUS/TLS.
-These specifications have been merged into this document.<a href="#section-1.2-1.1" class="pilcrow">¶</a>
+            <p id="section-1.2-1.1.1"><span>[<a href="#RFC6614" class="cite xref">RFC6614</a>]</span> referenced <span>[<a href="#RFC6613" class="cite xref">RFC6613</a>]</span> for TCP-related specification, RFC6613 on the other hand had some specification for RADIUS/TLS.
+These specifications have been merged into this document.<a href="#section-1.2-1.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.2-1.2">RFC6614 marked TLSv1.1 or later as mandatory, this specification requires TLSv1.2 as minimum and recommends usage of TLSv1.3<a href="#section-1.2-1.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-1.2-1.2">
+            <p id="section-1.2-1.2.1">RFC6614 marked TLSv1.1 or later as mandatory, this specification requires TLSv1.2 as minimum and recommends usage of TLSv1.3<a href="#section-1.2-1.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.2-1.3">RFC6614 allowed usage of TLS compression, this document forbids it.<a href="#section-1.2-1.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-1.2-1.3">
+            <p id="section-1.2-1.3.1">RFC6614 allowed usage of TLS compression, this document forbids it.<a href="#section-1.2-1.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.2-1.4">RFC6614 only requires support for the trust model "certificates with PKIX". This document changes this. For servers, "certificates with PKIX" and "TLS-PSK" is now mandated and clients must implement one of the two.<a href="#section-1.2-1.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-1.2-1.4">
+            <p id="section-1.2-1.4.1">RFC6614 only requires support for the trust model "certificates with PKIX". This document changes this. For servers, "certificates with PKIX" and "TLS-PSK" is now mandated and clients must implement one of the two.<a href="#section-1.2-1.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.2-1.5">The mandatory-to-implement cipher suites are not referenced directly, this is replaced by a pointer to the TLS BCP.<a href="#section-1.2-1.5" class="pilcrow">¶</a>
+          <li class="normal" id="section-1.2-1.5">
+            <p id="section-1.2-1.5.1">The mandatory-to-implement cipher suites are not referenced directly, this is replaced by a pointer to the TLS BCP.<a href="#section-1.2-1.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.2-1.6">The specification regarding steps for certificate verification has been updated<a href="#section-1.2-1.6" class="pilcrow">¶</a>
+          <li class="normal" id="section-1.2-1.6">
+            <p id="section-1.2-1.6.1">The specification regarding steps for certificate verification has been updated<a href="#section-1.2-1.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-1.2-2">The rationales behind some of these changes are outlined in <a href="#design_decisions" class="auto internal xref">Section 8</a>.<a href="#section-1.2-2" class="pilcrow">¶</a></p>
@@ -1413,27 +1410,38 @@ Client implementations <span class="bcp14">SHOULD</span> implement both, but <sp
 <p id="section-3.1-2">The RADIUS packet format is unchanged from <span>[<a href="#RFC2865" class="cite xref">RFC2865</a>]</span>, <span>[<a href="#RFC2866" class="cite xref">RFC2866</a>]</span> and <span>[<a href="#RFC5176" class="cite xref">RFC5176</a>]</span>.
 Specifically, all of the following portions of RADIUS <span class="bcp14">MUST</span> be unchanged when using RADIUS/(D)TLS:<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1-3.1">Packet format<a href="#section-3.1-3.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.1-3.1">
+            <p id="section-3.1-3.1.1">Packet format<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.2">Permitted codes<a href="#section-3.1-3.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.2">
+            <p id="section-3.1-3.2.1">Permitted codes<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.3">Request Authenticator calculation<a href="#section-3.1-3.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.3">
+            <p id="section-3.1-3.3.1">Request Authenticator calculation<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.4">Response Authenticator calculation<a href="#section-3.1-3.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.4">
+            <p id="section-3.1-3.4.1">Response Authenticator calculation<a href="#section-3.1-3.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.5">Minimum packet length<a href="#section-3.1-3.5" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.5">
+            <p id="section-3.1-3.5.1">Minimum packet length<a href="#section-3.1-3.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.6">Maximum packet length<a href="#section-3.1-3.6" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.6">
+            <p id="section-3.1-3.6.1">Maximum packet length<a href="#section-3.1-3.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.7">Attribute format<a href="#section-3.1-3.7" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.7">
+            <p id="section-3.1-3.7.1">Attribute format<a href="#section-3.1-3.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.8">Vendor-Specific Attribute (VSA) format<a href="#section-3.1-3.8" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.8">
+            <p id="section-3.1-3.8.1">Vendor-Specific Attribute (VSA) format<a href="#section-3.1-3.8.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.9">Permitted data types<a href="#section-3.1-3.9" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.9">
+            <p id="section-3.1-3.9.1">Permitted data types<a href="#section-3.1-3.9.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.10">Calculation of dynamic attributes such as CHAP-Challenge, or Message-Authenticator<a href="#section-3.1-3.10" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.10">
+            <p id="section-3.1-3.10.1">Calculation of dynamic attributes such as CHAP-Challenge, or Message-Authenticator<a href="#section-3.1-3.10.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-3.11">Calculation of "encrypted" attributes such as Tunnel-Password.<a href="#section-3.1-3.11" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.1-3.11">
+            <p id="section-3.1-3.11.1">Calculation of "encrypted" attributes such as Tunnel-Password.<a href="#section-3.1-3.11.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.1-4">The use of (D)TLS transport does not change the calculation of security-related fields (such as the Response-Authenticator) in RADIUS <span>[<a href="#RFC2865" class="cite xref">RFC2865</a>]</span> or RADIUS Dynamic Authorization <span>[<a href="#RFC5176" class="cite xref">RFC5176</a>]</span>.
@@ -1530,13 +1538,17 @@ This action has to be taken by the administrators of the two systems.<a href="#s
 <p id="section-4.1-4">Implementations <span class="bcp14">MUST</span> follow the recommendations given in <span>[<a href="#RFC9325" class="cite xref">RFC9325</a>]</span>.
 Additionally, the following requirements have to be met for the (D)TLS session:<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1-5.1">Support for TLS 1.2 <span>[<a href="#RFC5248" class="cite xref">RFC5248</a>]</span> / DTLS 1.2 <span>[<a href="#RFC6347" class="cite xref">RFC6347</a>]</span> is <span class="bcp14">REQUIRED</span>, support for TLS 1.3 <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> / DTLS 1.3 <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>]</span> or higher is <span class="bcp14">RECOMMENDED</span>.<a href="#section-4.1-5.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.1-5.1">
+            <p id="section-4.1-5.1.1">Support for TLS 1.2 <span>[<a href="#RFC5248" class="cite xref">RFC5248</a>]</span> / DTLS 1.2 <span>[<a href="#RFC6347" class="cite xref">RFC6347</a>]</span> is <span class="bcp14">REQUIRED</span>, support for TLS 1.3 <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> / DTLS 1.3 <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>]</span> or higher is <span class="bcp14">RECOMMENDED</span>.<a href="#section-4.1-5.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.1-5.2">Negotiation of a cipher suite providing for confidentiality as well as integrity protection is <span class="bcp14">REQUIRED</span>.<a href="#section-4.1-5.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.1-5.2">
+            <p id="section-4.1-5.2.1">Negotiation of a cipher suite providing for confidentiality as well as integrity protection is <span class="bcp14">REQUIRED</span>.<a href="#section-4.1-5.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.1-5.3">The peers <span class="bcp14">MUST NOT</span> negotiate compression.<a href="#section-4.1-5.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.1-5.3">
+            <p id="section-4.1-5.3.1">The peers <span class="bcp14">MUST NOT</span> negotiate compression.<a href="#section-4.1-5.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.1-5.4">The session <span class="bcp14">MUST</span> be mutually authenticated (see <a href="#mutual_auth" class="auto internal xref">Section 4.2</a>)<a href="#section-4.1-5.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.1-5.4">
+            <p id="section-4.1-5.4.1">The session <span class="bcp14">MUST</span> be mutually authenticated (see <a href="#mutual_auth" class="auto internal xref">Section 4.2</a>)<a href="#section-4.1-5.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1560,29 +1572,37 @@ Allowing anonymous clients would ensure privacy for RADIUS/(D)TLS traffic, but w
 RADIUS/(D)TLS client implementations <span class="bcp14">SHOULD</span> implement this model, but <span class="bcp14">MUST</span> implement either this or TLS-PSK<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.2.1-2">If implemented it <span class="bcp14">MUST</span> use the following rules:<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2.1-3.1">Implementations <span class="bcp14">MUST</span> allow the configuration of a list of trusted Certificate Authorities for new TLS sessions.<a href="#section-4.2.1-3.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.2.1-3.1">
+              <p id="section-4.2.1-3.1.1">Implementations <span class="bcp14">MUST</span> allow the configuration of a list of trusted Certificate Authorities for new TLS sessions.<a href="#section-4.2.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.2.1-3.2">Certificate validation <span class="bcp14">MUST</span> include the verification rules as per <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>.<a href="#section-4.2.1-3.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-4.2.1-3.2">
+              <p id="section-4.2.1-3.2.1">Certificate validation <span class="bcp14">MUST</span> include the verification rules as per <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>.<a href="#section-4.2.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.2.1-3.3">Implementations <span class="bcp14">SHOULD</span> indicate their trusted Certification authorities (CAs).
-See <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span>, Section 7.4.4 and <span>[<a href="#RFC6066" class="cite xref">RFC6066</a>]</span>, Section 6 for TLS 1.2 and <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, Section 4.2.4 for TLS 1.3 <span class="cref" id="dtls-ca-ind">TODO: CA-Indication for DTLS.<span class="crefSource">Janfred</span></span><a href="#section-4.2.1-3.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-4.2.1-3.3">
+              <p id="section-4.2.1-3.3.1">Implementations <span class="bcp14">SHOULD</span> indicate their trusted Certification authorities (CAs).
+See <span>[<a href="#RFC5246" class="cite xref">RFC5246</a>]</span>, Section 7.4.4 and <span>[<a href="#RFC6066" class="cite xref">RFC6066</a>]</span>, Section 6 for TLS 1.2 and <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, Section 4.2.4 for TLS 1.3 <span class="cref" id="dtls-ca-ind">TODO: CA-Indication for DTLS.<span class="crefSource">Janfred</span></span><a href="#section-4.2.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.2.1-3.4">
               <p id="section-4.2.1-3.4.1">RADIUS/(D)TLS clients validate the servers identity to match their local configuration:<a href="#section-4.2.1-3.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2.1-3.4.2.1">If the expected RADIUS/(D)TLS server was configured as a hostname, the configured name is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component of the certificate subject<a href="#section-4.2.1-3.4.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.2.1-3.4.2.1">
+                  <p id="section-4.2.1-3.4.2.1.1">If the expected RADIUS/(D)TLS server was configured as a hostname, the configured name is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component of the certificate subject<a href="#section-4.2.1-3.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-4.2.1-3.4.2.2">If the expected RADIUS/(D)TLS server was configured as an IP address, the configured IP address is matched against the presented addresses in the subjectAltName:iPAddr extension; if no such exist, against the presented CN component of the certificate subject.<a href="#section-4.2.1-3.4.2.2" class="pilcrow">¶</a>
+                <li class="normal" id="section-4.2.1-3.4.2.2">
+                  <p id="section-4.2.1-3.4.2.2.1">If the expected RADIUS/(D)TLS server was configured as an IP address, the configured IP address is matched against the presented addresses in the subjectAltName:iPAddr extension; if no such exist, against the presented CN component of the certificate subject.<a href="#section-4.2.1-3.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-4.2.1-3.4.2.3">
                   <p id="section-4.2.1-3.4.2.3.1">If the RADIUS/(D)TLS server was not configured but discovered as per <span>[<a href="#RFC7585" class="cite xref">RFC7585</a>]</span>, the client executes the following checks in this order, accepting the certificate on the first match:<a href="#section-4.2.1-3.4.2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2.1-3.4.2.3.2.1">The realm which was used as input to the discovery is matched against the presented realm names from the subjectAltName:naiRealm extension.<a href="#section-4.2.1-3.4.2.3.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.2.1-3.4.2.3.2.1">
+                      <p id="section-4.2.1-3.4.2.3.2.1.1">The realm which was used as input to the discovery is matched against the presented realm names from the subjectAltName:naiRealm extension.<a href="#section-4.2.1-3.4.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                    <li class="normal" id="section-4.2.1-3.4.2.3.2.2">If the discovery process yielded a hostname, this hostname is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component of the certificate subject.
-Implementations <span class="bcp14">MAY</span> require the use of DNSSEC <span>[<a href="#RFC4033" class="cite xref">RFC4033</a>]</span> to ensure the authenticity of the DNS result before relying on this for trust checks.<a href="#section-4.2.1-3.4.2.3.2.2" class="pilcrow">¶</a>
+                    <li class="normal" id="section-4.2.1-3.4.2.3.2.2">
+                      <p id="section-4.2.1-3.4.2.3.2.2.1">If the discovery process yielded a hostname, this hostname is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component of the certificate subject.
+Implementations <span class="bcp14">MAY</span> require the use of DNSSEC <span>[<a href="#RFC4033" class="cite xref">RFC4033</a>]</span> to ensure the authenticity of the DNS result before relying on this for trust checks.<a href="#section-4.2.1-3.4.2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
-                    <li class="normal" id="section-4.2.1-3.4.2.3.2.3">If the previous checks fail, the certificate <span class="bcp14">MAY</span> Be accepted without further name checks immediately after the <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span> trust chain checks, if configured by the administrator.<a href="#section-4.2.1-3.4.2.3.2.3" class="pilcrow">¶</a>
+                    <li class="normal" id="section-4.2.1-3.4.2.3.2.3">
+                      <p id="section-4.2.1-3.4.2.3.2.3.1">If the previous checks fail, the certificate <span class="bcp14">MAY</span> Be accepted without further name checks immediately after the <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span> trust chain checks, if configured by the administrator.<a href="#section-4.2.1-3.4.2.3.2.3.1" class="pilcrow">¶</a></p>
 </li>
                   </ul>
 </li>
@@ -1592,19 +1612,24 @@ Implementations <span class="bcp14">MAY</span> require the use of DNSSEC <span>[
               <p id="section-4.2.1-3.5.1">RADIUS/(D)TLS servers validate the certificate of the RADIUS/(D)TLS client against a local database of acceptable clients.
 The database may enumerate acceptable clients either by IP address or by a name component in the certificate<a href="#section-4.2.1-3.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.2.1-3.5.2.1">For clients configured by name, the configured name is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component in the certificate subject.<a href="#section-4.2.1-3.5.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.2.1-3.5.2.1">
+                  <p id="section-4.2.1-3.5.2.1.1">For clients configured by name, the configured name is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component in the certificate subject.<a href="#section-4.2.1-3.5.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-4.2.1-3.5.2.2">For clients configured by their source IP address, the configured IP address is matched against the presented addresses in the subjectAltName:iPAddr extension; if no such exist, against the presented CN component of the certificate subject. <span class="cref" id="ipaddr-cidr">TODO: Find out if there are matching rules for subnet configuration.<span class="crefSource">Janfred</span></span><a href="#section-4.2.1-3.5.2.2" class="pilcrow">¶</a>
+                <li class="normal" id="section-4.2.1-3.5.2.2">
+                  <p id="section-4.2.1-3.5.2.2.1">For clients configured by their source IP address, the configured IP address is matched against the presented addresses in the subjectAltName:iPAddr extension; if no such exist, against the presented CN component of the certificate subject. <span class="cref" id="ipaddr-cidr">TODO: Find out if there are matching rules for subnet configuration.<span class="crefSource">Janfred</span></span><a href="#section-4.2.1-3.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
-                <li class="normal" id="section-4.2.1-3.5.2.3">It is possible for a RADIUS/(D)TLS server to not require additional name checks for incoming RADIUS/(D)TLS clients, i.e. if the client used dynamic lookup.
+                <li class="normal" id="section-4.2.1-3.5.2.3">
+                  <p id="section-4.2.1-3.5.2.3.1">It is possible for a RADIUS/(D)TLS server to not require additional name checks for incoming RADIUS/(D)TLS clients, i.e. if the client used dynamic lookup.
 In this case, the certificate is accepted immediately after the <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span> trust chain checks.
-This <span class="bcp14">MUST NOT</span> be used outside of trusted network environments or without additional certificate attribute checks in place.<a href="#section-4.2.1-3.5.2.3" class="pilcrow">¶</a>
+This <span class="bcp14">MUST NOT</span> be used outside of trusted network environments or without additional certificate attribute checks in place.<a href="#section-4.2.1-3.5.2.3.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
 </li>
-            <li class="normal" id="section-4.2.1-3.6">Implementations <span class="bcp14">MAY</span> allow a configuration of a set of additional properties of the certificate to check for a peer's authorization to communicate (e.g. a set of allowed values in subjectAltName:URI or a set of allowed X.509v3 Certificate Policies).<a href="#section-4.2.1-3.6" class="pilcrow">¶</a>
+            <li class="normal" id="section-4.2.1-3.6">
+              <p id="section-4.2.1-3.6.1">Implementations <span class="bcp14">MAY</span> allow a configuration of a set of additional properties of the certificate to check for a peer's authorization to communicate (e.g. a set of allowed values in subjectAltName:URI or a set of allowed X.509v3 Certificate Policies).<a href="#section-4.2.1-3.6.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.2.1-3.7">When the configured trust base changes (e.g., removal of a CA from the list of trusted CAs; issuance of a new CRL for a given CA), implementations <span class="bcp14">SHOULD</span> renegotiate the TLS session to reassess the connecting peer's continued authorization.<span class="cref" id="may-should-trustbase">Open discussion: RFC6614 says "may" here. I think this should be a "should".<span class="crefSource">Janfred</span></span><a href="#section-4.2.1-3.7" class="pilcrow">¶</a>
+            <li class="normal" id="section-4.2.1-3.7">
+              <p id="section-4.2.1-3.7.1">When the configured trust base changes (e.g., removal of a CA from the list of trusted CAs; issuance of a new CRL for a given CA), implementations <span class="bcp14">SHOULD</span> renegotiate the TLS session to reassess the connecting peer's continued authorization.<span class="cref" id="may-should-trustbase">Open discussion: RFC6614 says "may" here. I think this should be a "should".<span class="crefSource">Janfred</span></span><a href="#section-4.2.1-3.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -1657,26 +1682,35 @@ For example, if the Issuer is not in a trusted set of Issuers, the server may de
 Implementations that want to support a wide variety of trust models should expose as many details of the presented certificate to the administrator as possible so that the trust model can be implemented by the administrator.
 As a suggestion, at least the following parameters of the X.509 client certificate should be exposed:<a href="#section-4.3-9" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.3-10.1">Originating IP address<a href="#section-4.3-10.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.3-10.1">
+            <p id="section-4.3-10.1.1">Originating IP address<a href="#section-4.3-10.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.2">Certificate Fingerprint<a href="#section-4.3-10.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.3-10.2">
+            <p id="section-4.3-10.2.1">Certificate Fingerprint<a href="#section-4.3-10.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.3">Issuer<a href="#section-4.3-10.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.3-10.3">
+            <p id="section-4.3-10.3.1">Issuer<a href="#section-4.3-10.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.4">Subject<a href="#section-4.3-10.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.3-10.4">
+            <p id="section-4.3-10.4.1">Subject<a href="#section-4.3-10.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.5">all X.509v3 Extended Key Usage<a href="#section-4.3-10.5" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.3-10.5">
+            <p id="section-4.3-10.5.1">all X.509v3 Extended Key Usage<a href="#section-4.3-10.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.6">all X.509v3 Subject Alternative Name<a href="#section-4.3-10.6" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.3-10.6">
+            <p id="section-4.3-10.6.1">all X.509v3 Subject Alternative Name<a href="#section-4.3-10.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.7">all X.509v3 Certificate Policy<a href="#section-4.3-10.7" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.3-10.7">
+            <p id="section-4.3-10.7.1">all X.509v3 Certificate Policy<a href="#section-4.3-10.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.3-11">In TLS-PSK operation at least the following parameters of the TLS connection should be exposed:<a href="#section-4.3-11" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.3-12.1">Originating IP address<a href="#section-4.3-12.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.3-12.1">
+            <p id="section-4.3-12.1.1">Originating IP address<a href="#section-4.3-12.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-12.2">TLS-PSK Identifier<a href="#section-4.3-12.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.3-12.2">
+            <p id="section-4.3-12.2.1">TLS-PSK Identifier<a href="#section-4.3-12.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1690,11 +1724,13 @@ As a suggestion, at least the following parameters of the X.509 client certifica
 <p id="section-4.4-2">RADIUS/(D)TLS clients transmit the same packet types on the connection they initiated as a RADIUS/UDP client would, RADIUS/(D)TLS servers transmit the same packet types on the connections they have accepted as a RADIUS/UDP server would.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.4-3">Due to the use of one single port for all packet types, it is required that a RADIUS/(D)TLS server signals which types of packets are supported on a server to a connecting peer.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.4-4.1">When an unwanted packet of type 'CoA-Request' or 'Disconnect-Request' is received, a RADIUS/(D)TLS server needs to respond with a 'CoA-NAK' or 'Disconnect-AK', respectively.
-The NAK <span class="bcp14">SHOULD</span> contain an attribute Error-Cause with the value 406 ("Unsupported Extension"); see <span>[<a href="#RFC5176" class="cite xref">RFC5176</a>]</span> for details.<a href="#section-4.4-4.1" class="pilcrow">¶</a>
+<li class="normal" id="section-4.4-4.1">
+            <p id="section-4.4-4.1.1">When an unwanted packet of type 'CoA-Request' or 'Disconnect-Request' is received, a RADIUS/(D)TLS server needs to respond with a 'CoA-NAK' or 'Disconnect-AK', respectively.
+The NAK <span class="bcp14">SHOULD</span> contain an attribute Error-Cause with the value 406 ("Unsupported Extension"); see <span>[<a href="#RFC5176" class="cite xref">RFC5176</a>]</span> for details.<a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.4-4.2">When an unwanted packet of type 'Accounting-Request' is received, the RADIUS/(D)TLS server <span class="bcp14">SHOULD</span> reply with an Accounting-Response containing an Error-Cause attribute with value 406 "Unsupported Extensions" as defined in <span>[<a href="#RFC5176" class="cite xref">RFC5176</a>]</span>.
-A RADIUS/(D)TLS accounting client receiving such an Accounting-Response <span class="bcp14">SHOULD</span> log the error and stop sending Accounting-Request packets.<a href="#section-4.4-4.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-4.4-4.2">
+            <p id="section-4.4-4.2.1">When an unwanted packet of type 'Accounting-Request' is received, the RADIUS/(D)TLS server <span class="bcp14">SHOULD</span> reply with an Accounting-Response containing an Error-Cause attribute with value 406 "Unsupported Extensions" as defined in <span>[<a href="#RFC5176" class="cite xref">RFC5176</a>]</span>.
+A RADIUS/(D)TLS accounting client receiving such an Accounting-Response <span class="bcp14">SHOULD</span> log the error and stop sending Accounting-Request packets.<a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1746,28 +1782,38 @@ As a result the behavior with respect to discarded packets has to change.<a href
 <p id="section-5.2-4">Implementations of this specification <span class="bcp14">SHOULD</span> tread the "silently discard" texts in the RADIUS specification referenced above as "silently discard and close the connection".
 That is, the implementation <span class="bcp14">SHOULD</span> send a TLS close notification and the underlying TCP connection <span class="bcp14">MUST</span> be closed if any of the following circumstances are seen:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.2-5.1">Connection from an unknown client<a href="#section-5.2-5.1" class="pilcrow">¶</a>
+<li class="normal" id="section-5.2-5.1">
+            <p id="section-5.2-5.1.1">Connection from an unknown client<a href="#section-5.2-5.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-5.2">Packet where the RADIUS "Length" field is less than the minimum RADIUS packet length<a href="#section-5.2-5.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-5.2">
+            <p id="section-5.2-5.2.1">Packet where the RADIUS "Length" field is less than the minimum RADIUS packet length<a href="#section-5.2-5.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-5.3">Packet where the RADIUS "Length" field is more than the maximum RADIUS packet length<a href="#section-5.2-5.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-5.3">
+            <p id="section-5.2-5.3.1">Packet where the RADIUS "Length" field is more than the maximum RADIUS packet length<a href="#section-5.2-5.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-5.4">Packet where an Attribute "Length" field has the value of zero or one (0 or 1)<a href="#section-5.2-5.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-5.4">
+            <p id="section-5.2-5.4.1">Packet where an Attribute "Length" field has the value of zero or one (0 or 1)<a href="#section-5.2-5.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-5.5">Packet where the attributes do not exactly fill the packet<a href="#section-5.2-5.5" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-5.5">
+            <p id="section-5.2-5.5.1">Packet where the attributes do not exactly fill the packet<a href="#section-5.2-5.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-5.6">Packet where the Request Authenticator fails validation (where validation is required)<a href="#section-5.2-5.6" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-5.6">
+            <p id="section-5.2-5.6.1">Packet where the Request Authenticator fails validation (where validation is required)<a href="#section-5.2-5.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-5.7">Packet where the Response Authenticator fails validation (where validation is required)<a href="#section-5.2-5.7" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-5.7">
+            <p id="section-5.2-5.7.1">Packet where the Response Authenticator fails validation (where validation is required)<a href="#section-5.2-5.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-5.8">Packet where the Message-Authenticator attribute fails validation (when it occurs in a packet)<a href="#section-5.2-5.8" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-5.8">
+            <p id="section-5.2-5.8.1">Packet where the Message-Authenticator attribute fails validation (when it occurs in a packet)<a href="#section-5.2-5.8.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-5.2-6">After applying the above rules, there are still two situations where the previous specifications allow a packet to be "silently discarded" upon receipt:<a href="#section-5.2-6" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.2-7.1">Packet with an invalid code field<a href="#section-5.2-7.1" class="pilcrow">¶</a>
+<li class="normal" id="section-5.2-7.1">
+            <p id="section-5.2-7.1.1">Packet with an invalid code field<a href="#section-5.2-7.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-7.2">Response packets that do not match any outstanding request<a href="#section-5.2-7.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-7.2">
+            <p id="section-5.2-7.2.1">Response packets that do not match any outstanding request<a href="#section-5.2-7.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-5.2-8">In these situations, the TCP connections <span class="bcp14">MAY</span> remain open, or they <span class="bcp14">MAY</span> be closed, as an implementation choice. However, the invalid packet <span class="bcp14">MUST</span> be silently discarded.<a href="#section-5.2-8" class="pilcrow">¶</a></p>
@@ -1876,13 +1922,17 @@ Instead, it should cache the RADIUS response packet, and re-process it through D
 <p id="section-6.4.1-1"><span class="cref" id="src_7360_5_1">Source: RFC7360, Section 5.1</span><a href="#section-6.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.4.1-2">A RADIUS/DTLS server <span class="bcp14">MUST</span> track ongoing DTLS sessions for each client, based on the following 4-tuple:<a href="#section-6.4.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-6.4.1-3.1">source IP address<a href="#section-6.4.1-3.1" class="pilcrow">¶</a>
+<li class="normal" id="section-6.4.1-3.1">
+              <p id="section-6.4.1-3.1.1">source IP address<a href="#section-6.4.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-6.4.1-3.2">source port<a href="#section-6.4.1-3.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-6.4.1-3.2">
+              <p id="section-6.4.1-3.2.1">source port<a href="#section-6.4.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-6.4.1-3.3">destination IP address<a href="#section-6.4.1-3.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-6.4.1-3.3">
+              <p id="section-6.4.1-3.3.1">destination IP address<a href="#section-6.4.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-6.4.1-3.4">destination port<a href="#section-6.4.1-3.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-6.4.1-3.4">
+              <p id="section-6.4.1-3.4.1">destination port<a href="#section-6.4.1-3.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-6.4.1-4">Note that this 4-tuple is independent of IP address version (IPv4 or IPv6).<a href="#section-6.4.1-4" class="pilcrow">¶</a></p>
@@ -1993,7 +2043,77 @@ This practice lowers the time and effort required to start a DTLS session with a
       <h2 id="name-security-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-7-1">TODO Security<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">As this specification relies on the existing TLS and DTLS specifications, all security considerations for these protocols also apply to the (D)TLS portions of RADIUS/(D)TLS.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">For RADIUS however, many security considerations raised in the RADIUS documents are related to RADIUS encryption and authorization.
+Those issues are largely mitigated when (D)TLS is used as a transport method.
+The issues that are not mitigated by this specification are related to the RADIUS packet format and handling, which is unchanged in this specification.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">A few remaining security considerations and notes to administrators deploying RADIUS/(D)TLS are listed below.<a href="#section-7-3" class="pilcrow">¶</a></p>
+<div id="radius-proxies">
+<section id="section-7.1">
+        <h3 id="name-radius-proxies">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-radius-proxies" class="section-name selfRef">RADIUS Proxies</a>
+        </h3>
+<p id="section-7.1-1">RADIUS/(D)TLS provides authentication, integrity and confidentiality protection for RADIUS traffic between two RADIUS peers.
+In the presence of proxies, the intermediate proxies can still inspect the individual RADIUS packets, i.e., "end-to-end" encryption is not provides.
+Where intermediate proxies are untrusted, it is desirable to use other RADIUS mechanisms to prevent RADIUS packet payload from inspection by such proxies.
+One common method to protect passwords is the use of the Extensible Authentication Protocol (EAP) and EAP methods that utilize TLS.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-2">Additionally, when RADIUS proxies are used, the client has no way of ensuring that the complete path of the RADIUS packet is protected, since RADIUS routing is done hop-by-hop and any intermediate proxy may decide to forward the RADIUS packet it received via RADIUS/(D)TLS using the RADIUS/UDP transport profile.
+There is no technical solution to this problem with the current specification.
+Where the confidentiality of the contents of the RADIUS packet across the whole path is required, organizational solutions need to be in place, that ensure that every intermediate RADIUS proxy is forwarding the RADIUS packets using RADIUS/(D)TLS as transport.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="usage-of-null-encryption-cipher-suites-for-debugging">
+<section id="section-7.2">
+        <h3 id="name-usage-of-null-encryption-ci">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-usage-of-null-encryption-ci" class="section-name selfRef">Usage of null encryption cipher suites for debugging</a>
+        </h3>
+<p id="section-7.2-1">For debugging purposes, some TLS implementation offer cipher suites with NULL encryption, to allow inspection of the plaintext with packet sniffing tools.
+Since with RADIUS/(D)TLS the RADIUS shared secret is set to a static string ("radsec" for RADIUS/TLS, "radius/dtls" for RADIUS/DTLS), using a NULL encryption cipher suite will also result in complete disclosure of the whole RADIUS packet, including the encrypted RADIUS attributes, to any intermediate IP node.
+To prevent this, while keeping a NULL encryption cipher suite active, the only option is to set a different shared secret for RADIUS.
+In this case, the security considerations for confidentiality of RADIUS/UDP packets apply.
+Following the recommendations in <span>[<a href="#RFC9325" class="cite xref">RFC9325</a>], <a href="https://rfc-editor.org/rfc/rfc9325#section-4.1" class="relref">Section 4.1</a></span>, this specification forbids the usage of NULL encryption cipher suites for RADIUS/(D)TLS.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="possibility-of-denial-of-service-attacks">
+<section id="section-7.3">
+        <h3 id="name-possibility-of-denial-of-se">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-possibility-of-denial-of-se" class="section-name selfRef">Possibility of Denial-of-Service attacks</a>
+        </h3>
+<p id="section-7.3-1">Both RADIUS/TLS and RADIUS/DTLS have a considerable higher amount of data that the server needs to store in comparison to RADIUS/UDP.
+Therefore, an attacker could try to exhaust server resources.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">With RADIUS/UDP, any bogous packet would fail the cryptographic checks and the server would silently discard the bogous packet.
+For RADIUS/(D)TLS, the server needs to perform at least a partial TLS handshake to determine whether or not the client is authorized.
+Performing a (D)TLS handshake is more complex than the cryptographic check of a RADIUS packet.
+An attacker could try to trigger a high number of (D)TLS handshakes at the same time, resulting in a high server load and potentially a Denial-of-Service.
+To prevent this attack, a RADIUS/(D)TLS server <span class="bcp14">SHOULD</span> have configurable limits on new connection attempts.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<p id="section-7.3-3">Both TLS and DTLS need to store session information for each open (D)TLS session.
+Especially with DTLS, a bogous or misbehaving client could open an excessive number of DTLS sessions.
+This session tracking could lead to a resource exhaustion, triggering a Denial-of-Service.
+Therefore, RADIUS/(D)TLS servers <span class="bcp14">MUST</span> limit the absolute number of sessions they can track and <span class="bcp14">SHOULD</span> expose this limit as configurable option to the administrator.
+When the total number of sessions tracked is going to exceed the configured limit, servers <span class="bcp14">MAY</span> free up resources by closing the session that has been idle for the longest time.
+Doing so may free up idle resources that then allow the server to accept a new session.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
+<p id="section-7.3-4">RADIUS/(D)TLS <span class="bcp14">MUST</span> limit the umber of partially open DTLS sessions and <span class="bcp14">SHOULD</span> expose this limit as configurable option to the administrator.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="migrating-from-radiusudp-to-radiusdtls">
+<section id="section-7.4">
+        <h3 id="name-migrating-from-radius-udp-t">
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-migrating-from-radius-udp-t" class="section-name selfRef">Migrating from RADIUS/UDP to RADIUS/(D)TLS</a>
+        </h3>
+<p id="section-7.4-1">Since RADIUS/UDP security relies on the MD5 algorithm, which is considered insecure, using RADIUS/UDP over insecure networks is risky.
+We therefore recommend to migrate from RADIUS/UDP to RADIUS/(D)TLS.
+Within this migration process, however, there are a few items that need to be considered by administrators.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.4-2">Firstly, administrators may be tempted to simply migrate from RADIUS/UDP to RADIUS/(D)TLS with (D)TLS-PSK and reuse the RADIUS shared secret as (D)TLS-PSK.
+While this may seem like an easy way to upgrade RADIUS/UDP to RADIUS/(D)TLS, the cryptographic problems with the RADIUS/UDP shared secret render the shared secret potentially compromised.
+Using a potentially compromised shared secret as TLS-PSK compromises the whole TLS connection.
+Therefore, any shared secret used with RADIUS/UDP before <span class="bcp14">MUST NOT</span> be used with RADIUS/(D)TLS and (D)TLS-PSK.
+Implementers <span class="bcp14">MUST NOT</span> reuse the configuration option for the RADIUS/UDP shared secret for the (D)TLS-PSK to prevent accidental reuse.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
+<p id="section-7.4-3">When upgrading from RADIUS/UDP to RADIUS/(D)TLS, there may be a period of time, where the connection between client and server is configured for both transport profiles.
+If the old RADIUS/UDP configuration is left configured, but not used in normal operation, e.g. due to a fail-over configuration that prefers RADIUS/(D)TLS, an attacker could disrupt the RADIUS/(D)TLS communication and force a downgrade to RADIUS/UDP.
+To prevent this it is <span class="bcp14">RECOMMENDED</span> that, when the migration to RADIUS/(D)TLS is completed, the RADIUS/UDP configuration is removed.
+RADIUS/(D)TLS clients <span class="bcp14">MUST NOT</span> fall back to RADIUS/UDP if the RADIUS/(D)TLS communication fails, unless explicitly configured this way.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="design_decisions">
@@ -2010,7 +2130,7 @@ This section will discuss the rationale behind significant changes from the expe
         </h3>
 <p id="section-8.1-1">With the merging of RADIUS/TLS and RADIUS/DTLS the question of mandatory-to-implement transports arose.
 In order to avoid incompatibilities, there were two possibilities: Either mandate one of the transports for all implementations or mandate the implementation of both transports for either the server or the client.
-As of the time writing, RADIUS/TLS is widely addapted for some use cases (see <a href="#lessons_learned" class="auto internal xref">Appendix A</a>).
+As of the time writing, RADIUS/TLS is widely adapted for some use cases (see <a href="#lessons_learned" class="auto internal xref">Appendix A</a>).
 However, TLS has some serious drawbacks when used for RADIUS transport.
 Especially the sequential nature of the connection and the connected issues like Head-of-Line blocking could create problems.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <p id="section-8.1-2">Therefore, the decision was made that RADIUS servers must implement both transports.
@@ -2039,16 +2159,21 @@ RADIUS clients again can choose which method is better suited for them, but must
       </h2>
 <p id="section-9-1">Upon approval, IANA should update the Reference to radsec in the Service Name and Transport Protocol Port Number Registry:<a href="#section-9-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-9-2.1">Service Name: radsec<a href="#section-9-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-9-2.1">
+          <p id="section-9-2.1.1">Service Name: radsec<a href="#section-9-2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-9-2.2">Port Number: 2083<a href="#section-9-2.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-9-2.2">
+          <p id="section-9-2.2.1">Port Number: 2083<a href="#section-9-2.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-9-2.3">Transport Protocol: tcp/udp<a href="#section-9-2.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-9-2.3">
+          <p id="section-9-2.3.1">Transport Protocol: tcp/udp<a href="#section-9-2.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-9-2.4">Description: Secure RADIUS Service<a href="#section-9-2.4" class="pilcrow">¶</a>
+        <li class="normal" id="section-9-2.4">
+          <p id="section-9-2.4.1">Description: Secure RADIUS Service<a href="#section-9-2.4.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-9-2.5">Assignment notes: The TCP port 2083 was already previously assigned by IANA for "RadSec", an early implementation of RADIUS/TLS, prior to issuance of the experimental RFC 6614.
-[This document] updates RFC 6614 (RADIUS/TLS) and RFC 7360 (RADIUS/DTLS), while maintaining backward compatibility, if configured. For further details see RFC 6614, Appendix A or [This document] <a href="#backwardcomp" class="auto internal xref">Appendix C</a>.<a href="#section-9-2.5" class="pilcrow">¶</a>
+        <li class="normal" id="section-9-2.5">
+          <p id="section-9-2.5.1">Assignment notes: The TCP port 2083 was already previously assigned by IANA for "RadSec", an early implementation of RADIUS/TLS, prior to issuance of the experimental RFC 6614.
+[This document] updates RFC 6614 (RADIUS/TLS) and RFC 7360 (RADIUS/DTLS), while maintaining backward compatibility, if configured. For further details see RFC 6614, Appendix A or [This document] <a href="#backwardcomp" class="auto internal xref">Appendix C</a>.<a href="#section-9-2.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -2057,6 +2182,7 @@ RADIUS clients again can choose which method is better suited for them, but must
       <h2 id="name-references">
 <a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
 <section id="section-10.1">
         <h3 id="name-normative-references">
 <a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
@@ -2064,7 +2190,7 @@ RADIUS clients again can choose which method is better suited for them, but must
 <dl class="references">
 <dt id="I-D.ietf-radext-tls-psk">[I-D.ietf-radext-tls-psk]</dt>
         <dd>
-<span class="refAuthor">DeKok, A.</span>, <span class="refTitle">"RADIUS and TLS-PSK"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-radext-tls-psk-01</span>, <time datetime="2023-08-08" class="refDate">8 August 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-01">https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-01</a>&gt;</span>. </dd>
+<span class="refAuthor">DeKok, A.</span>, <span class="refTitle">"RADIUS and TLS-PSK"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-radext-tls-psk-03</span>, <time datetime="2023-08-24" class="refDate">24 August 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-03">https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -2156,6 +2282,8 @@ RADIUS clients again can choose which method is better suited for them, but must
 <dd class="break"></dd>
 </dl>
 </section>
+</div>
+<div id="sec-informative-references">
 <section id="section-10.2">
         <h3 id="name-informative-references">
 <a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
@@ -2187,6 +2315,7 @@ RADIUS clients again can choose which method is better suited for them, but must
 <dd class="break"></dd>
 </dl>
 </section>
+</div>
 </section>
 <div id="lessons_learned">
 <section id="appendix-A">
@@ -2204,13 +2333,17 @@ This section will discuss lessens learned from these deployments, that influence
 <p id="appendix-A.1-2">Over time, more than a dozen out of 100+ national branches of eduroam used RADIUS/TLS in production to secure their country-to-country RADIUS proxy connections. This number is big enough to attest that the protocol does work, and scales. The number is also low enough to wonder why RADIUS/UDP continued to be used by a majority of country deployments despite its significant security issues.<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
 <p id="appendix-A.1-3">Operational experience reveals that the main reason is related to the choice of PKIX certificates for securing the proxy interconnections. Compared to shared secrets, certificates are more complex to handle in multiple dimensions:<a href="#appendix-A.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-A.1-4.1">Lifetime: PKIX certificates have an expiry date, and need administrator attention and expertise for their renewal<a href="#appendix-A.1-4.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-A.1-4.1">
+            <p id="appendix-A.1-4.1.1">Lifetime: PKIX certificates have an expiry date, and need administrator attention and expertise for their renewal<a href="#appendix-A.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.1-4.2">Validation: The validation of a certificate (both client and server) requires contacting a third party to verify the revocation status. This either takes time during session setup (OCSP checks) or requires the presence of a fresh CRL on the server - this in turn requires regular update of that CRL.<a href="#appendix-A.1-4.2" class="pilcrow">¶</a>
+          <li class="normal" id="appendix-A.1-4.2">
+            <p id="appendix-A.1-4.2.1">Validation: The validation of a certificate (both client and server) requires contacting a third party to verify the revocation status. This either takes time during session setup (OCSP checks) or requires the presence of a fresh CRL on the server - this in turn requires regular update of that CRL.<a href="#appendix-A.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.1-4.3">Issuance: PKIX certificates carry properties in the Subject and extensions that need to be vetted. Depending on the CA policy, a certificate request may need significant human intervention to be verified. In particular, the authorisation of a requester to operate a server for a particular NAI realm needs to be verified. This rules out public "browser-trusted" CAs; eduroam is operating a special-purpose CA for eduroam RADIUS/TLS purposes.<a href="#appendix-A.1-4.3" class="pilcrow">¶</a>
+          <li class="normal" id="appendix-A.1-4.3">
+            <p id="appendix-A.1-4.3.1">Issuance: PKIX certificates carry properties in the Subject and extensions that need to be vetted. Depending on the CA policy, a certificate request may need significant human intervention to be verified. In particular, the authorisation of a requester to operate a server for a particular NAI realm needs to be verified. This rules out public "browser-trusted" CAs; eduroam is operating a special-purpose CA for eduroam RADIUS/TLS purposes.<a href="#appendix-A.1-4.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.1-4.4">Automatic failure over time: CRL refresh and certificate renewal must be attended to regularly. Failure to do so leads to failure of the authentication service. Among other reasons, employee churn with incorrectly transferred or forgotten responsibilities is a risk factor.<a href="#appendix-A.1-4.4" class="pilcrow">¶</a>
+          <li class="normal" id="appendix-A.1-4.4">
+            <p id="appendix-A.1-4.4.1">Automatic failure over time: CRL refresh and certificate renewal must be attended to regularly. Failure to do so leads to failure of the authentication service. Among other reasons, employee churn with incorrectly transferred or forgotten responsibilities is a risk factor.<a href="#appendix-A.1-4.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="appendix-A.1-5">It appears that these complexities often outweigh the argument of improved security; and a fallback to RADIUS/UDP is seen as the more appealing option.<a href="#appendix-A.1-5" class="pilcrow">¶</a></p>
