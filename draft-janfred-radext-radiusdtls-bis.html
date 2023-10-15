@@ -2026,13 +2026,13 @@ Non-compliant, or unexpected packets will be ignored by the DTLS layer.<span cla
 <p id="section-6.4.2-3">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> proactively close sessions when they have been idle for a period of time.
 Clients <span class="bcp14">SHOULD</span> close a session when no traffic other than watchdog packet and (possibly) watchdog responses have been sent for three watchdog timeouts.
 This behavior ensures that clients do not waste resources on the server by causing it to track idle sessions.<a href="#section-6.4.2-3" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-4">DTLS sessions <span class="bcp14">MUST</span> also be deleted when a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Response Authenticator.<span class="cref" id="normalizespec">Maybe modify this text to be more similar to the TLS specific text here.<span class="crefSource">Janfred</span></span>
-There are other cases, when the specifications require that a packet received via a DTLS session be "silently discarded".
-In those cases, implementations <span class="bcp14">MAY</span> delete the underlying DTLS session.<a href="#section-6.4.2-4" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-5">RADIUS/DTLS clients <span class="bcp14">SHOULD NOT</span> send both RADIUS/UDP and RADIUS/DTLS packets to different servers from the same source socket.
-This practice causes increased complexity in the client application and increases the potential for security breaches due to implementation issues.<a href="#section-6.4.2-5" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-6">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> implement session resumption, preferably stateless session resumption as given in <span>[<a href="#RFC5077" class="cite xref">RFC5077</a>]</span>.
-This practice lowers the time and effort required to start a DTLS session with a server and increases network responsiveness.<a href="#section-6.4.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-4">DTLS sessions <span class="bcp14">MUST</span> also be deleted when a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Response Authenticator.<span class="cref" id="normalizespec">Maybe modify this text to be more similar to the TLS specific text here.<span class="crefSource">Janfred</span></span><a href="#section-6.4.2-4" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-5">There are other cases, when the specifications require that a packet received via a DTLS session be "silently discarded".
+In those cases, implementations <span class="bcp14">MAY</span> delete the underlying DTLS session.<a href="#section-6.4.2-5" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-6">RADIUS/DTLS clients <span class="bcp14">SHOULD NOT</span> send both RADIUS/UDP and RADIUS/DTLS packets to different servers from the same source socket.
+This practice causes increased complexity in the client application and increases the potential for security breaches due to implementation issues.<a href="#section-6.4.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-7">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> implement session resumption, preferably stateless session resumption as given in <span>[<a href="#RFC5077" class="cite xref">RFC5077</a>]</span>.
+This practice lowers the time and effort required to start a DTLS session with a server and increases network responsiveness.<a href="#section-6.4.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2046,7 +2046,7 @@ This practice lowers the time and effort required to start a DTLS session with a
       </h2>
 <p id="section-7-1">As this specification relies on the existing TLS and DTLS specifications, all security considerations for these protocols also apply to the (D)TLS portions of RADIUS/(D)TLS.<a href="#section-7-1" class="pilcrow">¶</a></p>
 <p id="section-7-2">For RADIUS however, many security considerations raised in the RADIUS documents are related to RADIUS encryption and authorization.
-Those issues are largely mitigated when (D)TLS is used as a transport method, since encryption and autorization is achieved on the (D)TLS layer.
+Those issues are largely mitigated when (D)TLS is used as a transport method, since encryption and authorization is achieved on the (D)TLS layer.
 The issues that are not mitigated by this specification are related to the RADIUS packet format and handling, which is unchanged in this specification.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-3">A few remaining security considerations and notes to administrators deploying RADIUS/(D)TLS are listed below.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <div id="radius-proxies">
@@ -2106,8 +2106,8 @@ The reason is that the session is expected to be used for transport of RADIUS pa
 <p id="section-7.4-2">Any non-RADIUS traffic on that session means the other party is misbehaving and is a potentially security risk.
 Similarly, any RADIUS traffic failing authentication vector or Message-Authenticator validation means that two parties do not have a common shared secret.
 Since the shared secret is static, this again means the other party is misbehaving.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
-<p id="section-7.4-3">We wish to avoid the situation wehere a third party can send well-formed RADIUS packets to a RADIUS proxy that cause a (D)TLS session to close.
-Therefore, in other situations, the session SOULD remain open in the face of non-conformant packets.
+<p id="section-7.4-3">We wish to avoid the situation where a third party can send well-formed RADIUS packets to a RADIUS proxy that cause a (D)TLS session to close.
+Therefore, in other situations, the session SOULD remain open in the face of non-conforming packets.
 Any malformed RADIUS packets sent by a third party will go through the security checks of the RADIUS proxy upon reception and will not be forwarded.
 Well-formed RADIUS packets with portions that the proxy does not understand do not pose a security risk to the security properties of the RADIUS/(D)TLS session and can be forwarded.
 This ensures forward compatibility with future RADIUS extensions.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
