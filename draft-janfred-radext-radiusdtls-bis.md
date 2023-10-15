@@ -826,4 +826,5 @@ Hopefully the differences to {{RFC6614}} are small enough that almost no config 
 
 Thanks to the original authors of RFC 6613, RFC 6614 and RFC 7360: Alan DeKok, Stefan Winter, Mike McCauley, Stig Venaas and Klaas Vierenga.
 
-Thanks to Arran Curdbard-Bell for text around keepalives.
+Thanks to Arran Curdbard-Bell for text around keepalives and the Status-Server watchdog algorithm.
+
