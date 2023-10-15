@@ -1033,7 +1033,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rieckers &amp; Winter</td>
-<td class="center">Expires 15 April 2024</td>
+<td class="center">Expires 17 April 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1049,12 +1049,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc6614%207360" class="eref">6614 7360</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-13" class="published">13 October 2023</time>
+<time datetime="2023-10-15" class="published">15 October 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-15">15 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-04-17">17 April 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1107,7 +1107,7 @@ The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1357,6 +1357,9 @@ These specifications have been merged into this document.<a href="#section-1.2-1
           <li class="normal" id="section-1.2-1.6">
             <p id="section-1.2-1.6.1">The specification regarding steps for certificate verification has been updated<a href="#section-1.2-1.6.1" class="pilcrow">¶</a></p>
 </li>
+          <li class="normal" id="section-1.2-1.7">
+            <p id="section-1.2-1.7.1"><span>[<a href="#RFC6613" class="cite xref">RFC6613</a>]</span> mandated the use of Status-Server as watchdog algorithm, <span>[<a href="#RFC7360" class="cite xref">RFC7360</a>]</span> only recommended it. This specification mandates the use of Status-Server for both RADIUS/TLS and RADIUS/DTLS.<a href="#section-1.2-1.7.1" class="pilcrow">¶</a></p>
+</li>
         </ul>
 <p id="section-1.2-2">The rationales behind some of these changes are outlined in <a href="#design_decisions" class="auto internal xref">Section 8</a>.<a href="#section-1.2-2" class="pilcrow">¶</a></p>
 </section>
@@ -1508,18 +1511,21 @@ They <span class="bcp14">MUST</span> close the connection and discard any data s
 While the client may be able to deduce the operational state of the local server (i.e., proxy), it cannot make any determination about the operational state of the downstream servers.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <p id="section-3.3-3">Within RADIUS, proxies typically only forward traffic between the NAS and RADIUS servers, and they do not generate their own response.
 As a result, when a NAS does not receive a response to a request, this could be the result of packet loss between the NAS and proxy, a problem on the proxy, loss between the RADIUS proxy and server, or a problem with the server.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
-<p id="section-3.3-4">When UDP is used as a transport protocol, the absence of a reply can cause a client to deduce (incorrectly) that the proxy is unavailable.
+<p id="section-3.3-4">The absence of a reply can cause a client to deduce (incorrectly) that the proxy is unavailable.
 The client could then fail over to another server or conclude that no "live" servers are available (OKAY state in <span>[<a href="#RFC3539" class="cite xref">RFC3539</a>]</span>, Appendix A).
 This situation is made even worse when requests are sent through a proxy to multiple destinations.
 Failures in one destination may result in service outages for other destinations, if the client erroneously believes that the proxy is unresponsive.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
-<p id="section-3.3-5">For RADIUS/TLS, it is <span class="bcp14">RECOMMENDED</span> that implementations utilize the existence of a TCP connection along with the application-layer watchdog defined in <span>[<a href="#RFC3539" class="cite xref">RFC3539</a>]</span>, Section 3.4 to determine that the server is "live".
-RADIUS/TLS clients <span class="bcp14">MUST</span> mark a connection DOWN, if the network stack indicates that the connection is no longer active.
-If the network stack indicates that the connection is still active, clients <span class="bcp14">MUST NOT</span> decide that it is down until the application-layer watchdog algorithm has marked it DOWN.
-RADIUS/TLS clients <span class="bcp14">MUST NOT</span> decide that a RADIUS/TLS server is unresponsive until all TLS connections to it have been marked down.<span class="cref" id="contradiction">The specification in RFC6613 is contradictory here. Section 2.4 says that it is recommended to have a watchdog. Section 2.6 says it must be used.<span class="crefSource">Janfred</span></span><a href="#section-3.3-5" class="pilcrow">¶</a></p>
-<p id="section-3.3-6">The above requirements do not forbid the practice of a client proactively closing connections or marking a server as DOWN due to an administrative decision.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
-<p id="section-3.3-7">It is <span class="bcp14">RECOMMENDED</span> that RADIUS/(D)TLS nodes implement the Status-Server extension as described in <span>[<a href="#RFC5997" class="cite xref">RFC5997</a>]</span> to detect the liveness of the peer without dependence on successful authentications.
+<p id="section-3.3-5">It is <span class="bcp14">REQUIRED</span> that implementations utilize the existence of a TCP/DTLS connection along with the application-layer watchdog defined in <span>[<a href="#RFC3539" class="cite xref">RFC3539</a>], <a href="https://rfc-editor.org/rfc/rfc3539#section-3.4" class="relref">Section 3.4</a></span> to determine the liveliness of the server.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
+<p id="section-3.3-6">RADIUS/(D)TLS clients <span class="bcp14">MUST</span> mark a connection DOWN if one or more of the following conditions are met:
+* The administrator has marked the connection administrative DOWN.
+* The network stack indicates that the connection is no longer viable.
+* The application-layer watchdog algorithm has marked it DOWN.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
+<p id="section-3.3-7">If a RADIUS/(D)TLS client has multiple connection to a server, it <span class="bcp14">MUST NOT</span> decide to mark the whole server as DOWN until all connections to it have been marked DOWN.<a href="#section-3.3-7" class="pilcrow">¶</a></p>
+<p id="section-3.3-8">It is <span class="bcp14">REQUIRED</span> that RADIUS/(D)TLS clients implement the Status-Server extension as described in <span>[<a href="#RFC5997" class="cite xref">RFC5997</a>]</span> as the application level watchdog to detect the liveliness of the peer in the absence of responses.
 Since RADIUS has a limitation of 256 simultaneous "in flight" packets due to the length of the ID field (<span>[<a href="#RFC3539" class="cite xref">RFC3539</a>]</span>, Section 2.4), it is <span class="bcp14">RECOMMENDED</span> that RADIUS/(D)TLS clients reserve ID zero (0) on each session for Status-Server packets.
-This value was picked arbitrary, as there is no reason to choose any other value over another for this use.<span class="cref" id="statusserver">TODO: RFC6613 mandates the use of Status-Server for RADIUS/TCP, RFC7360 only recommends it for RADIUS/DTLS. Maybe it should be mandatory for both?<span class="crefSource">Janfred</span></span><a href="#section-3.3-7" class="pilcrow">¶</a></p>
+This value was picked arbitrary, as there is no reason to choose any other value over another for this use.<a href="#section-3.3-8" class="pilcrow">¶</a></p>
+<p id="section-3.3-9">For RADIUS/TLS, the peers <span class="bcp14">MAY</span> send TCP keepalives as described in <span>[<a href="#RFC9293" class="cite xref">RFC9293</a>], <a href="https://rfc-editor.org/rfc/rfc9293#section-3.8.4" class="relref">Section 3.8.4</a></span>, for RADIUS/DTLS connections, the peers <span class="bcp14">MAY</span> send periodic keepalives as defined in <span>[<a href="#RFC6520" class="cite xref">RFC6520</a>]</span>, as a way of proactively and rapidly triggering a connection DOWN notification from the network stack.
+These liveliness checks are essentially redundant in the presence of an application-layer watchdog, but may provide more rapid notifications of connectivity issues.<a href="#section-3.3-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1988,26 +1994,24 @@ A session <span class="bcp14">SHOULD NOT</span> be deleted when a well-formed, b
 Any security-related issue causes the connection to be closed.
 After security restrictions have been applied, any unexpected traffic may be safely ignored, as it cannot cause a security issue.
 This allows for future extensions to the RADIUS/DTLS specifications.<a href="#section-6.4.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-6.4.1.1-6">Once a DTLS session is established, a RADIUS/DTLS server <span class="bcp14">SHOULD</span> use DTLS Heartbeats <span>[<a href="#RFC6520" class="cite xref">RFC6520</a>]</span> to determine connectivity between the two servers.
-A server <span class="bcp14">SHOULD</span> also use watchdog packets from the client to determine that the session is still active.<a href="#section-6.4.1.1-6" class="pilcrow">¶</a></p>
-<p id="section-6.4.1.1-7">As UDP does not guarantee delivery of messages, RADIUS/DTLS servers that do not implement an application-layer watchdog <span class="bcp14">MUST</span> also maintain a "Last Traffic" timestamp per DTLS session.
+<p id="section-6.4.1.1-6">As UDP does not guarantee delivery of messages, RADIUS/DTLS servers <span class="bcp14">MUST</span> maintain a "Last Traffic" timestamp per DTLS session.
 The granularity of this timestamp is not critical and could be limited to one-second intervals.
 The timestamp <span class="bcp14">SHOULD</span> be updated on reception of a valid RADIUS/DTLS packet, or a DTLS Heartbeat, but no more than once per interval.
-The timestamp <span class="bcp14">MUST NOT</span> be updated in other situations.<a href="#section-6.4.1.1-7" class="pilcrow">¶</a></p>
-<p id="section-6.4.1.1-8">When a session has not received a packet for a period of time, it is labeled "idle".
+The timestamp <span class="bcp14">MUST NOT</span> be updated in other situations.<a href="#section-6.4.1.1-6" class="pilcrow">¶</a></p>
+<p id="section-6.4.1.1-7">When a session has not received a packet for a period of time, it is labeled "idle".
 The server <span class="bcp14">SHOULD</span> delete idle DTLS sessions after an "idle timeout".
-The server <span class="bcp14">MAY</span> cache the TLS session parameters, in order to provide for fast session resumption.<span class="cref" id="idle-timeout-conf">RFC 7360 adds a paragraph about that the idle timeout should not be exposed to the admin as configurable parameter and references a mechanism to determine this value from the application-layer watchdog, but I didn't find the specification anywhere.<span class="crefSource">Janfred</span></span><a href="#section-6.4.1.1-8" class="pilcrow">¶</a></p>
-<p id="section-6.4.1.1-9">RADIUS/DTLS servers <span class="bcp14">SHOULD</span> also monitor the total number of open sessions.
+The server <span class="bcp14">MAY</span> cache the TLS session parameters, in order to provide for fast session resumption.<span class="cref" id="idle-timeout-conf">RFC 7360 adds a paragraph about that the idle timeout should not be exposed to the admin as configurable parameter and references a mechanism to determine this value from the application-layer watchdog, but I didn't find the specification anywhere.<span class="crefSource">Janfred</span></span><a href="#section-6.4.1.1-7" class="pilcrow">¶</a></p>
+<p id="section-6.4.1.1-8">RADIUS/DTLS servers <span class="bcp14">SHOULD</span> also monitor the total number of open sessions.
 They <span class="bcp14">SHOULD</span> have a "maximum sessions" setting exposed to administrators as a configurable parameter.
-When this maximum is reached and a new session is started, the server <span class="bcp14">MUST</span> either drop an old session in order to open the new one or not create a new session.<a href="#section-6.4.1.1-9" class="pilcrow">¶</a></p>
-<p id="section-6.4.1.1-10">RADIUS/DTLS servers <span class="bcp14">SHOULD</span> implement session resumption, preferably stateless session resumption as given in <span>[<a href="#RFC5077" class="cite xref">RFC5077</a>]</span>.
-This practice lowers the time and effort required to start a DTLS session with a client and increases network responsiveness.<a href="#section-6.4.1.1-10" class="pilcrow">¶</a></p>
-<p id="section-6.4.1.1-11">Since UDP is stateless, the potential exists for the client to initiate a new DTLS session using a particular 4-tuple, before the server has closed the old session.
+When this maximum is reached and a new session is started, the server <span class="bcp14">MUST</span> either drop an old session in order to open the new one or not create a new session.<a href="#section-6.4.1.1-8" class="pilcrow">¶</a></p>
+<p id="section-6.4.1.1-9">RADIUS/DTLS servers <span class="bcp14">SHOULD</span> implement session resumption, preferably stateless session resumption as given in <span>[<a href="#RFC5077" class="cite xref">RFC5077</a>]</span>.
+This practice lowers the time and effort required to start a DTLS session with a client and increases network responsiveness.<a href="#section-6.4.1.1-9" class="pilcrow">¶</a></p>
+<p id="section-6.4.1.1-10">Since UDP is stateless, the potential exists for the client to initiate a new DTLS session using a particular 4-tuple, before the server has closed the old session.
 For security reasons, the server <span class="bcp14">MUST</span> keep the old session active until either it has received secure notification from the client that the session is closed or the server decides to close the session based on idle timeouts.
-Taking any other action would permit unauthenticated clients to perform a DoS attack, by reusing a 4-tuple and thus causing the server to close an active (and authenticated) DTLS session.<a href="#section-6.4.1.1-11" class="pilcrow">¶</a></p>
-<p id="section-6.4.1.1-12">As a result, servers <span class="bcp14">MUST</span> ignore any attempts to reuse an existing 4-tuple from an active session.
+Taking any other action would permit unauthenticated clients to perform a DoS attack, by reusing a 4-tuple and thus causing the server to close an active (and authenticated) DTLS session.<a href="#section-6.4.1.1-10" class="pilcrow">¶</a></p>
+<p id="section-6.4.1.1-11">As a result, servers <span class="bcp14">MUST</span> ignore any attempts to reuse an existing 4-tuple from an active session.
 This requirement can likely be reached by simply processing the packet through the existing session, as with any other packet received via that 4-tuple.
-Non-compliant, or unexpected packets will be ignored by the DTLS layer.<span class="cref" id="proxymitigation">In RFC7360 there is a final paragraph about mitigation of the 4-tuple problem by using a local proxy. I'm not sure if this is the right place here, i'd rather move that to a general "Implementation Guidelines" paragraph.<span class="crefSource">Janfred</span></span><a href="#section-6.4.1.1-12" class="pilcrow">¶</a></p>
+Non-compliant, or unexpected packets will be ignored by the DTLS layer.<span class="cref" id="proxymitigation">In RFC7360 there is a final paragraph about mitigation of the 4-tuple problem by using a local proxy. I'm not sure if this is the right place here, i'd rather move that to a general "Implementation Guidelines" paragraph.<span class="crefSource">Janfred</span></span><a href="#section-6.4.1.1-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2018,26 +2022,17 @@ Non-compliant, or unexpected packets will be ignored by the DTLS layer.<span cla
 <a href="#section-6.4.2" class="section-number selfRef">6.4.2. </a><a href="#name-client-session-management" class="section-name selfRef">Client Session Management</a>
           </h4>
 <p id="section-6.4.2-1"><span class="cref" id="src_7360_5_2">Source: RFC7360, Section 5.2 with modifications</span><a href="#section-6.4.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-2">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> use PMTU discovery <span>[<a href="#RFC6520" class="cite xref">RFC6520</a>]</span> to determine the PMTU between the client and server, prior to sending any RADIUS traffic.
-Once a DTLS session is established, a RADIUS/DTLS client <span class="bcp14">SHOULD</span> use DTLS Heartbeats <span>[<a href="#RFC6520" class="cite xref">RFC6520</a>]</span> to determine connectivity between the two systems.
-RADIUS/DTLS clients <span class="bcp14">SHOULD</span> also use the application-layer watchdog algorithm defined in <span>[<a href="#RFC3539" class="cite xref">RFC3539</a>]</span> to determine server responsiveness.
-The Status-Server packet defined in <span>[<a href="#RFC5997" class="cite xref">RFC5997</a>]</span> <span class="bcp14">SHOULD</span> be used as the "watchdog packet" in any application-layer watchdog algorithm.<span class="cref" id="doublespec">The Status-Server spec was already mentioned above. Maybe remove it from here?<span class="crefSource">Janfred</span></span><a href="#section-6.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-2">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> use PMTU discovery <span>[<a href="#RFC6520" class="cite xref">RFC6520</a>]</span> to determine the PMTU between the client and server, prior to sending any RADIUS traffic.<a href="#section-6.4.2-2" class="pilcrow">¶</a></p>
 <p id="section-6.4.2-3">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> proactively close sessions when they have been idle for a period of time.
-Clients <span class="bcp14">SHOULD</span> close a session when the DTLS Heartbeat algorithm indicates that the session is no longer active.
 Clients <span class="bcp14">SHOULD</span> close a session when no traffic other than watchdog packet and (possibly) watchdog responses have been sent for three watchdog timeouts.
-This behavior ensures that clients do not wast resources on the server by causing it to track idle sessions.<a href="#section-6.4.2-3" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-4">When a client fails to implement both DTLS Heartbeats and watchdog packets, it has no way of knowing that a DTLS session has been closed.
-Therefore, there is the possibility that the server closes the session without the client knowing.
-When that happens, the client may later transmit packets in a session, and those packets will be ignored by the server.
-The client is then forced to time out those packets and then the session, leading to delays and network instabilities.<a href="#section-6.4.2-4" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-5">For these reasons, it is <span class="bcp14">RECOMMENDED</span> that all DTLS session be configured to use DTLS Heartbeats and/or watchdog packets.<a href="#section-6.4.2-5" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-6">DTLS sessions <span class="bcp14">MUST</span> also be deleted when a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Response Authenticator.<span class="cref" id="normalizespec">Maybe modify this text to be more similar to the TLS specific text here.<span class="crefSource">Janfred</span></span>
+This behavior ensures that clients do not waste resources on the server by causing it to track idle sessions.<a href="#section-6.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-4">DTLS sessions <span class="bcp14">MUST</span> also be deleted when a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Response Authenticator.<span class="cref" id="normalizespec">Maybe modify this text to be more similar to the TLS specific text here.<span class="crefSource">Janfred</span></span>
 There are other cases, when the specifications require that a packet received via a DTLS session be "silently discarded".
-In those cases, implementations <span class="bcp14">MAY</span> delete the underlying DTLS session.<a href="#section-6.4.2-6" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-7">RADIUS/DTLS clients <span class="bcp14">SHOULD NOT</span> send both RADIUS/UDP and RADIUS/DTLS packets to different servers from the same source socket.
-This practice causes increased complexity in the client application and increases the potential for security breaches due to implementation issues.<a href="#section-6.4.2-7" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-8">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> implement session resumption, preferably stateless session resumption as given in <span>[<a href="#RFC5077" class="cite xref">RFC5077</a>]</span>.
-This practice lowers the time and effort required to start a DTLS session with a server and increases network responsiveness.<a href="#section-6.4.2-8" class="pilcrow">¶</a></p>
+In those cases, implementations <span class="bcp14">MAY</span> delete the underlying DTLS session.<a href="#section-6.4.2-4" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-5">RADIUS/DTLS clients <span class="bcp14">SHOULD NOT</span> send both RADIUS/UDP and RADIUS/DTLS packets to different servers from the same source socket.
+This practice causes increased complexity in the client application and increases the potential for security breaches due to implementation issues.<a href="#section-6.4.2-5" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-6">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> implement session resumption, preferably stateless session resumption as given in <span>[<a href="#RFC5077" class="cite xref">RFC5077</a>]</span>.
+This practice lowers the time and effort required to start a DTLS session with a server and increases network responsiveness.<a href="#section-6.4.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2283,6 +2278,10 @@ RADIUS clients again can choose which method is better suited for them, but must
         <dd>
 <span class="refAuthor">Cooper, D.</span>, <span class="refAuthor">Santesson, S.</span>, <span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Boeyen, S.</span>, <span class="refAuthor">Housley, R.</span>, and <span class="refAuthor">W. Polk</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 5280</span>, <span class="seriesInfo">DOI 10.17487/RFC5280</span>, <time datetime="2008-05" class="refDate">May 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5280">https://www.rfc-editor.org/rfc/rfc5280</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC5997">[RFC5997]</dt>
+        <dd>
+<span class="refAuthor">DeKok, A.</span>, <span class="refTitle">"Use of Status-Server Packets in the Remote Authentication Dial In User Service (RADIUS) Protocol"</span>, <span class="seriesInfo">RFC 5997</span>, <span class="seriesInfo">DOI 10.17487/RFC5997</span>, <time datetime="2010-08" class="refDate">August 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5997">https://www.rfc-editor.org/rfc/rfc5997</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC6066">[RFC6066]</dt>
         <dd>
 <span class="refAuthor">Eastlake 3rd, D.</span>, <span class="refTitle">"Transport Layer Security (TLS) Extensions: Extension Definitions"</span>, <span class="seriesInfo">RFC 6066</span>, <span class="seriesInfo">DOI 10.17487/RFC6066</span>, <time datetime="2011-01" class="refDate">January 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6066">https://www.rfc-editor.org/rfc/rfc6066</a>&gt;</span>. </dd>
@@ -2315,6 +2314,10 @@ RADIUS clients again can choose which method is better suited for them, but must
         <dd>
 <span class="refAuthor">Rescorla, E.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">N. Modadugu</span>, <span class="refTitle">"The Datagram Transport Layer Security (DTLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 9147</span>, <span class="seriesInfo">DOI 10.17487/RFC9147</span>, <time datetime="2022-04" class="refDate">April 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9147">https://www.rfc-editor.org/rfc/rfc9147</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC9293">[RFC9293]</dt>
+        <dd>
+<span class="refAuthor">Eddy, W., Ed.</span>, <span class="refTitle">"Transmission Control Protocol (TCP)"</span>, <span class="seriesInfo">STD 7</span>, <span class="seriesInfo">RFC 9293</span>, <span class="seriesInfo">DOI 10.17487/RFC9293</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9293">https://www.rfc-editor.org/rfc/rfc9293</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9325">[RFC9325]</dt>
       <dd>
 <span class="refAuthor">Sheffer, Y.</span>, <span class="refAuthor">Saint-Andre, P.</span>, and <span class="refAuthor">T. Fossati</span>, <span class="refTitle">"Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)"</span>, <span class="seriesInfo">BCP 195</span>, <span class="seriesInfo">RFC 9325</span>, <span class="seriesInfo">DOI 10.17487/RFC9325</span>, <time datetime="2022-11" class="refDate">November 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9325">https://www.rfc-editor.org/rfc/rfc9325</a>&gt;</span>. </dd>
@@ -2335,10 +2338,6 @@ RADIUS clients again can choose which method is better suited for them, but must
 <dt id="I-D.ietf-radext-tls-psk">[I-D.ietf-radext-tls-psk]</dt>
         <dd>
 <span class="refAuthor">DeKok, A.</span>, <span class="refTitle">"RADIUS and TLS-PSK"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-radext-tls-psk-03</span>, <time datetime="2023-08-24" class="refDate">24 August 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-03">https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-03</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC5997">[RFC5997]</dt>
-        <dd>
-<span class="refAuthor">DeKok, A.</span>, <span class="refTitle">"Use of Status-Server Packets in the Remote Authentication Dial In User Service (RADIUS) Protocol"</span>, <span class="seriesInfo">RFC 5997</span>, <span class="seriesInfo">DOI 10.17487/RFC5997</span>, <time datetime="2010-08" class="refDate">August 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5997">https://www.rfc-editor.org/rfc/rfc5997</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6613">[RFC6613]</dt>
         <dd>
@@ -2440,6 +2439,7 @@ Hopefully the differences to <span>[<a href="#RFC6614" class="cite xref">RFC6614
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
 <p id="appendix-D-1">Thanks to the original authors of RFC 6613, RFC 6614 and RFC 7360: Alan DeKok, Stefan Winter, Mike McCauley, Stig Venaas and Klaas Vierenga.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-2">Thanks to Arran Curdbard-Bell for text around keepalives and the Status-Server watchdog algorithm.<a href="#appendix-D-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
