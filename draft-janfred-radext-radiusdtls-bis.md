@@ -614,6 +614,7 @@ Clients SHOULD close a session when no traffic other than watchdog packet and (p
 This behavior ensures that clients do not waste resources on the server by causing it to track idle sessions.
 
 DTLS sessions MUST also be deleted when a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Response Authenticator.[^normalizespec]{:jf}
+
 There are other cases, when the specifications require that a packet received via a DTLS session be "silently discarded".
 In those cases, implementations MAY delete the underlying DTLS session.
 
@@ -630,7 +631,7 @@ This practice lowers the time and effort required to start a DTLS session with a
 As this specification relies on the existing TLS and DTLS specifications, all security considerations for these protocols also apply to the (D)TLS portions of RADIUS/(D)TLS.
 
 For RADIUS however, many security considerations raised in the RADIUS documents are related to RADIUS encryption and authorization.
-Those issues are largely mitigated when (D)TLS is used as a transport method, since encryption and autorization is achieved on the (D)TLS layer.
+Those issues are largely mitigated when (D)TLS is used as a transport method, since encryption and authorization is achieved on the (D)TLS layer.
 The issues that are not mitigated by this specification are related to the RADIUS packet format and handling, which is unchanged in this specification.
 
 A few remaining security considerations and notes to administrators deploying RADIUS/(D)TLS are listed below.
@@ -683,8 +684,8 @@ Any non-RADIUS traffic on that session means the other party is misbehaving and 
 Similarly, any RADIUS traffic failing authentication vector or Message-Authenticator validation means that two parties do not have a common shared secret.
 Since the shared secret is static, this again means the other party is misbehaving.
 
-We wish to avoid the situation wehere a third party can send well-formed RADIUS packets to a RADIUS proxy that cause a (D)TLS session to close.
-Therefore, in other situations, the session SOULD remain open in the face of non-conformant packets.
+We wish to avoid the situation where a third party can send well-formed RADIUS packets to a RADIUS proxy that cause a (D)TLS session to close.
+Therefore, in other situations, the session SOULD remain open in the face of non-conforming packets.
 Any malformed RADIUS packets sent by a third party will go through the security checks of the RADIUS proxy upon reception and will not be forwarded.
 Well-formed RADIUS packets with portions that the proxy does not understand do not pose a security risk to the security properties of the RADIUS/(D)TLS session and can be forwarded.
 This ensures forward compatibility with future RADIUS extensions.
