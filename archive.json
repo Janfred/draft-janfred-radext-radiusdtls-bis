@@ -1,0 +1,579 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-01-09T00:59:12.860442+00:00",
+  "repo": "Janfred/draft-janfred-radext-radiusdtls-bis",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 3,
+      "id": "I_kwDOJZLpqc5vYtzl",
+      "title": "RADIUS/TLS with non-encrypting TLS cipher suites",
+      "url": "https://github.com/Janfred/draft-janfred-radext-radiusdtls-bis/issues/3",
+      "state": "CLOSED",
+      "author": "alandekok",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "  IEC 62351-3:2023 allows for non-encrypting cipher suites.\r\n\r\n  It has some text which somewhat addresses the security issues:\r\n\r\n> Any cipher suite that specifies NULL for encryption shall not be used for communication outside the administrative domain if the encryption of this communication connection by other means cannot be guaranteed.\r\n\r\n  But that doesn't really help.  Given that RFC 6614 suggests the use of a fixed shared secret \"radsec\", this means that anyone in your local domain can see and decode the User-Password.\r\n\r\n  Furthermore text says:\r\n\r\n> The application of no-encrypting cipher suites allows for traffic inspection, while still retaining an end-to- end authentication and integrity protection of the traffic.\r\n\r\n  They also allow the following cipher suites for TLS 1.3:\r\n\r\n> \u2013  TLS_SHA256_SHA256 (RFC 9150)\r\n>  \u2013  TLS_SHA384_SHA384 (RFC 9150)\r\n\r\n  If there is a need to monitor traffic, just use RADIUS/UDP.  RADIUS/TLS with NULL encryption is worse than UDP in every possible way.  It has all of the worst aspects of UDP (everything in the clear) plus all of the worst aspect of TCP (head of line blocking) plus the ability for anyone to see all of your passwords!\r\n\r\n  The document contains no warnings that the use of \"radsec\" as a shared secret will result in compromised passwords.\r\n\r\n  Either the IEC specification or implementations should do one of the following:\r\n\r\n1) forbid non-encrypting cipher suites for TLS 1.2 and TLS 1.3\r\n\r\n or\r\n\r\n2) forbid the use of the \"radsec\" shared secret for TLS 1.2 and TLS 1.3.  Require that the shared secret is at least 16 characters long.  Ideally generated a random shared secret, and suggest it to the admin.\r\n\r\n Without these precautions, User-Passwords will be sent across the network, effectively in clear-text.",
+      "createdAt": "2023-08-28T01:08:58Z",
+      "updatedAt": "2023-09-13T11:48:43Z",
+      "closedAt": "2023-09-13T11:48:42Z",
+      "comments": [
+        {
+          "author": "restena-sw",
+          "authorAssociation": "COLLABORATOR",
+          "body": "RFC6614 already forbids those ever since:\r\n\r\n\"Negotiation of a ciphersuite providing for confidentiality as\r\n          well as integrity protection is REQUIRED.  Failure to comply\r\n          with this requirement can lead to severe security problems,\r\n          like user passwords being recoverable by third parties.  See\r\n          [Section 6](https://www.rfc-editor.org/rfc/rfc6614#section-6) for details.\"\r\n\r\nIf the IEC suggests otherwise, IMHO this other spec should be fixed.",
+          "createdAt": "2023-09-13T06:43:15Z",
+          "updatedAt": "2023-09-13T06:43:15Z"
+        },
+        {
+          "author": "alandekok",
+          "authorAssociation": "NONE",
+          "body": "@restena-sw I agree.  I had a deeper look at 6614, and found that text.\r\n\r\nI've also talked with the IEC people, and they're now aware of these issues.  The hope is to get them to update their specification.\r\n\r\nIn the mean time, I believe it's useful to address these issues in a little more detail in 6614bis.  e.g. \"While it may seem useful to allow NULL encryption for deep packet inspection, such use-cases result in significantly decreased security\" etc.",
+          "createdAt": "2023-09-13T11:37:21Z",
+          "updatedAt": "2023-09-13T11:37:21Z"
+        },
+        {
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "body": "The question is if this document is the right place for this. \r\nThe current draft text explicitly references RFC9325. And RFC9325 states (section 4.1):\r\n> Implementations MUST NOT negotiate the cipher suites with NULL encryption.\r\n> Rationale: The NULL cipher suites do not encrypt traffic and so provide no confidentiality services. Any entity in the network with access to the connection can view the plaintext of contents being exchanged by the client and server. Nevertheless, this document does not discourage software from implementing NULL cipher suites, since they can be useful for testing and debugging.\r\n\r\nI think this is clear enough. If people want to shoot themselves in the foot, we have no way of preventing that, but explicitly stating \"beware of eNULL ciphers, things may break then\" maybe is the thing that gives people the idea to do this stupid thing.\r\n\r\n(Not generally opposed to add a sentence in the security considerations section about it though, just wanted to add another point of view)",
+          "createdAt": "2023-09-13T11:44:19Z",
+          "updatedAt": "2023-09-13T11:44:48Z"
+        },
+        {
+          "author": "alandekok",
+          "authorAssociation": "NONE",
+          "body": "@Janfred I'm a big fan of adding text which names bad behavior and explains why it's bad.\r\n\r\nThere is a strong tendency for some people to say \"It isn't forbidden by the RFCs, therefore it's allowed\".  Or in this case \"It's forbidden, but we still find it useful for reasons A, B, and C\".   If we name those reasons and explain why they're wrong, it can cut down on bad things.  If it's just a sentence or two, then it's not much work.",
+          "createdAt": "2023-09-13T11:48:43Z",
+          "updatedAt": "2023-09-13T11:48:43Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOJZLpqc5WRwIk",
+      "title": "Resolve conflicting and ambiguous text around keepalives",
+      "url": "https://github.com/Janfred/draft-janfred-radext-radiusdtls-bis/pull/1",
+      "state": "CLOSED",
+      "author": "arr2036",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Justifications submitted inline as comments.",
+      "createdAt": "2023-07-24T23:10:12Z",
+      "updatedAt": "2023-10-15T16:31:20Z",
+      "baseRepository": "Janfred/draft-janfred-radext-radiusdtls-bis",
+      "baseRefName": "main",
+      "baseRefOid": "530882a704205b3afb821f1007b5e07b58db5c5d",
+      "headRepository": "arr2036/draft-janfred-radext-radiusdtls-bis",
+      "headRefName": "patch-1",
+      "headRefOid": "c1750e12653a4b89e5ff47862be90da656f06d24",
+      "closedAt": "2023-10-15T10:36:24Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "body": "I have changed some text and created a new pull request ( #2 ) for the watchdog specs.\r\nFeel free to comment those changes.\r\n(I'll leave this PR open until we have decided on a version.)",
+          "createdAt": "2023-08-17T08:51:43Z",
+          "updatedAt": "2023-08-17T08:51:43Z"
+        },
+        {
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "body": "I have now added the reworded branch.\r\n@arr2036 Please check if the text is ok, any feedback is welcome.\r\nClosing this PR.",
+          "createdAt": "2023-10-15T10:36:24Z",
+          "updatedAt": "2023-10-15T10:36:24Z"
+        },
+        {
+          "author": "arr2036",
+          "authorAssociation": "NONE",
+          "body": "Looks good to me.\r\n\r\nThanks,\r\n-Arran\r\n\r\n> On Oct 15, 2023, at 04:36, Jan-Frederik Rieckers ***@***.***> wrote:\r\n> \r\n> \r\n> Closed #1.\r\n> \u2014\r\n> Reply to this email directly, view it on GitHub, or unsubscribe.\r\n> You are receiving this because you were mentioned.Message ID: ***@***.***>\r\n\r\n",
+          "createdAt": "2023-10-15T16:31:20Z",
+          "updatedAt": "2023-10-15T16:31:20Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJZLpqc5cDe0M",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "arr2036",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-24T23:25:32Z",
+          "updatedAt": "2023-07-24T23:25:33Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "This isn't an issue with UDP specifically.  A lack of reply with any transport can lead to the client deducing that the proxy is unavailable.",
+              "createdAt": "2023-07-24T23:25:32Z",
+              "updatedAt": "2023-07-24T23:25:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5cDfsZ",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "arr2036",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-24T23:31:02Z",
+          "updatedAt": "2023-07-24T23:31:02Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "If you receive an error on `write()` or via an event in your event loop, the connection is DOWN, i.e. the underlying connection is gone, and you'll need to re-establish the connection.  There's no point in waiting for an application level watchdog to indicate that the connection is down, attempting to write to a closed connection will just result in further errors.\r\n\r\nI dislike the text about waiting for all connections to fail.  That's an implementor's decision.  If 9/10 connections have been closed, and new connections are failing, you can be fairly sure that the server is unavailable, you don't need to wait for the last connection to time out.",
+              "createdAt": "2023-07-24T23:31:02Z",
+              "updatedAt": "2023-07-25T04:57:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5cDgGy",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "arr2036",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-24T23:32:18Z",
+          "updatedAt": "2023-07-24T23:32:18Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "This is a more concise statement about which conditions result in a connection being marked DOWN.",
+              "createdAt": "2023-07-24T23:32:18Z",
+              "updatedAt": "2023-07-24T23:32:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5cDgxq",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "arr2036",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-24T23:36:42Z",
+          "updatedAt": "2023-07-24T23:36:43Z",
+          "comments": [
+            {
+              "originalPosition": 21,
+              "body": "TCP and DTLS level keepalives are redundant.  DTLS heartbeats aren't available in OpenSSL (they were removed in 1.1.1).  The behaviour of the application-layer watchdog is superior in that it only runs in the _absence_ of normal request/response traffic, and does not result in spurious keepalive/heartbeart packets.  Transport level keepalives/heartbeats primarily useful because the minimum interval of Status-Server packets is 6 seconds.  keepalives and heartbeats may be sent more frequently and could provide more timely indications of connectivity loss.",
+              "createdAt": "2023-07-24T23:36:43Z",
+              "updatedAt": "2023-07-25T04:55:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5cDg0x",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "arr2036",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-24T23:37:03Z",
+          "updatedAt": "2023-07-24T23:37:04Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "Agreed",
+              "createdAt": "2023-07-24T23:37:04Z",
+              "updatedAt": "2023-07-24T23:37:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5cDhZD",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "arr2036",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-24T23:40:52Z",
+          "updatedAt": "2023-07-24T23:40:52Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "It's absolutely required that with proxy servers there is some active monitoring to determine upstream reachability.  Waiting for traffic to be sent to a proxy before marking it as down leads to a poor end user experience.",
+              "createdAt": "2023-07-24T23:40:52Z",
+              "updatedAt": "2023-07-24T23:40:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5c__kJ",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "restena-sw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-03T05:54:04Z",
+          "updatedAt": "2023-08-03T05:54:05Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "True; it's easier to jump to this possibly wrong conclusion on some transports than on others. DTLS and UDP are pretty much on par; with TLS the client could look at TCP state responsiveness and thus could make a more accurate guess on whether the remote end is still there.",
+              "createdAt": "2023-08-03T05:54:04Z",
+              "updatedAt": "2023-08-03T05:54:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5dACoW",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "restena-sw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-03T06:06:32Z",
+          "updatedAt": "2023-08-03T06:06:32Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "The wording in the text can be read like you do; but I think the intention was different (and thus it should be rewritten for clarity.\r\n\r\nIf you got a positive indication from the network stack that the TCP session is gone (e.g. after receiving an RST) then there is no point in waiting for anything *on this particular connection*. It should be marked as down and re-established immediately following the event.\r\n\r\nThe more interesting case is when TCP is not yet down, just doesn't get any application layer responses. In that case, waiting for the application-layer is the thing to do (for any one connection in isolation).\r\n\r\nNo guessing should be done about \"9/10 are not responding, so the 10th is certainly also down\". There can be situations in proxy environments where a proxy is waiting for downstream RADIUS servers with a long response timeout; if 9 of 10 of its downstreams take their time, then 9 of 10 TCP sessions from the client to that proxy hang; but it is still possible that a tenth connection to the same proxy but another downstream is healthy and replying.\r\n\r\nI guess in a pseudocode we would write this with a short-circuit OR:\r\n\r\n```\r\nforeach (TCP socket in use) {\r\n  if (socket reported closed by OS || application-layer watchdog fails) {\r\n     mark connection failed;\r\n     establish new conn;\r\n  } else {\r\n   wait;\r\n  }\r\n} \r\n```",
+              "createdAt": "2023-08-03T06:06:32Z",
+              "updatedAt": "2023-08-03T06:06:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5dADIW",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "restena-sw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-03T06:08:34Z",
+          "updatedAt": "2023-08-03T06:08:34Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "Good, just for clarity:\r\n\r\nRADIUS/TLS clients MUST mark a connection DOWN if one or more of the following conditions are true:",
+              "createdAt": "2023-08-03T06:08:34Z",
+              "updatedAt": "2023-08-03T06:08:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5dAD7e",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "restena-sw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-03T06:11:42Z",
+          "updatedAt": "2023-08-03T06:11:43Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "Yes.",
+              "createdAt": "2023-08-03T06:11:43Z",
+              "updatedAt": "2023-08-03T06:11:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5dAEGU",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "restena-sw",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-03T06:12:22Z",
+          "updatedAt": "2023-08-03T06:12:22Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "Yes.",
+              "createdAt": "2023-08-03T06:12:22Z",
+              "updatedAt": "2023-08-03T06:12:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5dAfL0",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-03T07:26:10Z",
+          "updatedAt": "2023-08-03T07:26:10Z",
+          "comments": [
+            {
+              "originalPosition": 15,
+              "body": "```suggestion\r\nRADIUS/(D)TLS clients MUST mark a connection DOWN if one or more of the following conditions are met:\r\n```\r\n\r\nThis is the suggestion from Stefan.\r\n\r\nSince this is part of the general spec, it should be valid for both RADIUS/TLS and RADIUS/DTLS.",
+              "createdAt": "2023-08-03T07:26:10Z",
+              "updatedAt": "2023-08-03T07:26:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5dDnHZ",
+          "commit": {
+            "abbreviatedOid": "c1750e1"
+          },
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-03T14:24:53Z",
+          "updatedAt": "2023-08-03T14:24:54Z",
+          "comments": [
+            {
+              "originalPosition": 41,
+              "body": "```suggestion\r\nOnce a DTLS session is established, a RADIUS/DTLS server MAY use DTLS Heartbeats {{!RFC6520}} to determine connectivity between the two RADIUS/DTLS peers.\r\n```\r\n\r\n(Annotation from Heikki via Mailinglist)",
+              "createdAt": "2023-08-03T14:24:54Z",
+              "updatedAt": "2023-08-03T14:24:54Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOJZLpqc5YIf_t",
+      "title": "Alternative text for watchdog algorithm",
+      "url": "https://github.com/Janfred/draft-janfred-radext-radiusdtls-bis/pull/2",
+      "state": "MERGED",
+      "author": "Janfred",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This commit copies some text, but all duplicate specifications in the TLS/DTLS specific sections is deleted.",
+      "createdAt": "2023-08-17T08:38:17Z",
+      "updatedAt": "2023-10-15T10:34:15Z",
+      "baseRepository": "Janfred/draft-janfred-radext-radiusdtls-bis",
+      "baseRefName": "main",
+      "baseRefOid": "a5c09b7693dfaaf2bb9321ad73d6558b71148301",
+      "headRepository": "Janfred/draft-janfred-radext-radiusdtls-bis",
+      "headRefName": "watchdog-keepalives-reword",
+      "headRefOid": "916971f50739f9ef820e56114cf2669f2b2237de",
+      "closedAt": "2023-10-15T10:34:14Z",
+      "mergedAt": "2023-10-15T10:34:14Z",
+      "mergedBy": "Janfred",
+      "mergeCommit": {
+        "oid": "916971f50739f9ef820e56114cf2669f2b2237de"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJZLpqc5eTLQj",
+          "commit": {
+            "abbreviatedOid": "0e88c25"
+          },
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T08:38:59Z",
+          "updatedAt": "2023-08-17T08:39:00Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "This is a change from the original specification, so this is now included in the \"Changes\" section",
+              "createdAt": "2023-08-17T08:39:00Z",
+              "updatedAt": "2023-08-17T08:39:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5eTLdr",
+          "commit": {
+            "abbreviatedOid": "0e88c25"
+          },
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T08:39:29Z",
+          "updatedAt": "2023-08-17T08:39:30Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Direct copy from Arran's pull request ( #1 )",
+              "createdAt": "2023-08-17T08:39:30Z",
+              "updatedAt": "2023-08-17T08:39:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5eTMFP",
+          "commit": {
+            "abbreviatedOid": "0e88c25"
+          },
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T08:40:52Z",
+          "updatedAt": "2023-08-17T08:40:52Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "This addresses hopefully the discussion about \"marking the server DOWN if it has connections\".",
+              "createdAt": "2023-08-17T08:40:52Z",
+              "updatedAt": "2023-08-17T08:40:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5eTMo_",
+          "commit": {
+            "abbreviatedOid": "0e88c25"
+          },
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T08:42:12Z",
+          "updatedAt": "2023-08-17T08:42:12Z",
+          "comments": [
+            {
+              "originalPosition": 34,
+              "body": "Add the requirement to use Status-Server. Since RFC5997 is an informational RFC and we have to mark this as normative reference, this would lead to a downref. But should be ok.",
+              "createdAt": "2023-08-17T08:42:12Z",
+              "updatedAt": "2023-08-17T08:42:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5eTPQv",
+          "commit": {
+            "abbreviatedOid": "0e88c25"
+          },
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T08:47:24Z",
+          "updatedAt": "2023-08-17T08:47:25Z",
+          "comments": [
+            {
+              "originalPosition": 54,
+              "body": "The spec regarding DTLS Heartbeats and application-layer watchdog is now redundant, since we have the requirement in the section above.\r\nMaybe we should reference it here, but at least the text should be removed.\r\n\r\nHowever, for a server there must still be a timer for deleting the DTLS session. AFAIK the server was completely passive before, especially since with RAIDUS/UDP there was no need to save state for the client, if there were no packets sent for a while.",
+              "createdAt": "2023-08-17T08:47:25Z",
+              "updatedAt": "2023-08-17T08:47:25Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5eTPjB",
+          "commit": {
+            "abbreviatedOid": "0e88c25"
+          },
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T08:48:02Z",
+          "updatedAt": "2023-08-17T08:48:03Z",
+          "comments": [
+            {
+              "originalPosition": 66,
+              "body": "This double spec is now removed, maybe also reference the spec from above, but don't copy the text here.",
+              "createdAt": "2023-08-17T08:48:02Z",
+              "updatedAt": "2023-08-17T08:48:03Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJZLpqc5eTQWZ",
+          "commit": {
+            "abbreviatedOid": "0e88c25"
+          },
+          "author": "Janfred",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-08-17T08:49:53Z",
+          "updatedAt": "2023-08-17T08:49:54Z",
+          "comments": [
+            {
+              "originalPosition": 76,
+              "body": "This consideration is now void, since we have the requirement, that all peers implement the watchdog algorithm.\r\nMaybe it would be helpful to add some text of this into \"Design Decisions\" as rationale or heads-up for implementers why the requirement is important.",
+              "createdAt": "2023-08-17T08:49:53Z",
+              "updatedAt": "2023-08-17T08:49:54Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
