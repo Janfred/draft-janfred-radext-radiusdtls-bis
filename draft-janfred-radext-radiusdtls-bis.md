@@ -64,7 +64,7 @@ For an updated version of RADIUS/(D)TLS without need for MD5 see {{?I-D.ietf-rad
 ## Purpose of RADIUS/(D)TLS
 
 The main focus of RADIUS/TLS and RADIUS/DTLS is to provide means to secure communication between RADIUS peers using TLS or DTLS.
-The most important use of this specification lies in roaming environments where RADIUS packets need to be transferred through different administrative domains and untrusted, potentially hostile networks.
+The most important use of this specification lies in roaming environments where RADIUS packets need to be sent across insecure or untrusted networks.
 An example for a worldwide roaming environment that uses RADIUS over TLS to secure communication is eduroam as described in {{?RFC7593}}
 
 ## Changes from RFC6614 (RADIUS/TLS) and RFC7360 (RADIUS/DTLS)
@@ -102,7 +102,7 @@ Whenever "(D)TLS" or "RADIUS/(D)TLS" is mentioned, the specification applies for
 Where "TLS" or "RADIUS/TLS" is mentioned, the specification only applies to RADIUS/TLS, where "DTLS" or "RADIUS/DTLS" is mentioned it only applies to RADIUS/DTLS.
 
 Server implementations MUST support both RADIUS/TLS and RADIUS/DTLS.
-Client implementations SHOULD implement both, but MUST only implement one of RADIUS/TLS or RADIUS/DTLS.
+Client implementations SHOULD implement both, but MUST implement at least one of RADIUS/TLS or RADIUS/DTLS.
 
 # Changes to RADIUS
 
@@ -136,6 +136,8 @@ Calculation of attributes such as User-Password {{RFC2865}} or Message-Authentic
 The changes to RADIUS implementations required to implement this specification are largely limited to the portions that send and receive packets on the network and the establishment of the (D)TLS connection.
 
 The requirement that RADIUS remain largely unchanged ensures the simplest possible implementation and widest interoperability of the specification.
+This includes the usage of the outdated security mechanisms in RADIUS that are based on shared secrets and MD5.
+This is not considered a security issue, since integrity and confidentiality are provided by the (D)TLS layer. See {{security_considerations}} or {{I-D.ietf-radext-radiusv11}} for more details.
 
 We note that for RADIUS/DTLS the DTLS encapsulation of RADIUS means that RADIUS packets have an additional overhead due to DTLS.
 This is discussed further in {{dtls_spec}}
@@ -159,13 +161,14 @@ The source port is arbitrary.
 [^considerations]{:jf}
 
 RADIUS/TLS servers MUST immediately start the TLS negotiation when a new connection is opened.
-They MUST close the connection and discard any data sent if the connecting client does not start a TLS negotiation.
+They MUST close the connection and discard any data sent if the connecting client does not start a TLS negotiation or if the TLS negotiation fails at any point.
 
 RADIUS/DTLS servers MUST silently discard any packet they receive that is not a new DTLS negotiation or a packet sent over a DTLS session established earlier.
 
-RADIUS/(D)TLS peers MUST NOT use the old RADIUS/UDP or RADIUS/TCP ports for RADIUS/DTLS or RADIUS/TLS.
+RADIUS/(D)TLS peers MUST NOT use the old RADIUS/UDP or RADIUS/TCP ports for RADIUS/DTLS or RADIUS/TLS.[^contradiction]{:jf}
 
 [^considerations]: TODO: add reference to considerations regarding the multi-purpose use of one port.
+[^contradiction]: This last sentence contradicts an earlier paragraph (should vs must). Must be fixed. TODO: check if this is a result of different specs from 6614 and 7360
 
 ## Detecting Live Servers
 
@@ -187,11 +190,14 @@ Failures in one destination may result in service outages for other destinations
 It is REQUIRED that implementations utilize the existence of a TCP/DTLS connection along with the application-layer watchdog defined in {{RFC3539, Section 3.4}} to determine the liveliness of the server.
 
 RADIUS/(D)TLS clients MUST mark a connection DOWN if one or more of the following conditions are met:
+
 * The administrator has marked the connection administrative DOWN.
 * The network stack indicates that the connection is no longer viable.
 * The application-layer watchdog algorithm has marked it DOWN.
 
-If a RADIUS/(D)TLS client has multiple connection to a server, it MUST NOT decide to mark the whole server as DOWN until all connections to it have been marked DOWN.
+If a RADIUS/(D)TLS client has multiple connection to a server, it MUST NOT decide to mark the whole server as DOWN until all connections to it have been marked DOWN.[^what_is_a_server]{:jf}
+
+[^what_is_a_server]: TODO: Explain what a server is. (Just the destination IP? include port?)
 
 It is REQUIRED that RADIUS/(D)TLS clients implement the Status-Server extension as described in {{!RFC5997}} as the application level watchdog to detect the liveliness of the peer in the absence of responses.
 Since RADIUS has a limitation of 256 simultaneous "in flight" packets due to the length of the ID field ({{RFC3539}}, Section 2.4), it is RECOMMENDED that RADIUS/(D)TLS clients reserve ID zero (0) on each session for Status-Server packets.
@@ -218,7 +224,7 @@ As RADIUS has no provisions for capability signaling, there is also no way for a
 Servers and clients need to be preconfigured to use RADIUS/(D)TLS for a given endpoint.
 This action has to be taken by the administrators of the two systems.
 
-Implementations MUST follow the recommendations given in {{!RFC9325}}.
+Implementations MUST follow the recommendations given in {{!RFC9325}}.[^add_which]{:jf}
 Additionally, the following requirements have to be met for the (D)TLS session:
 
 * Support for TLS 1.2 {{!RFC5248}} / DTLS 1.2 {{!RFC6347}} is REQUIRED, support for TLS 1.3 {{!RFC8446}} / DTLS 1.3 {{!RFC9147}} or higher is RECOMMENDED.
@@ -226,6 +232,7 @@ Additionally, the following requirements have to be met for the (D)TLS session:
 * The peers MUST NOT negotiate compression.
 * The session MUST be mutually authenticated (see {{mutual_auth}})
 
+[^add_which]: TODO: Add text which recommendations of RFC9325 must be followed and why
 ## Mutual authentication
 {: #mutual_auth }
 
@@ -235,7 +242,7 @@ Additionally, the following requirements have to be met for the (D)TLS session:
 
 RADIUS/(D)TLS servers MUST authenticate clients.
 RADIUS is designed to be used by mutually trusted systems.
-Allowing anonymous clients would ensure privacy for RADIUS/(D)TLS traffic, but would negate all other security aspects of the protocol.
+Allowing anonymous clients would ensure privacy for RADIUS/(D)TLS traffic, but would negate all other security aspects of the protocol, including security aspects of RADIUS itself, due to the fixed shared secret.
 
 RADIUS/(D)TLS allows for the following different modes of mutual authentication.
 
@@ -260,7 +267,7 @@ If implemented it MUST use the following rules:
     * If the previous checks fail, the certificate MAY Be accepted without further name checks immediately after the {{RFC5280}} trust chain checks, if configured by the administrator.
 * RADIUS/(D)TLS servers validate the certificate of the RADIUS/(D)TLS client against a local database of acceptable clients.
   The database may enumerate acceptable clients either by IP address or by a name component in the certificate
-  * For clients configured by name, the configured name is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component in the certificate subject.
+  * For clients configured by DNS name, the configured name is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component in the certificate subject.
   * For clients configured by their source IP address, the configured IP address is matched against the presented addresses in the subjectAltName:iPAddr extension; if no such exist, against the presented CN component of the certificate subject. [^ipaddr-cidr]{:jf}
   * It is possible for a RADIUS/(D)TLS server to not require additional name checks for incoming RADIUS/(D)TLS clients, i.e. if the client used dynamic lookup.
     In this case, the certificate is accepted immediately after the {{RFC5280}} trust chain checks.
@@ -627,6 +634,7 @@ RADIUS/DTLS clients SHOULD implement session resumption, preferably stateless se
 This practice lowers the time and effort required to start a DTLS session with a server and increases network responsiveness.
 
 # Security Considerations
+{: #security_considerations}
 
 As this specification relies on the existing TLS and DTLS specifications, all security considerations for these protocols also apply to the (D)TLS portions of RADIUS/(D)TLS.
 
