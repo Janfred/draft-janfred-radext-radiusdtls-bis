@@ -317,6 +317,8 @@ In TLS-X.509 mode using PKIX trust models, a client is uniquely identified by th
 Note well: having identified a connecting entity does not mean the server necessarily wants to communicate with that client.
 For example, if the Issuer is not in a trusted set of Issuers, the server may decline to perform RADIUS transactions with this client.
 
+[^add_ip_filtering]{:jf}
+
 There are numerous trust models in PKIX environments, and it is beyond the scope of this document to define how a particular deployment determines whether a client is trustworthy.
 Implementations that want to support a wide variety of trust models should expose as many details of the presented certificate to the administrator as possible so that the trust model can be implemented by the administrator.
 As a suggestion, at least the following parameters of the X.509 client certificate should be exposed:
@@ -335,6 +337,7 @@ In TLS-PSK operation at least the following parameters of the TLS connection sho
 * TLS-PSK Identifier
 
 [^pskid]: TODO: What is the correct term here? "PSK Identifier"? Probably not "TLS Identifier" as it was in RFC6614
+[^add_ip_filtering]: TODO: Add text around IP filtering.
 
 ## RADIUS Datagrams
 
@@ -350,7 +353,9 @@ Due to the use of one single port for all packet types, it is required that a RA
 * When an unwanted packet of type 'CoA-Request' or 'Disconnect-Request' is received, a RADIUS/(D)TLS server needs to respond with a 'CoA-NAK' or 'Disconnect-AK', respectively.
   The NAK SHOULD contain an attribute Error-Cause with the value 406 ("Unsupported Extension"); see {{!RFC5176}} for details.
 * When an unwanted packet of type 'Accounting-Request' is received, the RADIUS/(D)TLS server SHOULD reply with an Accounting-Response containing an Error-Cause attribute with value 406 "Unsupported Extensions" as defined in {{RFC5176}}.
-  A RADIUS/(D)TLS accounting client receiving such an Accounting-Response SHOULD log the error and stop sending Accounting-Request packets.
+  A RADIUS/(D)TLS accounting client receiving such an Accounting-Response SHOULD log the error and stop sending Accounting-Request packets.[^send_protocol_error_instead]{:jf}
+
+[^send_protocol_error_instead]: TODO: Comment from Alan to send a Protocol Error packet instead.
 
 # RADIUS/TLS specific specifications
 
@@ -363,7 +368,7 @@ This section discusses all specifications that are only relevant for RADIUS/TLS.
 [^src_6613_2_6_1]: Source: RFC6613, Section 2.6.1, with small modifications
 
 As TCP is a reliable transport, RADIUS/TLS peers MUST NOT retransmit RADIUS packets over a given TCP connection.
-Similarly, if there is no response to a RADIUS packet over one RADIUS/TLS connection, implementations MUST NOT retransmit that packet over a different connection to the same destination IP address and port, while the first connection is in the OKAY state ({{RFC3539, Appendix A}}.
+Similarly, if there is no response to a RADIUS packet over one RADIUS/TLS connection, implementations MUST NOT retransmit that packet over a different connection to the same destination IP address and port, while the first connection is in the OKAY state ({{RFC3539, Appendix A}}. [^what_is_a_server]{:jf}
 
 However, if the TLS session or TCP connection is closed or broken, retransmissions over new connections are permissible.
 RADIUS request packets that have not yet received a response MAY be transmitted by a RADIUS/TLS client over a new connection.
@@ -384,6 +389,8 @@ RADIUS packets SHOULD NOT be retransmitted to the same destination IP an numeric
 There is no guarantee in RADIUS that the two ports are in any way related.
 This requirement does not, however, forbid the practice of putting multiple servers into a failover or load-balancing pool.
 In that situation, RADIUS requests MAY be retransmitted to another server that is known to be part of the same pool.
+
+[^what_is_a_server]: TODO: Destination IP addr and port may be bad, but what is a server's identity?
 
 ## Malformed Packets and Unknown clients
 
@@ -480,6 +487,10 @@ It MAY mark the client as "DTLS Required".
 
 Allowing RADIUS/UDP and RADIUS/DTLS from the same client exposes the traffic to downbidding attacks and is NOT RECOMMENDED.
 
+[^add_ip_filtering]{:jf}
+
+[^add_ip_filtering]: TODO: Add text for IP filtering
+
 ## Client behavior
 
 [^src_7360_4]
@@ -567,10 +578,10 @@ DTLS sessions SHOULD NOT be tracked until a ClientHello packet has been received
 Server implementation SHOULD have a way of tracking DTLS sessions that are partially set up.
 Servers MUST limit both the number and impact on resources of partial sessions.
 
-Sessions (both 4-tuple and entry) MUST be deleted when a TLS Closure Alert ({{RFC5246, Section 7.2.1}}) or a fatal TLS Error Alert ({{RFC5246, Section 7.2.2}}) is received.
+Sessions (both 4-tuple and entry) MUST be deleted when a TLS Closure Alert ({{RFC5246, Section 7.2.1}}) or a fatal TLS Error Alert ({{RFC5246, Section 7.2.2}}) is received.[^closed_for_any_reason]{:jf}
 When a session is deleted due to it failing security requirements, the DTLS session MUST be closed, any TLS session resumption parameters for that session MUST be discarded, and all tracking information MUST be deleted.
 
-Sessions MUST also be deleted when a non-RADIUS packet is received, a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Request Authenticator.
+Sessions MUST also be deleted when a non-RADIUS packet is received over the DTLS connection, a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Request Authenticator.
 There are other cases when the specifications require that a packet received via a DTLS session be "silently discarded".
 In those cases, implementations MAY delete the underlying session as described above.
 A session SHOULD NOT be deleted when a well-formed, but "unexpected", RADIUS packet is received over it.
@@ -583,11 +594,10 @@ This allows for future extensions to the RADIUS/DTLS specifications.
 As UDP does not guarantee delivery of messages, RADIUS/DTLS servers MUST maintain a "Last Traffic" timestamp per DTLS session.
 The granularity of this timestamp is not critical and could be limited to one-second intervals.
 The timestamp SHOULD be updated on reception of a valid RADIUS/DTLS packet, or a DTLS Heartbeat, but no more than once per interval.
-The timestamp MUST NOT be updated in other situations.
+The timestamp MUST NOT be updated in other situations, such as when packets are "silently discarded".
 
 When a session has not received a packet for a period of time, it is labeled "idle".
-The server SHOULD delete idle DTLS sessions after an "idle timeout".
-The server MAY cache the TLS session parameters, in order to provide for fast session resumption.[^idle-timeout-conf]{:jf}
+The server SHOULD delete idle DTLS sessions after an "idle timeout".[^idle-timeout-conf]{:jf}
 
 [^idle-timeout-conf]: RFC 7360 adds a paragraph about that the idle timeout should not be exposed to the admin as configurable parameter and references a mechanism to determine this value from the application-layer watchdog, but I didn't find the specification anywhere.
 
@@ -607,6 +617,7 @@ This requirement can likely be reached by simply processing the packet through t
 Non-compliant, or unexpected packets will be ignored by the DTLS layer.[^proxymitigation]{:jf}
 
 [^proxymitigation]: In RFC7360 there is a final paragraph about mitigation of the 4-tuple problem by using a local proxy. I'm not sure if this is the right place here, i'd rather move that to a general "Implementation Guidelines" paragraph.
+[^closed_for_any_reason]: TODO: Rephrase this to "if closed for any reason" after validating that this is what we mean.
 
 ### Client Session Management
 
