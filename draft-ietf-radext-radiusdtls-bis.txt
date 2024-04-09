@@ -6,11 +6,11 @@ RADIUS EXTensions                                         J.-F. Rieckers
 Internet-Draft                                                       DFN
 Obsoletes: 6614 7360 (if approved)                             S. Winter
 Intended status: Standards Track                                 RESTENA
-Expires: 15 April 2024                                   13 October 2023
+Expires: 11 October 2024                                    9 April 2024
 
 
    (Datagram) Transport Layer Security ((D)TLS Encryption for RADIUS
-               draft-janfred-radext-radiusdtls-bis-latest
+                draft-ietf-radext-radiusdtls-bis-latest
 
 Abstract
 
@@ -27,8 +27,7 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    Status information for this document may be found at
-   https://datatracker.ietf.org/doc/draft-janfred-radext-radiusdtls-
-   bis/.
+   https://datatracker.ietf.org/doc/draft-ietf-radext-radiusdtls-bis/.
 
    Discussion of this document takes place on the RADIUS EXTensions
    Working Group mailing list (mailto:radext@ietf.org), which is
@@ -50,11 +49,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 April 2024.
+   This Internet-Draft will expire on 11 October 2024.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -107,6 +106,7 @@ Table of Contents
    8.  Design Decisions
      8.1.  Mandatory-to-implement transports
      8.2.  Mandatory-to-implement trust profiles
+     8.3.  Changes in application of TLS
    9.  IANA Considerations
    10. References
      10.1.  Normative References
@@ -140,10 +140,10 @@ Table of Contents
    The main focus of RADIUS/TLS and RADIUS/DTLS is to provide means to
    secure communication between RADIUS peers using TLS or DTLS.  The
    most important use of this specification lies in roaming environments
-   where RADIUS packets need to be transferred through different
-   administrative domains and untrusted, potentially hostile networks.
-   An example for a worldwide roaming environment that uses RADIUS over
-   TLS to secure communication is eduroam as described in [RFC7593]
+   where RADIUS packets need to be sent across insecure or untrusted
+   networks.  An example for a worldwide roaming environment that uses
+   RADIUS over TLS to secure communication is eduroam as described in
+   [RFC7593]
 
 1.2.  Changes from RFC6614 (RADIUS/TLS) and RFC7360 (RADIUS/DTLS)
 
@@ -203,8 +203,8 @@ Table of Contents
    DTLS.
 
    Server implementations MUST support both RADIUS/TLS and RADIUS/DTLS.
-   Client implementations SHOULD implement both, but MUST only implement
-   one of RADIUS/TLS or RADIUS/DTLS.
+   Client implementations SHOULD implement both, but MUST implement at
+   least one of RADIUS/TLS or RADIUS/DTLS.
 
 3.  Changes to RADIUS
 
@@ -258,7 +258,11 @@ Table of Contents
 
    The requirement that RADIUS remain largely unchanged ensures the
    simplest possible implementation and widest interoperability of the
-   specification.
+   specification.  This includes the usage of the outdated security
+   mechanisms in RADIUS that are based on shared secrets and MD5.  This
+   is not considered a security issue, since integrity and
+   confidentiality are provided by the (D)TLS layer.  See Section 7 or
+   [I-D.ietf-radext-radiusv11] for more details.
 
    We note that for RADIUS/DTLS the DTLS encapsulation of RADIUS means
    that RADIUS packets have an additional overhead due to DTLS.  This is
@@ -298,7 +302,7 @@ Table of Contents
    RADIUS/TLS servers MUST immediately start the TLS negotiation when a
    new connection is opened.  They MUST close the connection and discard
    any data sent if the connecting client does not start a TLS
-   negotiation.
+   negotiation or if the TLS negotiation fails at any point.
 
    RADIUS/DTLS servers MUST silently discard any packet they receive
    that is not a new DTLS negotiation or a packet sent over a DTLS
@@ -306,6 +310,11 @@ Table of Contents
 
    RADIUS/(D)TLS peers MUST NOT use the old RADIUS/UDP or RADIUS/TCP
    ports for RADIUS/DTLS or RADIUS/TLS.
+   // This last sentence contradicts an earlier paragraph (should vs
+   // must).  Must be fixed.  TODO: check if this is a result of
+   // different specs from 6614 and 7360
+   //
+   // -- Janfred
 
 3.3.  Detecting Live Servers
 
@@ -340,14 +349,22 @@ Table of Contents
    [RFC3539], Section 3.4 to determine the liveliness of the server.
 
    RADIUS/(D)TLS clients MUST mark a connection DOWN if one or more of
-   the following conditions are met: * The administrator has marked the
-   connection administrative DOWN. * The network stack indicates that
-   the connection is no longer viable. * The application-layer watchdog
-   algorithm has marked it DOWN.
+   the following conditions are met:
+
+   *  The administrator has marked the connection administrative DOWN.
+
+   *  The network stack indicates that the connection is no longer
+      viable.
+
+   *  The application-layer watchdog algorithm has marked it DOWN.
 
    If a RADIUS/(D)TLS client has multiple connection to a server, it
    MUST NOT decide to mark the whole server as DOWN until all
    connections to it have been marked DOWN.
+   // TODO: Explain what a server is.  (Just the destination IP? include
+   // port?)
+   //
+   // -- Janfred
 
    It is REQUIRED that RADIUS/(D)TLS clients implement the Status-Server
    extension as described in [RFC5997] as the application level watchdog
@@ -392,8 +409,11 @@ Table of Contents
    action has to be taken by the administrators of the two systems.
 
    Implementations MUST follow the recommendations given in [RFC9325].
-   Additionally, the following requirements have to be met for the
-   (D)TLS session:
+   // TODO: Add text which recommendations of RFC9325 must be followed
+   // and why
+   //
+   // -- Janfred Additionally, the following requirements have to be met
+   for the (D)TLS session:
 
    *  Support for TLS 1.2 [RFC5248] / DTLS 1.2 [RFC6347] is REQUIRED,
       support for TLS 1.3 [RFC8446] / DTLS 1.3 [RFC9147] or higher is
@@ -414,7 +434,8 @@ Table of Contents
    RADIUS/(D)TLS servers MUST authenticate clients.  RADIUS is designed
    to be used by mutually trusted systems.  Allowing anonymous clients
    would ensure privacy for RADIUS/(D)TLS traffic, but would negate all
-   other security aspects of the protocol.
+   other security aspects of the protocol, including security aspects of
+   RADIUS itself, due to the fixed shared secret.
 
    RADIUS/(D)TLS allows for the following different modes of mutual
    authentication.
@@ -479,8 +500,8 @@ Table of Contents
       clients.  The database may enumerate acceptable clients either by
       IP address or by a name component in the certificate
 
-      -  For clients configured by name, the configured name is matched
-         against the presented names from the subjectAltName:DNS
+      -  For clients configured by DNS name, the configured name is
+         matched against the presented names from the subjectAltName:DNS
          extension; if no such exist, against the presented CN component
          in the certificate subject.
 
@@ -576,6 +597,11 @@ Table of Contents
    example, if the Issuer is not in a trusted set of Issuers, the server
    may decline to perform RADIUS transactions with this client.
 
+
+   // TODO: Add text around IP filtering.
+   //
+   // -- Janfred
+
    There are numerous trust models in PKIX environments, and it is
    beyond the scope of this document to define how a particular
    deployment determines whether a client is trustworthy.
@@ -633,6 +659,10 @@ Table of Contents
       Extensions" as defined in [RFC5176].  A RADIUS/(D)TLS accounting
       client receiving such an Accounting-Response SHOULD log the error
       and stop sending Accounting-Request packets.
+      // TODO: Comment from Alan to send a Protocol Error packet
+      instead.
+      //
+      // -- Janfred
 
 5.  RADIUS/TLS specific specifications
 
@@ -650,6 +680,10 @@ Table of Contents
    implementations MUST NOT retransmit that packet over a different
    connection to the same destination IP address and port, while the
    first connection is in the OKAY state ([RFC3539], Appendix A.
+   // TODO: Destination IP addr and port may be bad, but what is a
+   // server's identity?
+   //
+   // -- Janfred
 
    However, if the TLS session or TCP connection is closed or broken,
    retransmissions over new connections are permissible.  RADIUS request
@@ -825,6 +859,11 @@ Table of Contents
    Allowing RADIUS/UDP and RADIUS/DTLS from the same client exposes the
    traffic to downbidding attacks and is NOT RECOMMENDED.
 
+
+   // TODO: Add text for IP filtering
+   //
+   // -- Janfred
+
 6.3.  Client behavior
 
 
@@ -944,19 +983,24 @@ Table of Contents
 
    Sessions (both 4-tuple and entry) MUST be deleted when a TLS Closure
    Alert ([RFC5246], Section 7.2.1) or a fatal TLS Error Alert
-   ([RFC5246], Section 7.2.2) is received.  When a session is deleted
-   due to it failing security requirements, the DTLS session MUST be
-   closed, any TLS session resumption parameters for that session MUST
-   be discarded, and all tracking information MUST be deleted.
+   ([RFC5246], Section 7.2.2) is received.
+   // TODO: Rephrase this to "if closed for any reason" after validating
+   // that this is what we mean.
+   //
+   // -- Janfred When a session is deleted due to it failing security
+   requirements, the DTLS session MUST be closed, any TLS session
+   resumption parameters for that session MUST be discarded, and all
+   tracking information MUST be deleted.
 
-   Sessions MUST also be deleted when a non-RADIUS packet is received, a
-   RADIUS packet fails validation due to a packet being malformed, or
-   when it has an invalid Message-Authenticator or invalid Request
-   Authenticator.  There are other cases when the specifications require
-   that a packet received via a DTLS session be "silently discarded".
-   In those cases, implementations MAY delete the underlying session as
-   described above.  A session SHOULD NOT be deleted when a well-formed,
-   but "unexpected", RADIUS packet is received over it.
+   Sessions MUST also be deleted when a non-RADIUS packet is received
+   over the DTLS connection, a RADIUS packet fails validation due to a
+   packet being malformed, or when it has an invalid Message-
+   Authenticator or invalid Request Authenticator.  There are other
+   cases when the specifications require that a packet received via a
+   DTLS session be "silently discarded".  In those cases,
+   implementations MAY delete the underlying session as described above.
+   A session SHOULD NOT be deleted when a well-formed, but "unexpected",
+   RADIUS packet is received over it.
 
    These requirements ensure the security while maintaining flexibility.
    Any security-related issue causes the connection to be closed.  After
@@ -970,12 +1014,11 @@ Table of Contents
    one-second intervals.  The timestamp SHOULD be updated on reception
    of a valid RADIUS/DTLS packet, or a DTLS Heartbeat, but no more than
    once per interval.  The timestamp MUST NOT be updated in other
-   situations.
+   situations, such as when packets are "silently discarded".
 
    When a session has not received a packet for a period of time, it is
    labeled "idle".  The server SHOULD delete idle DTLS sessions after an
-   "idle timeout".  The server MAY cache the TLS session parameters, in
-   order to provide for fast session resumption.
+   "idle timeout".
    // RFC 7360 adds a paragraph about that the idle timeout should not
    // be exposed to the admin as configurable parameter and references a
    // mechanism to determine this value from the application-layer
@@ -1038,10 +1081,11 @@ Table of Contents
    // Maybe modify this text to be more similar to the TLS specific text
    // here.
    //
-   // -- Janfred There are other cases, when the specifications require
-   that a packet received via a DTLS session be "silently discarded".
-   In those cases, implementations MAY delete the underlying DTLS
-   session.
+   // -- Janfred
+
+   There are other cases, when the specifications require that a packet
+   received via a DTLS session be "silently discarded".  In those cases,
+   implementations MAY delete the underlying DTLS session.
 
    RADIUS/DTLS clients SHOULD NOT send both RADIUS/UDP and RADIUS/DTLS
    packets to different servers from the same source socket.  This
@@ -1063,7 +1107,7 @@ Table of Contents
    For RADIUS however, many security considerations raised in the RADIUS
    documents are related to RADIUS encryption and authorization.  Those
    issues are largely mitigated when (D)TLS is used as a transport
-   method, since encryption and autorization is achieved on the (D)TLS
+   method, since encryption and authorization is achieved on the (D)TLS
    layer.  The issues that are not mitigated by this specification are
    related to the RADIUS packet format and handling, which is unchanged
    in this specification.
@@ -1159,10 +1203,10 @@ Table of Contents
    Since the shared secret is static, this again means the other party
    is misbehaving.
 
-   We wish to avoid the situation wehere a third party can send well-
+   We wish to avoid the situation where a third party can send well-
    formed RADIUS packets to a RADIUS proxy that cause a (D)TLS session
    to close.  Therefore, in other situations, the session SOULD remain
-   open in the face of non-conformant packets.  Any malformed RADIUS
+   open in the face of non-conforming packets.  Any malformed RADIUS
    packets sent by a third party will go through the security checks of
    the RADIUS proxy upon reception and will not be forwarded.  Well-
    formed RADIUS packets with portions that the proxy does not
@@ -1278,6 +1322,20 @@ Table of Contents
    authentication.  RADIUS clients again can choose which method is
    better suited for them, but must, for compatibility reasons,
    implement at least one of the two.
+
+8.3.  Changes in application of TLS
+
+   The original specification of RADIUS/TLS does not forbid the usage of
+   compression in the TLS layer.  As per [RFC9325], Section 3.3,
+   compression should not be used due to the possibility of compression-
+   related attacks, unless the application protocol is proven to be not
+   open to such attacks.  Since some attributes of the RADIUS packets
+   within the TLS tunnel contain values that an attacker could at least
+   partially choose (i.e. username, MAC address or EAP message), there
+   is a possibility for compression-related attacks, that could
+   potentially reveal data in other RADIUS attributes through length of
+   the TLS record.  To circumvent this attack, this specification
+   forbids the usage of TLS compression.
 
 9.  IANA Considerations
 
@@ -1428,16 +1486,16 @@ Table of Contents
 10.2.  Informative References
 
    [I-D.ietf-radext-radiusv11]
-              DeKok, A., "RADIUS Version 1.1", Work in Progress,
-              Internet-Draft, draft-ietf-radext-radiusv11-02, 11 October
-              2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              radext-radiusv11-02>.
+              DeKok, A., "RADIUS ALPN and removing MD5", Work in
+              Progress, Internet-Draft, draft-ietf-radext-radiusv11-04,
+              26 February 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-radext-radiusv11-04>.
 
    [I-D.ietf-radext-tls-psk]
               DeKok, A., "RADIUS and TLS-PSK", Work in Progress,
-              Internet-Draft, draft-ietf-radext-tls-psk-03, 24 August
-              2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              radext-tls-psk-03>.
+              Internet-Draft, draft-ietf-radext-tls-psk-09, 29 February
+              2024, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              radext-tls-psk-09>.
 
    [RFC6613]  DeKok, A., "RADIUS over TCP", RFC 6613,
               DOI 10.17487/RFC6613, May 2012,
@@ -1583,7 +1641,8 @@ Acknowledgments
    Alan DeKok, Stefan Winter, Mike McCauley, Stig Venaas and Klaas
    Vierenga.
 
-   Thanks to Arran Curdbard-Bell for text around keepalives.
+   Thanks to Arran Curdbard-Bell for text around keepalives and the
+   Status-Server watchdog algorithm.
 
 Authors' Addresses
 

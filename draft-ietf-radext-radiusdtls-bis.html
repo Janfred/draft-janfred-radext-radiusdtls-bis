@@ -12,27 +12,27 @@
 This enables encrypting the RADIUS traffic as well as dynamic trust relationships between RADIUS servers.
 The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/TLS) and RFC 7360 (RADIUS/DTLS) and combines them in this specification. 
     " name="description">
-<meta content="xml2rfc 3.18.1" name="generator">
+<meta content="xml2rfc 3.20.1" name="generator">
 <meta content="RADIUS" name="keyword">
 <meta content="TLS" name="keyword">
-<meta content="draft-janfred-radext-radiusdtls-bis-latest" name="ietf.draft">
+<meta content="draft-ietf-radext-radiusdtls-bis-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.1
-    Python 3.11.5
-    ConfigArgParse 1.5.3
+  xml2rfc 3.20.1
+    Python 3.11.8
+    ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 3.11.0
+    platformdirs 4.2.0
     pycountry 22.3.5
-    PyYAML 6.0
+    PyYAML 6.0.1
     requests 2.31.0
-    setuptools 67.7.2
+    setuptools 68.2.2
     six 1.16.0
-    wcwidth 0.2.8
+    wcwidth 0.2.13
 -->
-<link href="draft-janfred-radext-radiusdtls-bis.xml" rel="alternate" type="application/rfc+xml">
+<link href="draft-ietf-radext-radiusdtls-bis.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@font-face {
   font-family: 'Lora';
@@ -1029,11 +1029,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">RADIUS over (D)TLS</td>
-<td class="right">October 2023</td>
+<td class="right">April 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rieckers &amp; Winter</td>
-<td class="center">Expires 15 April 2024</td>
+<td class="center">Expires 11 October 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1043,18 +1043,18 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">RADIUS EXTensions</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-janfred-radext-radiusdtls-bis-latest</dd>
+<dd class="internet-draft">draft-ietf-radext-radiusdtls-bis-latest</dd>
 <dt class="label-obsoletes">Obsoletes:</dt>
 <dd class="obsoletes">
 <a href="https://www.rfc-editor.org/rfc/rfc6614%207360" class="eref">6614 7360</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-13" class="published">13 October 2023</time>
+<time datetime="2024-04-09" class="published">9 April 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-15">15 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-10-11">11 October 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1081,7 +1081,7 @@ The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-janfred-radext-radiusdtls-bis/">https://datatracker.ietf.org/doc/draft-janfred-radext-radiusdtls-bis/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-ietf-radext-radiusdtls-bis/">https://datatracker.ietf.org/doc/draft-ietf-radext-radiusdtls-bis/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
         RADIUS EXTensions Working Group mailing list (<span><a href="mailto:radext@ietf.org">mailto:radext@ietf.org</a></span>),
@@ -1107,7 +1107,7 @@ The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1116,7 +1116,7 @@ The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2023 IETF Trust and the persons identified as the
+            Copyright (c) 2024 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1266,6 +1266,9 @@ The specification obsoletes the experimental specifications in RFC 6614 (RADIUS/
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
                 <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-mandatory-to-implement-trus" class="internal xref">Mandatory-to-implement trust profiles</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-changes-in-application-of-t" class="internal xref">Changes in application of TLS</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
@@ -1328,7 +1331,7 @@ For an updated version of RADIUS/(D)TLS without need for MD5 see <span>[<a href=
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-purpose-of-radius-dtls" class="section-name selfRef">Purpose of RADIUS/(D)TLS</a>
         </h3>
 <p id="section-1.1-1">The main focus of RADIUS/TLS and RADIUS/DTLS is to provide means to secure communication between RADIUS peers using TLS or DTLS.
-The most important use of this specification lies in roaming environments where RADIUS packets need to be transferred through different administrative domains and untrusted, potentially hostile networks.
+The most important use of this specification lies in roaming environments where RADIUS packets need to be sent across insecure or untrusted networks.
 An example for a worldwide roaming environment that uses RADIUS over TLS to secure communication is eduroam as described in <span>[<a href="#RFC7593" class="cite xref">RFC7593</a>]</span><a href="#section-1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1401,7 +1404,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-2-4">Whenever "(D)TLS" or "RADIUS/(D)TLS" is mentioned, the specification applies for both RADIUS/TLS and RADIUS/DTLS.
 Where "TLS" or "RADIUS/TLS" is mentioned, the specification only applies to RADIUS/TLS, where "DTLS" or "RADIUS/DTLS" is mentioned it only applies to RADIUS/DTLS.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">Server implementations <span class="bcp14">MUST</span> support both RADIUS/TLS and RADIUS/DTLS.
-Client implementations <span class="bcp14">SHOULD</span> implement both, but <span class="bcp14">MUST</span> only implement one of RADIUS/TLS or RADIUS/DTLS.<a href="#section-2-5" class="pilcrow">¶</a></p>
+Client implementations <span class="bcp14">SHOULD</span> implement both, but <span class="bcp14">MUST</span> implement at least one of RADIUS/TLS or RADIUS/DTLS.<a href="#section-2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="changes-to-radius">
@@ -1456,7 +1459,9 @@ Specifically, all of the following portions of RADIUS <span class="bcp14">MUST</
 <p id="section-3.1-4">The use of (D)TLS transport does not change the calculation of security-related fields (such as the Response-Authenticator) in RADIUS <span>[<a href="#RFC2865" class="cite xref">RFC2865</a>]</span> or RADIUS Dynamic Authorization <span>[<a href="#RFC5176" class="cite xref">RFC5176</a>]</span>.
 Calculation of attributes such as User-Password <span>[<a href="#RFC2865" class="cite xref">RFC2865</a>]</span> or Message-Authenticator <span>[<a href="#RFC3579" class="cite xref">RFC3579</a>]</span> also does not change.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 <p id="section-3.1-5">The changes to RADIUS implementations required to implement this specification are largely limited to the portions that send and receive packets on the network and the establishment of the (D)TLS connection.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.1-6">The requirement that RADIUS remain largely unchanged ensures the simplest possible implementation and widest interoperability of the specification.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
+<p id="section-3.1-6">The requirement that RADIUS remain largely unchanged ensures the simplest possible implementation and widest interoperability of the specification.
+This includes the usage of the outdated security mechanisms in RADIUS that are based on shared secrets and MD5.
+This is not considered a security issue, since integrity and confidentiality are provided by the (D)TLS layer. See <a href="#security_considerations" class="auto internal xref">Section 7</a> or <span>[<a href="#I-D.ietf-radext-radiusv11" class="cite xref">I-D.ietf-radext-radiusv11</a>]</span> for more details.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
 <p id="section-3.1-7">We note that for RADIUS/DTLS the DTLS encapsulation of RADIUS means that RADIUS packets have an additional overhead due to DTLS.
 This is discussed further in <a href="#dtls_spec" class="auto internal xref">Section 6</a><a href="#section-3.1-7" class="pilcrow">¶</a></p>
 </section>
@@ -1496,9 +1501,9 @@ The calculation of security-related fields such as Response-Authenticator, Messa
 The source port is arbitrary.
 <span class="cref" id="considerations">TODO: add reference to considerations regarding the multi-purpose use of one port.<span class="crefSource">Janfred</span></span><a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <p id="section-3.2-5">RADIUS/TLS servers <span class="bcp14">MUST</span> immediately start the TLS negotiation when a new connection is opened.
-They <span class="bcp14">MUST</span> close the connection and discard any data sent if the connecting client does not start a TLS negotiation.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+They <span class="bcp14">MUST</span> close the connection and discard any data sent if the connecting client does not start a TLS negotiation or if the TLS negotiation fails at any point.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
 <p id="section-3.2-6">RADIUS/DTLS servers <span class="bcp14">MUST</span> silently discard any packet they receive that is not a new DTLS negotiation or a packet sent over a DTLS session established earlier.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
-<p id="section-3.2-7">RADIUS/(D)TLS peers <span class="bcp14">MUST NOT</span> use the old RADIUS/UDP or RADIUS/TCP ports for RADIUS/DTLS or RADIUS/TLS.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+<p id="section-3.2-7">RADIUS/(D)TLS peers <span class="bcp14">MUST NOT</span> use the old RADIUS/UDP or RADIUS/TCP ports for RADIUS/DTLS or RADIUS/TLS.<span class="cref" id="contradiction">This last sentence contradicts an earlier paragraph (should vs must). Must be fixed. TODO: check if this is a result of different specs from 6614 and 7360<span class="crefSource">Janfred</span></span><a href="#section-3.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="detecting-live-servers">
@@ -1516,16 +1521,24 @@ The client could then fail over to another server or conclude that no "live" ser
 This situation is made even worse when requests are sent through a proxy to multiple destinations.
 Failures in one destination may result in service outages for other destinations, if the client erroneously believes that the proxy is unresponsive.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
 <p id="section-3.3-5">It is <span class="bcp14">REQUIRED</span> that implementations utilize the existence of a TCP/DTLS connection along with the application-layer watchdog defined in <span>[<a href="#RFC3539" class="cite xref">RFC3539</a>], <a href="https://rfc-editor.org/rfc/rfc3539#section-3.4" class="relref">Section 3.4</a></span> to determine the liveliness of the server.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
-<p id="section-3.3-6">RADIUS/(D)TLS clients <span class="bcp14">MUST</span> mark a connection DOWN if one or more of the following conditions are met:
-* The administrator has marked the connection administrative DOWN.
-* The network stack indicates that the connection is no longer viable.
-* The application-layer watchdog algorithm has marked it DOWN.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
-<p id="section-3.3-7">If a RADIUS/(D)TLS client has multiple connection to a server, it <span class="bcp14">MUST NOT</span> decide to mark the whole server as DOWN until all connections to it have been marked DOWN.<a href="#section-3.3-7" class="pilcrow">¶</a></p>
-<p id="section-3.3-8">It is <span class="bcp14">REQUIRED</span> that RADIUS/(D)TLS clients implement the Status-Server extension as described in <span>[<a href="#RFC5997" class="cite xref">RFC5997</a>]</span> as the application level watchdog to detect the liveliness of the peer in the absence of responses.
+<p id="section-3.3-6">RADIUS/(D)TLS clients <span class="bcp14">MUST</span> mark a connection DOWN if one or more of the following conditions are met:<a href="#section-3.3-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3-7.1">
+            <p id="section-3.3-7.1.1">The administrator has marked the connection administrative DOWN.<a href="#section-3.3-7.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.3-7.2">
+            <p id="section-3.3-7.2.1">The network stack indicates that the connection is no longer viable.<a href="#section-3.3-7.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.3-7.3">
+            <p id="section-3.3-7.3.1">The application-layer watchdog algorithm has marked it DOWN.<a href="#section-3.3-7.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.3-8">If a RADIUS/(D)TLS client has multiple connection to a server, it <span class="bcp14">MUST NOT</span> decide to mark the whole server as DOWN until all connections to it have been marked DOWN.<span class="cref" id="what_is_a_server_1">TODO: Explain what a server is. (Just the destination IP? include port?)<span class="crefSource">Janfred</span></span><a href="#section-3.3-8" class="pilcrow">¶</a></p>
+<p id="section-3.3-9">It is <span class="bcp14">REQUIRED</span> that RADIUS/(D)TLS clients implement the Status-Server extension as described in <span>[<a href="#RFC5997" class="cite xref">RFC5997</a>]</span> as the application level watchdog to detect the liveliness of the peer in the absence of responses.
 Since RADIUS has a limitation of 256 simultaneous "in flight" packets due to the length of the ID field (<span>[<a href="#RFC3539" class="cite xref">RFC3539</a>]</span>, Section 2.4), it is <span class="bcp14">RECOMMENDED</span> that RADIUS/(D)TLS clients reserve ID zero (0) on each session for Status-Server packets.
-This value was picked arbitrary, as there is no reason to choose any other value over another for this use.<a href="#section-3.3-8" class="pilcrow">¶</a></p>
-<p id="section-3.3-9">For RADIUS/TLS, the peers <span class="bcp14">MAY</span> send TCP keepalives as described in <span>[<a href="#RFC9293" class="cite xref">RFC9293</a>], <a href="https://rfc-editor.org/rfc/rfc9293#section-3.8.4" class="relref">Section 3.8.4</a></span>, for RADIUS/DTLS connections, the peers <span class="bcp14">MAY</span> send periodic keepalives as defined in <span>[<a href="#RFC6520" class="cite xref">RFC6520</a>]</span>, as a way of proactively and rapidly triggering a connection DOWN notification from the network stack.
-These liveliness checks are essentially redundant in the presence of an application-layer watchdog, but may provide more rapid notifications of connectivity issues.<a href="#section-3.3-9" class="pilcrow">¶</a></p>
+This value was picked arbitrary, as there is no reason to choose any other value over another for this use.<a href="#section-3.3-9" class="pilcrow">¶</a></p>
+<p id="section-3.3-10">For RADIUS/TLS, the peers <span class="bcp14">MAY</span> send TCP keepalives as described in <span>[<a href="#RFC9293" class="cite xref">RFC9293</a>], <a href="https://rfc-editor.org/rfc/rfc9293#section-3.8.4" class="relref">Section 3.8.4</a></span>, for RADIUS/DTLS connections, the peers <span class="bcp14">MAY</span> send periodic keepalives as defined in <span>[<a href="#RFC6520" class="cite xref">RFC6520</a>]</span>, as a way of proactively and rapidly triggering a connection DOWN notification from the network stack.
+These liveliness checks are essentially redundant in the presence of an application-layer watchdog, but may provide more rapid notifications of connectivity issues.<a href="#section-3.3-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1547,7 +1560,7 @@ These liveliness checks are essentially redundant in the presence of an applicat
 As RADIUS has no provisions for capability signaling, there is also no way for a server to indicate to a client that it should transition to using TLS or DTLS.
 Servers and clients need to be preconfigured to use RADIUS/(D)TLS for a given endpoint.
 This action has to be taken by the administrators of the two systems.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.1-4">Implementations <span class="bcp14">MUST</span> follow the recommendations given in <span>[<a href="#RFC9325" class="cite xref">RFC9325</a>]</span>.
+<p id="section-4.1-4">Implementations <span class="bcp14">MUST</span> follow the recommendations given in <span>[<a href="#RFC9325" class="cite xref">RFC9325</a>]</span>.<span class="cref" id="add_which">TODO: Add text which recommendations of RFC9325 must be followed and why<span class="crefSource">Janfred</span></span>
 Additionally, the following requirements have to be met for the (D)TLS session:<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-5.1">
@@ -1573,7 +1586,7 @@ Additionally, the following requirements have to be met for the (D)TLS session:<
 <p id="section-4.2-1"><span class="cref" id="src_6614_2_3_item3">Source: RFC6614, Section 2.3, Item 3 with modifications.</span><a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">RADIUS/(D)TLS servers <span class="bcp14">MUST</span> authenticate clients.
 RADIUS is designed to be used by mutually trusted systems.
-Allowing anonymous clients would ensure privacy for RADIUS/(D)TLS traffic, but would negate all other security aspects of the protocol.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+Allowing anonymous clients would ensure privacy for RADIUS/(D)TLS traffic, but would negate all other security aspects of the protocol, including security aspects of RADIUS itself, due to the fixed shared secret.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">RADIUS/(D)TLS allows for the following different modes of mutual authentication.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <div id="authentication-using-x509-certificates-with-pkix-trust-model">
 <section id="section-4.2.1">
@@ -1625,7 +1638,7 @@ Implementations <span class="bcp14">MAY</span> require the use of DNSSEC <span>[
 The database may enumerate acceptable clients either by IP address or by a name component in the certificate<a href="#section-4.2.1-3.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2.1-3.5.2.1">
-                  <p id="section-4.2.1-3.5.2.1.1">For clients configured by name, the configured name is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component in the certificate subject.<a href="#section-4.2.1-3.5.2.1.1" class="pilcrow">¶</a></p>
+                  <p id="section-4.2.1-3.5.2.1.1">For clients configured by DNS name, the configured name is matched against the presented names from the subjectAltName:DNS extension; if no such exist, against the presented CN component in the certificate subject.<a href="#section-4.2.1-3.5.2.1.1" class="pilcrow">¶</a></p>
 </li>
                 <li class="normal" id="section-4.2.1-3.5.2.2">
                   <p id="section-4.2.1-3.5.2.2.1">For clients configured by their source IP address, the configured IP address is matched against the presented addresses in the subjectAltName:iPAddr extension; if no such exist, against the presented CN component of the certificate subject. <span class="cref" id="ipaddr-cidr">TODO: Find out if there are matching rules for subnet configuration.<span class="crefSource">Janfred</span></span><a href="#section-4.2.1-3.5.2.2.1" class="pilcrow">¶</a></p>
@@ -1690,39 +1703,40 @@ Since the shared secret is associated with the origin IP address, if more than o
 <p id="section-4.3-7">In TLS-X.509 mode using PKIX trust models, a client is uniquely identified by the tuple of the serial number of the presented client certificate and the issuer.<a href="#section-4.3-7" class="pilcrow">¶</a></p>
 <p id="section-4.3-8">Note well: having identified a connecting entity does not mean the server necessarily wants to communicate with that client.
 For example, if the Issuer is not in a trusted set of Issuers, the server may decline to perform RADIUS transactions with this client.<a href="#section-4.3-8" class="pilcrow">¶</a></p>
-<p id="section-4.3-9">There are numerous trust models in PKIX environments, and it is beyond the scope of this document to define how a particular deployment determines whether a client is trustworthy.
+<p id="section-4.3-9"><span class="cref" id="add_ip_filtering_2">TODO: Add text around IP filtering.<span class="crefSource">Janfred</span></span><a href="#section-4.3-9" class="pilcrow">¶</a></p>
+<p id="section-4.3-10">There are numerous trust models in PKIX environments, and it is beyond the scope of this document to define how a particular deployment determines whether a client is trustworthy.
 Implementations that want to support a wide variety of trust models should expose as many details of the presented certificate to the administrator as possible so that the trust model can be implemented by the administrator.
-As a suggestion, at least the following parameters of the X.509 client certificate should be exposed:<a href="#section-4.3-9" class="pilcrow">¶</a></p>
+As a suggestion, at least the following parameters of the X.509 client certificate should be exposed:<a href="#section-4.3-10" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.3-10.1">
-            <p id="section-4.3-10.1.1">Originating IP address<a href="#section-4.3-10.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.3-11.1">
+            <p id="section-4.3-11.1.1">Originating IP address<a href="#section-4.3-11.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.2">
-            <p id="section-4.3-10.2.1">Certificate Fingerprint<a href="#section-4.3-10.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.3-11.2">
+            <p id="section-4.3-11.2.1">Certificate Fingerprint<a href="#section-4.3-11.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.3">
-            <p id="section-4.3-10.3.1">Issuer<a href="#section-4.3-10.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.3-11.3">
+            <p id="section-4.3-11.3.1">Issuer<a href="#section-4.3-11.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.4">
-            <p id="section-4.3-10.4.1">Subject<a href="#section-4.3-10.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.3-11.4">
+            <p id="section-4.3-11.4.1">Subject<a href="#section-4.3-11.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.5">
-            <p id="section-4.3-10.5.1">all X.509v3 Extended Key Usage<a href="#section-4.3-10.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.3-11.5">
+            <p id="section-4.3-11.5.1">all X.509v3 Extended Key Usage<a href="#section-4.3-11.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.6">
-            <p id="section-4.3-10.6.1">all X.509v3 Subject Alternative Name<a href="#section-4.3-10.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.3-11.6">
+            <p id="section-4.3-11.6.1">all X.509v3 Subject Alternative Name<a href="#section-4.3-11.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-10.7">
-            <p id="section-4.3-10.7.1">all X.509v3 Certificate Policy<a href="#section-4.3-10.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.3-11.7">
+            <p id="section-4.3-11.7.1">all X.509v3 Certificate Policy<a href="#section-4.3-11.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.3-11">In TLS-PSK operation at least the following parameters of the TLS connection should be exposed:<a href="#section-4.3-11" class="pilcrow">¶</a></p>
+<p id="section-4.3-12">In TLS-PSK operation at least the following parameters of the TLS connection should be exposed:<a href="#section-4.3-12" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.3-12.1">
-            <p id="section-4.3-12.1.1">Originating IP address<a href="#section-4.3-12.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.3-13.1">
+            <p id="section-4.3-13.1.1">Originating IP address<a href="#section-4.3-13.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.3-12.2">
-            <p id="section-4.3-12.2.1">TLS-PSK Identifier<a href="#section-4.3-12.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.3-13.2">
+            <p id="section-4.3-13.2.1">TLS-PSK Identifier<a href="#section-4.3-13.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1742,7 +1756,7 @@ The NAK <span class="bcp14">SHOULD</span> contain an attribute Error-Cause with 
 </li>
           <li class="normal" id="section-4.4-4.2">
             <p id="section-4.4-4.2.1">When an unwanted packet of type 'Accounting-Request' is received, the RADIUS/(D)TLS server <span class="bcp14">SHOULD</span> reply with an Accounting-Response containing an Error-Cause attribute with value 406 "Unsupported Extensions" as defined in <span>[<a href="#RFC5176" class="cite xref">RFC5176</a>]</span>.
-A RADIUS/(D)TLS accounting client receiving such an Accounting-Response <span class="bcp14">SHOULD</span> log the error and stop sending Accounting-Request packets.<a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
+A RADIUS/(D)TLS accounting client receiving such an Accounting-Response <span class="bcp14">SHOULD</span> log the error and stop sending Accounting-Request packets.<span class="cref" id="send_protocol_error_instead">TODO: Comment from Alan to send a Protocol Error packet instead.<span class="crefSource">Janfred</span></span><a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1762,7 +1776,7 @@ A RADIUS/(D)TLS accounting client receiving such an Accounting-Response <span cl
         </h3>
 <p id="section-5.1-1"><span class="cref" id="src_6613_2_6_1">Source: RFC6613, Section 2.6.1, with small modifications</span><a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">As TCP is a reliable transport, RADIUS/TLS peers <span class="bcp14">MUST NOT</span> retransmit RADIUS packets over a given TCP connection.
-Similarly, if there is no response to a RADIUS packet over one RADIUS/TLS connection, implementations <span class="bcp14">MUST NOT</span> retransmit that packet over a different connection to the same destination IP address and port, while the first connection is in the OKAY state (<span>[<a href="#RFC3539" class="cite xref">RFC3539</a>], <a href="https://rfc-editor.org/rfc/rfc3539#appendix-A" class="relref">Appendix A</a></span>.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+Similarly, if there is no response to a RADIUS packet over one RADIUS/TLS connection, implementations <span class="bcp14">MUST NOT</span> retransmit that packet over a different connection to the same destination IP address and port, while the first connection is in the OKAY state (<span>[<a href="#RFC3539" class="cite xref">RFC3539</a>], <a href="https://rfc-editor.org/rfc/rfc3539#appendix-A" class="relref">Appendix A</a></span>. <span class="cref" id="what_is_a_server_2">TODO: Destination IP addr and port may be bad, but what is a server's identity?<span class="crefSource">Janfred</span></span><a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1-3">However, if the TLS session or TCP connection is closed or broken, retransmissions over new connections are permissible.
 RADIUS request packets that have not yet received a response <span class="bcp14">MAY</span> be transmitted by a RADIUS/TLS client over a new connection.
 As this procedure involves using a new source port, the ID of the packet <span class="bcp14">MAY</span> change.
@@ -1889,6 +1903,7 @@ When packets are received fom a client with the "DTLS Required" flag set on non-
 However, if the server receives DTLS traffic from a client, it <span class="bcp14">SHOULD</span> notify the administrator that DTLS is available for that client.
 It <span class="bcp14">MAY</span> mark the client as "DTLS Required".<a href="#section-6.2-5" class="pilcrow">¶</a></p>
 <p id="section-6.2-6">Allowing RADIUS/UDP and RADIUS/DTLS from the same client exposes the traffic to downbidding attacks and is <span class="bcp14">NOT RECOMMENDED</span>.<a href="#section-6.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.2-7"><span class="cref" id="add_ip_filtering_1">TODO: Add text for IP filtering<span class="crefSource">Janfred</span></span><a href="#section-6.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="client-behavior">
@@ -1984,9 +1999,9 @@ RADIUS/DTLS servers <span class="bcp14">SHOULD</span> use the stateless cookie t
 DTLS sessions <span class="bcp14">SHOULD NOT</span> be tracked until a ClientHello packet has been received with an appropriate Cookie value.
 Server implementation <span class="bcp14">SHOULD</span> have a way of tracking DTLS sessions that are partially set up.
 Servers <span class="bcp14">MUST</span> limit both the number and impact on resources of partial sessions.<a href="#section-6.4.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.4.1.1-3">Sessions (both 4-tuple and entry) <span class="bcp14">MUST</span> be deleted when a TLS Closure Alert (<span>[<a href="#RFC5246" class="cite xref">RFC5246</a>], <a href="https://rfc-editor.org/rfc/rfc5246#section-7.2.1" class="relref">Section 7.2.1</a></span>) or a fatal TLS Error Alert (<span>[<a href="#RFC5246" class="cite xref">RFC5246</a>], <a href="https://rfc-editor.org/rfc/rfc5246#section-7.2.2" class="relref">Section 7.2.2</a></span>) is received.
+<p id="section-6.4.1.1-3">Sessions (both 4-tuple and entry) <span class="bcp14">MUST</span> be deleted when a TLS Closure Alert (<span>[<a href="#RFC5246" class="cite xref">RFC5246</a>], <a href="https://rfc-editor.org/rfc/rfc5246#section-7.2.1" class="relref">Section 7.2.1</a></span>) or a fatal TLS Error Alert (<span>[<a href="#RFC5246" class="cite xref">RFC5246</a>], <a href="https://rfc-editor.org/rfc/rfc5246#section-7.2.2" class="relref">Section 7.2.2</a></span>) is received.<span class="cref" id="closed_for_any_reason">TODO: Rephrase this to "if closed for any reason" after validating that this is what we mean.<span class="crefSource">Janfred</span></span>
 When a session is deleted due to it failing security requirements, the DTLS session <span class="bcp14">MUST</span> be closed, any TLS session resumption parameters for that session <span class="bcp14">MUST</span> be discarded, and all tracking information <span class="bcp14">MUST</span> be deleted.<a href="#section-6.4.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-6.4.1.1-4">Sessions <span class="bcp14">MUST</span> also be deleted when a non-RADIUS packet is received, a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Request Authenticator.
+<p id="section-6.4.1.1-4">Sessions <span class="bcp14">MUST</span> also be deleted when a non-RADIUS packet is received over the DTLS connection, a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Request Authenticator.
 There are other cases when the specifications require that a packet received via a DTLS session be "silently discarded".
 In those cases, implementations <span class="bcp14">MAY</span> delete the underlying session as described above.
 A session <span class="bcp14">SHOULD NOT</span> be deleted when a well-formed, but "unexpected", RADIUS packet is received over it.<a href="#section-6.4.1.1-4" class="pilcrow">¶</a></p>
@@ -1997,10 +2012,9 @@ This allows for future extensions to the RADIUS/DTLS specifications.<a href="#se
 <p id="section-6.4.1.1-6">As UDP does not guarantee delivery of messages, RADIUS/DTLS servers <span class="bcp14">MUST</span> maintain a "Last Traffic" timestamp per DTLS session.
 The granularity of this timestamp is not critical and could be limited to one-second intervals.
 The timestamp <span class="bcp14">SHOULD</span> be updated on reception of a valid RADIUS/DTLS packet, or a DTLS Heartbeat, but no more than once per interval.
-The timestamp <span class="bcp14">MUST NOT</span> be updated in other situations.<a href="#section-6.4.1.1-6" class="pilcrow">¶</a></p>
+The timestamp <span class="bcp14">MUST NOT</span> be updated in other situations, such as when packets are "silently discarded".<a href="#section-6.4.1.1-6" class="pilcrow">¶</a></p>
 <p id="section-6.4.1.1-7">When a session has not received a packet for a period of time, it is labeled "idle".
-The server <span class="bcp14">SHOULD</span> delete idle DTLS sessions after an "idle timeout".
-The server <span class="bcp14">MAY</span> cache the TLS session parameters, in order to provide for fast session resumption.<span class="cref" id="idle-timeout-conf">RFC 7360 adds a paragraph about that the idle timeout should not be exposed to the admin as configurable parameter and references a mechanism to determine this value from the application-layer watchdog, but I didn't find the specification anywhere.<span class="crefSource">Janfred</span></span><a href="#section-6.4.1.1-7" class="pilcrow">¶</a></p>
+The server <span class="bcp14">SHOULD</span> delete idle DTLS sessions after an "idle timeout".<span class="cref" id="idle-timeout-conf">RFC 7360 adds a paragraph about that the idle timeout should not be exposed to the admin as configurable parameter and references a mechanism to determine this value from the application-layer watchdog, but I didn't find the specification anywhere.<span class="crefSource">Janfred</span></span><a href="#section-6.4.1.1-7" class="pilcrow">¶</a></p>
 <p id="section-6.4.1.1-8">RADIUS/DTLS servers <span class="bcp14">SHOULD</span> also monitor the total number of open sessions.
 They <span class="bcp14">SHOULD</span> have a "maximum sessions" setting exposed to administrators as a configurable parameter.
 When this maximum is reached and a new session is started, the server <span class="bcp14">MUST</span> either drop an old session in order to open the new one or not create a new session.<a href="#section-6.4.1.1-8" class="pilcrow">¶</a></p>
@@ -2026,27 +2040,27 @@ Non-compliant, or unexpected packets will be ignored by the DTLS layer.<span cla
 <p id="section-6.4.2-3">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> proactively close sessions when they have been idle for a period of time.
 Clients <span class="bcp14">SHOULD</span> close a session when no traffic other than watchdog packet and (possibly) watchdog responses have been sent for three watchdog timeouts.
 This behavior ensures that clients do not waste resources on the server by causing it to track idle sessions.<a href="#section-6.4.2-3" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-4">DTLS sessions <span class="bcp14">MUST</span> also be deleted when a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Response Authenticator.<span class="cref" id="normalizespec">Maybe modify this text to be more similar to the TLS specific text here.<span class="crefSource">Janfred</span></span>
-There are other cases, when the specifications require that a packet received via a DTLS session be "silently discarded".
-In those cases, implementations <span class="bcp14">MAY</span> delete the underlying DTLS session.<a href="#section-6.4.2-4" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-5">RADIUS/DTLS clients <span class="bcp14">SHOULD NOT</span> send both RADIUS/UDP and RADIUS/DTLS packets to different servers from the same source socket.
-This practice causes increased complexity in the client application and increases the potential for security breaches due to implementation issues.<a href="#section-6.4.2-5" class="pilcrow">¶</a></p>
-<p id="section-6.4.2-6">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> implement session resumption, preferably stateless session resumption as given in <span>[<a href="#RFC5077" class="cite xref">RFC5077</a>]</span>.
-This practice lowers the time and effort required to start a DTLS session with a server and increases network responsiveness.<a href="#section-6.4.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-4">DTLS sessions <span class="bcp14">MUST</span> also be deleted when a RADIUS packet fails validation due to a packet being malformed, or when it has an invalid Message-Authenticator or invalid Response Authenticator.<span class="cref" id="normalizespec">Maybe modify this text to be more similar to the TLS specific text here.<span class="crefSource">Janfred</span></span><a href="#section-6.4.2-4" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-5">There are other cases, when the specifications require that a packet received via a DTLS session be "silently discarded".
+In those cases, implementations <span class="bcp14">MAY</span> delete the underlying DTLS session.<a href="#section-6.4.2-5" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-6">RADIUS/DTLS clients <span class="bcp14">SHOULD NOT</span> send both RADIUS/UDP and RADIUS/DTLS packets to different servers from the same source socket.
+This practice causes increased complexity in the client application and increases the potential for security breaches due to implementation issues.<a href="#section-6.4.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.4.2-7">RADIUS/DTLS clients <span class="bcp14">SHOULD</span> implement session resumption, preferably stateless session resumption as given in <span>[<a href="#RFC5077" class="cite xref">RFC5077</a>]</span>.
+This practice lowers the time and effort required to start a DTLS session with a server and increases network responsiveness.<a href="#section-6.4.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 </section>
 </div>
-<div id="security-considerations">
+<div id="security_considerations">
 <section id="section-7">
       <h2 id="name-security-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-7-1">As this specification relies on the existing TLS and DTLS specifications, all security considerations for these protocols also apply to the (D)TLS portions of RADIUS/(D)TLS.<a href="#section-7-1" class="pilcrow">¶</a></p>
 <p id="section-7-2">For RADIUS however, many security considerations raised in the RADIUS documents are related to RADIUS encryption and authorization.
-Those issues are largely mitigated when (D)TLS is used as a transport method, since encryption and autorization is achieved on the (D)TLS layer.
+Those issues are largely mitigated when (D)TLS is used as a transport method, since encryption and authorization is achieved on the (D)TLS layer.
 The issues that are not mitigated by this specification are related to the RADIUS packet format and handling, which is unchanged in this specification.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-3">A few remaining security considerations and notes to administrators deploying RADIUS/(D)TLS are listed below.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <div id="radius-proxies">
@@ -2106,8 +2120,8 @@ The reason is that the session is expected to be used for transport of RADIUS pa
 <p id="section-7.4-2">Any non-RADIUS traffic on that session means the other party is misbehaving and is a potentially security risk.
 Similarly, any RADIUS traffic failing authentication vector or Message-Authenticator validation means that two parties do not have a common shared secret.
 Since the shared secret is static, this again means the other party is misbehaving.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
-<p id="section-7.4-3">We wish to avoid the situation wehere a third party can send well-formed RADIUS packets to a RADIUS proxy that cause a (D)TLS session to close.
-Therefore, in other situations, the session SOULD remain open in the face of non-conformant packets.
+<p id="section-7.4-3">We wish to avoid the situation where a third party can send well-formed RADIUS packets to a RADIUS proxy that cause a (D)TLS session to close.
+Therefore, in other situations, the session SOULD remain open in the face of non-conforming packets.
 Any malformed RADIUS packets sent by a third party will go through the security checks of the RADIUS proxy upon reception and will not be forwarded.
 Well-formed RADIUS packets with portions that the proxy does not understand do not pose a security risk to the security properties of the RADIUS/(D)TLS session and can be forwarded.
 This ensures forward compatibility with future RADIUS extensions.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
@@ -2186,6 +2200,17 @@ Since dealing with certificates can create a lot of issues, both for implementer
 <p id="section-8.2-2">As with the supported transports, the assumption is that RADIUS servers are generally believed to be less constrained that RADIUS clients.
 Since some client implementations already support using certificates for mutual authentication and there are several use cases, where Pre-shared keys are not usable (e.g. a dynamic federation with changing members), the decision was made that, analog to the supported transports, RADIUS servers must implement both certificates with PKIX trust model and TLS-PSK as means of mutual authentication.
 RADIUS clients again can choose which method is better suited for them, but must, for compatibility reasons, implement at least one of the two.<a href="#section-8.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="design_changes_in_tls">
+<section id="section-8.3">
+        <h3 id="name-changes-in-application-of-t">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-changes-in-application-of-t" class="section-name selfRef">Changes in application of TLS</a>
+        </h3>
+<p id="section-8.3-1">The original specification of RADIUS/TLS does not forbid the usage of compression in the TLS layer.
+As per <span>[<a href="#RFC9325" class="cite xref">RFC9325</a>], <a href="https://rfc-editor.org/rfc/rfc9325#section-3.3" class="relref">Section 3.3</a></span>, compression should not be used due to the possibility of compression-related attacks, unless the application protocol is proven to be not open to such attacks.
+Since some attributes of the RADIUS packets within the TLS tunnel contain values that an attacker could at least partially choose (i.e. username, MAC address or EAP message), there is a possibility for compression-related attacks, that could potentially reveal data in other RADIUS attributes through length of the TLS record.
+To circumvent this attack, this specification forbids the usage of TLS compression.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2333,11 +2358,11 @@ RADIUS clients again can choose which method is better suited for them, but must
 <dl class="references">
 <dt id="I-D.ietf-radext-radiusv11">[I-D.ietf-radext-radiusv11]</dt>
         <dd>
-<span class="refAuthor">DeKok, A.</span>, <span class="refTitle">"RADIUS Version 1.1"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-radext-radiusv11-02</span>, <time datetime="2023-10-11" class="refDate">11 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-radext-radiusv11-02">https://datatracker.ietf.org/doc/html/draft-ietf-radext-radiusv11-02</a>&gt;</span>. </dd>
+<span class="refAuthor">DeKok, A.</span>, <span class="refTitle">"RADIUS ALPN and removing MD5"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-radext-radiusv11-04</span>, <time datetime="2024-02-26" class="refDate">26 February 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-radext-radiusv11-04">https://datatracker.ietf.org/doc/html/draft-ietf-radext-radiusv11-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-radext-tls-psk">[I-D.ietf-radext-tls-psk]</dt>
         <dd>
-<span class="refAuthor">DeKok, A.</span>, <span class="refTitle">"RADIUS and TLS-PSK"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-radext-tls-psk-03</span>, <time datetime="2023-08-24" class="refDate">24 August 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-03">https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-03</a>&gt;</span>. </dd>
+<span class="refAuthor">DeKok, A.</span>, <span class="refTitle">"RADIUS and TLS-PSK"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-radext-tls-psk-09</span>, <time datetime="2024-02-29" class="refDate">29 February 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-09">https://datatracker.ietf.org/doc/html/draft-ietf-radext-tls-psk-09</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6613">[RFC6613]</dt>
         <dd>
@@ -2362,7 +2387,7 @@ RADIUS clients again can choose which method is better suited for them, but must
 <div id="lessons_learned">
 <section id="appendix-A">
       <h2 id="name-lessons-learned-from-deploy">
-<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-lessons-learned-from-deploy" class="section-name selfRef">Lessons learned from deployments of the Experimental <em class="cite xref">[RFC6614]</em></a>
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-lessons-learned-from-deploy" class="section-name selfRef">Lessons learned from deployments of the Experimental <span class="cite xref">[RFC6614]</span></a>
       </h2>
 <p id="appendix-A-1">There are at least to major (world-scale deployments of <span>[<a href="#RFC6614" class="cite xref">RFC6614</a>]</span>.
 This section will discuss lessens learned from these deployments, that influenced this document.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
@@ -2439,7 +2464,7 @@ Hopefully the differences to <span>[<a href="#RFC6614" class="cite xref">RFC6614
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
 <p id="appendix-D-1">Thanks to the original authors of RFC 6613, RFC 6614 and RFC 7360: Alan DeKok, Stefan Winter, Mike McCauley, Stig Venaas and Klaas Vierenga.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
-<p id="appendix-D-2">Thanks to Arran Curdbard-Bell for text around keepalives.<a href="#appendix-D-2" class="pilcrow">¶</a></p>
+<p id="appendix-D-2">Thanks to Arran Curdbard-Bell for text around keepalives and the Status-Server watchdog algorithm.<a href="#appendix-D-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
