@@ -800,7 +800,7 @@ Upon approval, IANA should update the Reference to radsec in the Service Name an
 # Lessons learned from deployments of the Experimental {{RFC6614}}
 {: #lessons_learned}
 
-There are at least to major (world-scale deployments of {{RFC6614}}.
+There are at least two major (world-scale deployments of {{RFC6614}}.
 This section will discuss lessens learned from these deployments, that influenced this document.
 
 ## eduroam
