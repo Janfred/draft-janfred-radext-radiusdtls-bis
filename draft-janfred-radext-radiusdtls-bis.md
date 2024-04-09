@@ -233,6 +233,7 @@ Additionally, the following requirements have to be met for the (D)TLS session:
 * The session MUST be mutually authenticated (see {{mutual_auth}})
 
 [^add_which]: TODO: Add text which recommendations of RFC9325 must be followed and why
+
 ## Mutual authentication
 {: #mutual_auth }
 
@@ -774,6 +775,14 @@ Since dealing with certificates can create a lot of issues, both for implementer
 As with the supported transports, the assumption is that RADIUS servers are generally believed to be less constrained that RADIUS clients.
 Since some client implementations already support using certificates for mutual authentication and there are several use cases, where Pre-shared keys are not usable (e.g. a dynamic federation with changing members), the decision was made that, analog to the supported transports, RADIUS servers must implement both certificates with PKIX trust model and TLS-PSK as means of mutual authentication.
 RADIUS clients again can choose which method is better suited for them, but must, for compatibility reasons, implement at least one of the two.
+
+## Changes in application of TLS
+{: #design_changes_in_tls}
+
+The original specification of RADIUS/TLS does not forbid the usage of compression in the TLS layer.
+As per {{RFC9325, Section 3.3}}, compression should not be used due to the possibility of compression-related attacks, unless the application protocol is proven to be not open to such attacks.
+Since some attributes of the RADIUS packets within the TLS tunnel contain values that an attacker could at least partially choose (i.e. username, MAC address or EAP message), there is a possibility for compression-related attacks, that could potentially reveal data in other RADIUS attributes through length of the TLS record.
+To circumvent this attack, this specification forbids the usage of TLS compression.
 
 # IANA Considerations
 
