@@ -2,16 +2,16 @@
 
 This is the working area for the individual Internet-Draft, "(Datagram) Transport Layer Security ((D)TLS Encryption for RADIUS".
 
-* [Editor's Copy](https://Janfred.github.io/draft-janfred-radext-radiusdtls-bis/#go.draft-janfred-radext-radiusdtls-bis.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-janfred-radext-radiusdtls-bis)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-janfred-radext-radiusdtls-bis)
-* [Compare Editor's Copy to Individual Draft](https://Janfred.github.io/draft-janfred-radext-radiusdtls-bis/#go.draft-janfred-radext-radiusdtls-bis.diff)
+* [Editor's Copy](https://radext-wg.github.io/draft-ietf-radext-radiusdtls-bis/#go.draft-ietf-radext-radiusdtls-bis.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-ietf-radext-radiusdtls-bis)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-ietf-radext-radiusdtls-bis)
+* [Compare Editor's Copy to Individual Draft](https://radext-wg.github.io/draft-ietf-radext-radiusdtls-bis/#go.draft-ietf-radext-radiusdtls-bis.diff)
 
 
 ## Contributing
 
 See the
-[guidelines for contributions](https://github.com/Janfred/draft-janfred-radext-radiusdtls-bis/blob/main/CONTRIBUTING.md).
+[guidelines for contributions](https://github.com/radext-wg/draft-ietf-radext-radiusdtls-bis/blob/main/CONTRIBUTING.md).
 
 Contributions can be made by creating pull requests.
 The GitHub interface supports creating pull requests using the Edit (✏) button.
