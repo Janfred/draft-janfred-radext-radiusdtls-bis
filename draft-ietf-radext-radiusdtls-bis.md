@@ -3,7 +3,7 @@ title: "(Datagram) Transport Layer Security ((D)TLS Encryption for RADIUS"
 abbrev: "RADIUS over (D)TLS"
 category: std
 
-obsoletes: 6614 7360
+obsoletes: 6614, 7360
 
 docname: draft-ietf-radext-radiusdtls-bis-latest
 submissiontype: IETF
