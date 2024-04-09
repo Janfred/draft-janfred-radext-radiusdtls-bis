@@ -195,9 +195,9 @@ RADIUS/(D)TLS clients MUST mark a connection DOWN if one or more of the followin
 * The network stack indicates that the connection is no longer viable.
 * The application-layer watchdog algorithm has marked it DOWN.
 
-If a RADIUS/(D)TLS client has multiple connection to a server, it MUST NOT decide to mark the whole server as DOWN until all connections to it have been marked DOWN.[^what_is_a_server]{:jf}
+If a RADIUS/(D)TLS client has multiple connection to a server, it MUST NOT decide to mark the whole server as DOWN until all connections to it have been marked DOWN.[^what_is_a_server_1]{:jf}
 
-[^what_is_a_server]: TODO: Explain what a server is. (Just the destination IP? include port?)
+[^what_is_a_server_1]: TODO: Explain what a server is. (Just the destination IP? include port?)
 
 It is REQUIRED that RADIUS/(D)TLS clients implement the Status-Server extension as described in {{!RFC5997}} as the application level watchdog to detect the liveliness of the peer in the absence of responses.
 Since RADIUS has a limitation of 256 simultaneous "in flight" packets due to the length of the ID field ({{RFC3539}}, Section 2.4), it is RECOMMENDED that RADIUS/(D)TLS clients reserve ID zero (0) on each session for Status-Server packets.
@@ -318,7 +318,7 @@ In TLS-X.509 mode using PKIX trust models, a client is uniquely identified by th
 Note well: having identified a connecting entity does not mean the server necessarily wants to communicate with that client.
 For example, if the Issuer is not in a trusted set of Issuers, the server may decline to perform RADIUS transactions with this client.
 
-[^add_ip_filtering]{:jf}
+[^add_ip_filtering_2]{:jf}
 
 There are numerous trust models in PKIX environments, and it is beyond the scope of this document to define how a particular deployment determines whether a client is trustworthy.
 Implementations that want to support a wide variety of trust models should expose as many details of the presented certificate to the administrator as possible so that the trust model can be implemented by the administrator.
@@ -338,7 +338,7 @@ In TLS-PSK operation at least the following parameters of the TLS connection sho
 * TLS-PSK Identifier
 
 [^pskid]: TODO: What is the correct term here? "PSK Identifier"? Probably not "TLS Identifier" as it was in RFC6614
-[^add_ip_filtering]: TODO: Add text around IP filtering.
+[^add_ip_filtering_2]: TODO: Add text around IP filtering.
 
 ## RADIUS Datagrams
 
@@ -369,7 +369,7 @@ This section discusses all specifications that are only relevant for RADIUS/TLS.
 [^src_6613_2_6_1]: Source: RFC6613, Section 2.6.1, with small modifications
 
 As TCP is a reliable transport, RADIUS/TLS peers MUST NOT retransmit RADIUS packets over a given TCP connection.
-Similarly, if there is no response to a RADIUS packet over one RADIUS/TLS connection, implementations MUST NOT retransmit that packet over a different connection to the same destination IP address and port, while the first connection is in the OKAY state ({{RFC3539, Appendix A}}. [^what_is_a_server]{:jf}
+Similarly, if there is no response to a RADIUS packet over one RADIUS/TLS connection, implementations MUST NOT retransmit that packet over a different connection to the same destination IP address and port, while the first connection is in the OKAY state ({{RFC3539, Appendix A}}. [^what_is_a_server_2]{:jf}
 
 However, if the TLS session or TCP connection is closed or broken, retransmissions over new connections are permissible.
 RADIUS request packets that have not yet received a response MAY be transmitted by a RADIUS/TLS client over a new connection.
@@ -391,7 +391,7 @@ There is no guarantee in RADIUS that the two ports are in any way related.
 This requirement does not, however, forbid the practice of putting multiple servers into a failover or load-balancing pool.
 In that situation, RADIUS requests MAY be retransmitted to another server that is known to be part of the same pool.
 
-[^what_is_a_server]: TODO: Destination IP addr and port may be bad, but what is a server's identity?
+[^what_is_a_server_2]: TODO: Destination IP addr and port may be bad, but what is a server's identity?
 
 ## Malformed Packets and Unknown clients
 
@@ -488,9 +488,9 @@ It MAY mark the client as "DTLS Required".
 
 Allowing RADIUS/UDP and RADIUS/DTLS from the same client exposes the traffic to downbidding attacks and is NOT RECOMMENDED.
 
-[^add_ip_filtering]{:jf}
+[^add_ip_filtering_1]{:jf}
 
-[^add_ip_filtering]: TODO: Add text for IP filtering
+[^add_ip_filtering_1]: TODO: Add text for IP filtering
 
 ## Client behavior
 

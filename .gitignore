@@ -17,7 +17,8 @@
 /versioned/
 Gemfile.lock
 archive.json
-draft-janfred-radext-radiusdtls-bis.xml
+draft-ietf-radext-radiusdtls-bis.xml
+metadata.min.js
 package-lock.json
 report.xml
 !requirements.txt
