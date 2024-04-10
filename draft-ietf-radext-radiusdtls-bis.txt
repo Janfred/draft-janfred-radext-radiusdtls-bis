@@ -4,9 +4,9 @@
 
 RADIUS EXTensions                                         J.-F. Rieckers
 Internet-Draft                                                       DFN
-Obsoletes: 6614 7360 (if approved)                             S. Winter
+Obsoletes: 6614, 7360 (if approved)                            S. Winter
 Intended status: Standards Track                                 RESTENA
-Expires: 11 October 2024                                    9 April 2024
+Expires: 12 October 2024                                   10 April 2024
 
 
    (Datagram) Transport Layer Security ((D)TLS Encryption for RADIUS
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 October 2024.
+   This Internet-Draft will expire on 12 October 2024.
 
 Copyright Notice
 
@@ -85,6 +85,8 @@ Table of Contents
        4.2.4.  Authentication using TLS-PSK
      4.3.  Connecting Client Identity
      4.4.  RADIUS Datagrams
+     4.5.  Forwarding RADIUS packets between UDP and TCP based
+           transports
    5.  RADIUS/TLS specific specifications
      5.1.  Duplicates and Retransmissions
      5.2.  Malformed Packets and Unknown clients
@@ -288,9 +290,6 @@ Table of Contents
 
                                  Table 1
 
-   The default ports for RADIUS/UDP (1812/udp, 1813/udp) and RADIUS/TCP
-   (1812/tcp, 1813/tcp) SHOULD NOT be used for RADIUS/(D)TLS.
-
    RADIUS/(D)TLS does not use separate ports for authentication,
    accounting and dynamic authorization changes.  The source port is
    arbitrary.
@@ -300,21 +299,17 @@ Table of Contents
    // -- Janfred
 
    RADIUS/TLS servers MUST immediately start the TLS negotiation when a
-   new connection is opened.  They MUST close the connection and discard
-   any data sent if the connecting client does not start a TLS
-   negotiation or if the TLS negotiation fails at any point.
+   new connection to the RADIUS/TLS port is opened.  They MUST close the
+   connection and discard any data sent if the connecting client does
+   not start a TLS negotiation or if the TLS negotiation fails at any
+   point.
 
    RADIUS/DTLS servers MUST silently discard any packet they receive
-   that is not a new DTLS negotiation or a packet sent over a DTLS
-   session established earlier.
+   over the RADIUS/DTLS port that is not a new DTLS negotiation or a
+   packet sent over a DTLS session established earlier.
 
    RADIUS/(D)TLS peers MUST NOT use the old RADIUS/UDP or RADIUS/TCP
    ports for RADIUS/DTLS or RADIUS/TLS.
-   // This last sentence contradicts an earlier paragraph (should vs
-   // must).  Must be fixed.  TODO: check if this is a result of
-   // different specs from 6614 and 7360
-   //
-   // -- Janfred
 
 3.3.  Detecting Live Servers
 
@@ -431,10 +426,11 @@ Table of Contents
 
    // Source: RFC6614, Section 2.3, Item 3 with modifications.
 
-   RADIUS/(D)TLS servers MUST authenticate clients.  RADIUS is designed
-   to be used by mutually trusted systems.  Allowing anonymous clients
-   would ensure privacy for RADIUS/(D)TLS traffic, but would negate all
-   other security aspects of the protocol, including security aspects of
+   RADIUS/(D)TLS servers MUST authenticate clients, and RADIUS/(D)TLS
+   clients MUST authenticate the server.  RADIUS is designed to be used
+   by mutually trusted systems.  Allowing anonymous clients would ensure
+   privacy for RADIUS/(D)TLS traffic, but would negate all other
+   security aspects of the protocol, including security aspects of
    RADIUS itself, due to the fixed shared secret.
 
    RADIUS/(D)TLS allows for the following different modes of mutual
@@ -534,7 +530,9 @@ Table of Contents
       connecting peer's continued authorization.
       // Open discussion: RFC6614 says "may" here.  I think this should
       be
-      // a "should".
+      // a "should".  There are some discussions to change this to
+      "must".
+      // Input from TLS/UTA experts is appreciated.
       //
       // -- Janfred
 
@@ -597,10 +595,15 @@ Table of Contents
    example, if the Issuer is not in a trusted set of Issuers, the server
    may decline to perform RADIUS transactions with this client.
 
-
-   // TODO: Add text around IP filtering.
-   //
-   // -- Janfred
+   Additionally, a server MAY restrict individual or groups of clients
+   to certain IP ranges.  A client connecting from outside this range
+   would be rejected, even if the mutual authentication otherwise would
+   have been successful.  To reduce server load and to prevent probing
+   the validity of stolen credentials, the server SHOULD abort the
+   (D)TLS negotiation immediately with a TLS alert access_denied(49)
+   after the client transmitted identifying information, i.e. the client
+   certificate or the PSK identifier, and the server recognizes that the
+   client connects from outside the allowed IP range.
 
    There are numerous trust models in PKIX environments, and it is
    beyond the scope of this document to define how a particular
@@ -663,6 +666,25 @@ Table of Contents
       instead.
       //
       // -- Janfred
+
+4.5.  Forwarding RADIUS packets between UDP and TCP based transports
+
+   Operating RADIUS proxies that use both UDP-based transports like
+   RADIUS/UDP or RADIUS/DTLS and TCP-based transports like RADIUS/TLS
+   requires different handing of packets.  TCP based transports do not
+   need retransmissions, since the reliable transport is provided by the
+   TCP layer.  Therefore, retransmission of RADIUS packets is forbidden
+   over RADIUS/TLS.  If a request is received over RADIUS/TLS and
+   forwarded over RADIUS/UDP or RADIUS/DTLS, the proxy needs perform its
+   own retransmissions for outstanding packets.
+
+
+   // TODO: This section is currently a stub.  Alan mentioned that we
+   // should have a section about handling this, especially around
+   // Accounting packets with Acct-Delay-Time.  I need more text around
+   // this, help welcome.
+   //
+   // -- Janfred
 
 5.  RADIUS/TLS specific specifications
 
@@ -858,11 +880,6 @@ Table of Contents
 
    Allowing RADIUS/UDP and RADIUS/DTLS from the same client exposes the
    traffic to downbidding attacks and is NOT RECOMMENDED.
-
-
-   // TODO: Add text for IP filtering
-   //
-   // -- Janfred
 
 6.3.  Client behavior
 
@@ -1139,6 +1156,13 @@ Table of Contents
    place, that ensure that every intermediate RADIUS proxy is configured
    to forward the RADIUS packets using RADIUS/(D)TLS as transport.
 
+
+   // TODO: Mabe add a reference to handling dynamic discovery (RFC7585)
+   // here too, and (as per Alans comments) that this issue is best
+   // resolved by limiting use of proxies.
+   //
+   // -- Janfred
+
 7.2.  Usage of null encryption cipher suites for debugging
 
    For debugging purposes, some TLS implementation offer cipher suites
@@ -1188,6 +1212,27 @@ Table of Contents
    RADIUS/DTLS servers MUST limit the number of partially open DTLS
    sessions and SHOULD expose this limit as configurable option to the
    administrator.
+
+   To prevent resource exhaustion by partially opening a large number of
+   DTLS sessions, RADIUS/DTLS servers SHOULD have a timeout on partially
+   open DTLS sessions.  We recommend a limit of a few seconds,
+   implementations SHOULD expose this timeout as configurable option to
+   the administrator.  If a DTLS session is not established within this
+   timeframe, it is likely that this is a bogous connection.  In
+   contrast, an established session might not send packets for longer
+   periods of time, but since the peers are mutually authenticated this
+   does not pose a problem other than the problems mentioned before.
+
+   A different means of prevention is IP filtering.  If the IP range
+   that the server expects clients to connect from is restricted, then
+   the server can simply reject or drop all connection attempts from
+   outside those ranges.  If every RADIUS/(D)TLS client is configured
+   with an IP range, then the server does not even have to perform a
+   partial TLS handshake if the connection attempt comes from outside
+   every allowed range, but can instead immediately drop the connection.
+   To perform this lookup efficiently, RADIUS/(D)TLS servers SHOULD keep
+   a list of the cummulated permitted IP ranges, individually for each
+   transport.
 
 7.4.  Session Closing
 
@@ -1519,7 +1564,7 @@ Table of Contents
 Appendix A.  Lessons learned from deployments of the Experimental
              [RFC6614]
 
-   There are at least to major (world-scale deployments of [RFC6614].
+   There are at least two major (world-scale deployments of [RFC6614].
    This section will discuss lessens learned from these deployments,
    that influenced this document.
 
@@ -1643,6 +1688,9 @@ Acknowledgments
 
    Thanks to Arran Curdbard-Bell for text around keepalives and the
    Status-Server watchdog algorithm.
+
+   Thanks to Alan DeKok for his constant review of this document over
+   its whole process.
 
 Authors' Addresses
 
