@@ -6,7 +6,7 @@ RADIUS EXTensions                                         J.-F. Rieckers
 Internet-Draft                                                       DFN
 Obsoletes: 6614, 7360 (if approved)                            S. Winter
 Intended status: Standards Track                                 RESTENA
-Expires: 12 October 2024                                   10 April 2024
+Expires: 18 October 2024                                   16 April 2024
 
 
    (Datagram) Transport Layer Security ((D)TLS Encryption for RADIUS
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 October 2024.
+   This Internet-Draft will expire on 18 October 2024.
 
 Copyright Notice
 
@@ -1564,7 +1564,7 @@ Table of Contents
 Appendix A.  Lessons learned from deployments of the Experimental
              [RFC6614]
 
-   There are at least two major (world-scale deployments of [RFC6614].
+   There are at least two major (world-scale) deployments of [RFC6614].
    This section will discuss lessens learned from these deployments,
    that influenced this document.
 
